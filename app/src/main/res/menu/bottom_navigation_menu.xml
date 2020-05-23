@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/foryou"
+            android:enabled="true"
+            android:icon="@drawable/ic_airplay"
+            android:title="@string/for_you"/>
+        <item
+            android:id="@+id/today"
+            android:enabled="true"
+            android:icon="@drawable/ic_activity"
+            android:title="@string/today"/>
+    <item
+        android:id="@+id/follow"
+        android:enabled="true"
+        android:icon="@drawable/ic_zoom_in"
+        android:title="@string/following"/>
+    <item
+        android:id="@+id/shelf"
+        android:enabled="true"
+        android:icon="@drawable/ic_layers"
+        android:title="@string/shelf"/>
+
+</menu>

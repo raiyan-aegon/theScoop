@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">theScoop</string>
+    <string name="app_name">the scoop</string>
+    <string name="for_you">For you</string>
+    <string name="today">Today</string>
+    <string name="following">Following</string>
+    <string name="shelf">Shelf</string>
+    <string name="search">Search</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
