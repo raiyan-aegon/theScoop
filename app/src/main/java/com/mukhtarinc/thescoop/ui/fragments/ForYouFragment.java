@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop;
+package com.mukhtarinc.thescoop.ui.fragments;
 
 import android.os.Bundle;
 
@@ -9,15 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mukhtarinc.thescoop.databinding.FragmentFollowingBinding;
+import com.mukhtarinc.thescoop.R;
+import com.mukhtarinc.thescoop.databinding.FragmentForYouBinding;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FollowingFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
-public class FollowingFragment extends Fragment {
+public class ForYouFragment extends Fragment {
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,7 +27,7 @@ public class FollowingFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public FollowingFragment() {
+    public ForYouFragment() {
         // Required empty public constructor
     }
 
@@ -37,11 +37,11 @@ public class FollowingFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FollowingFragment.
+     * @return A new instance of fragment ShelfFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FollowingFragment newInstance(String param1, String param2) {
-        FollowingFragment fragment = new FollowingFragment();
+    public static ForYouFragment newInstance(String param1, String param2) {
+        ForYouFragment fragment = new ForYouFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,8 +62,7 @@ public class FollowingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        FragmentFollowingBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_following,container,false);
+        FragmentForYouBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_for_you,container,false);
 
 
         return binding.getRoot();

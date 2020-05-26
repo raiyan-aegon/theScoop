@@ -1,18 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".TodayFragment">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.today.TodayFragment">
 
-        <TextView
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="403dp"
+        android:layout_marginLeft="4dp"
+        android:background="#ffff"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_height="106dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="TODAY"
-            android:textSize="20sp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
-    </FrameLayout>
+
+            <TextView
+                android:id="@+id/article_title"
+                android:layout_width="297dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Black mother arrested brutally by NYPD for not wearing COVID-19 face mask"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/article_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/article_image" />
+
+            <ImageView
+                android:id="@+id/article_image"
+                android:layout_width="91dp"
+                android:layout_height="103dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_search"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/article_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="CNN"
+                app:layout_constraintStart_toStartOf="@+id/article_title"
+                app:layout_constraintTop_toBottomOf="@+id/article_title" />
+
+
+            <TextView
+                android:id="@+id/article_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="14dp"
+                android:text="2020-05-25T01:17:27Z"
+                app:layout_constraintBottom_toBottomOf="@+id/article_source"
+                app:layout_constraintStart_toEndOf="@+id/article_source"
+                app:layout_constraintTop_toBottomOf="@+id/article_title" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
 </layout>

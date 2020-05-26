@@ -1,28 +1,38 @@
-package com.mukhtarinc.thescoop;
+package com.mukhtarinc.thescoop.ui.fragments;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.ActivityMainBinding;
+import com.mukhtarinc.thescoop.ui.today.TodayFragment;
 
-public class MainActivity extends AppCompatActivity {
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class MainActivity extends DaggerAppCompatActivity {
 
     ActivityMainBinding binding ;
+
+    private static final String TAG = "MainActivity";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
 
 
         ForYouFragment forYouFragment = ForYouFragment.newInstance("","");
@@ -41,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.today:
                         Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
-                        TodayFragment todayFragment = TodayFragment.newInstance("","");
-                        openFragment(todayFragment);
+                        TodayFragment todayFragment = TodayFragment.newInstance();
+                          openFragment(todayFragment);
                         break;
                     case R.id.follow:
                         Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();

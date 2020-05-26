@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop;
+package com.mukhtarinc.thescoop.ui.fragments;
 
 import android.os.Bundle;
 
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mukhtarinc.thescoop.databinding.FragmentFollowingBinding;
+import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
 
 
@@ -63,7 +63,7 @@ public class ShelfFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentShelfBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_shelf,container,false);
+        FragmentShelfBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shelf,container,false);
 
 
         return binding.getRoot();

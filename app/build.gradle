@@ -3,6 +3,10 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
 
+    compileOptions{
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     dataBinding {
 
@@ -40,14 +44,19 @@ dependencies {
 
 
     //DAGGER2
-    implementation 'com.google.dagger:dagger-android:2.20'
-    implementation 'com.google.dagger:dagger-android-support:2.20'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.20'
+    implementation 'com.google.dagger:dagger:2.27'
+    implementation 'com.google.dagger:dagger-android:2.22'
+    implementation 'com.google.dagger:dagger-android-support:2.22'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.22'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.27'
 
     //LIVEDATA & //VIEWMODEL
     implementation "android.arch.lifecycle:livedata:1.1.1"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+
+    //Reactive Streams (convert flowable (RXJava) to LiveData)
+
+    implementation 'android.arch.lifecycle:reactivestreams:1.1.1'
 
     //PAGING
     implementation "androidx.paging:paging-runtime:2.1.2"
@@ -63,4 +72,17 @@ dependencies {
 
     //MATERIAL DESIGN
     implementation 'com.google.android.material:material:1.2.0-alpha06'
+
+
+    //RETROFIT
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+
+    //RXJAVA
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.14'
+
+    //RX-RETROFIT CALL ADAPTER
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
+
 }

@@ -8,11 +8,12 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:name=".BaseApplication"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/theScoopTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.fragments.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
