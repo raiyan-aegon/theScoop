@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop.ui.fragments;
+package com.mukhtarinc.thescoop.ui;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -6,16 +6,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.ActivityMainBinding;
+import com.mukhtarinc.thescoop.ui.fragments.FollowingFragment;
+import com.mukhtarinc.thescoop.ui.fragments.ForYouFragment;
+import com.mukhtarinc.thescoop.ui.fragments.ShelfFragment;
 import com.mukhtarinc.thescoop.ui.today.TodayFragment;
-
-import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 

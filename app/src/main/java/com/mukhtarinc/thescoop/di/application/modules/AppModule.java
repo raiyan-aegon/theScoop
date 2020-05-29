@@ -1,7 +1,13 @@
 package com.mukhtarinc.thescoop.di.application.modules;
 
-import com.mukhtarinc.thescoop.utils.Constants;
+import android.app.Application;
 
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.mukhtarinc.thescoop.di.application.scopes.AppScoped;
+import com.mukhtarinc.thescoop.utils.Constants;
+import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
@@ -12,10 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Raiyan Mukhtar on 5/24/2020.
  */
 
+
 @Module
 public class AppModule {
 
 
+    @AppScoped
     @Provides
     static Retrofit provideRetrofit(){
         return new Retrofit.Builder()
@@ -24,4 +32,14 @@ public class AppModule {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
+
+
+    @AppScoped
+    @Provides
+    static RequestManager provideGlideRequestManager(Application application){
+
+        return Glide.with(application);
+
+    }
+
 }

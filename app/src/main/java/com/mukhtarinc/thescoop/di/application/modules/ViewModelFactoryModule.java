@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop.di;
+package com.mukhtarinc.thescoop.di.application.modules;
 
 import androidx.lifecycle.ViewModelProvider;
 

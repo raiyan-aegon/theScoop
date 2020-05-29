@@ -36,9 +36,9 @@ public class TodayResource<T> {
         return new TodayResource<>(TodayArticlesStatus.LOADING,data,null);
     }
 
-    public static <T> TodayResource<T> error(@Nullable  T data){
+    public static <T> TodayResource<T> error(@Nullable String message,@Nullable  T data){
 
-        return new TodayResource<>(TodayArticlesStatus.ERROR,data,null);
+        return new TodayResource<>(TodayArticlesStatus.ERROR,data,message);
     }
 
 

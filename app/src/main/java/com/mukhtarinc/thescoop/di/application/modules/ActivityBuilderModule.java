@@ -1,7 +1,7 @@
 package com.mukhtarinc.thescoop.di.application.modules;
 
-import com.mukhtarinc.thescoop.di.main.module.FragmentsBuilderModule;
-import com.mukhtarinc.thescoop.ui.fragments.MainActivity;
+import com.mukhtarinc.thescoop.di.main.FragmentsBuilderModule;
+import com.mukhtarinc.thescoop.ui.MainActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

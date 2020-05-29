@@ -3,9 +3,10 @@ package com.mukhtarinc.thescoop.di.application.component;
 import android.app.Application;
 
 import com.mukhtarinc.thescoop.BaseApplication;
-import com.mukhtarinc.thescoop.di.ViewModelFactoryModule;
+import com.mukhtarinc.thescoop.di.application.modules.ViewModelFactoryModule;
 import com.mukhtarinc.thescoop.di.application.modules.ActivityBuilderModule;
 import com.mukhtarinc.thescoop.di.application.modules.AppModule;
+import com.mukhtarinc.thescoop.di.application.scopes.AppScoped;
 
 import javax.inject.Singleton;
 
@@ -19,7 +20,8 @@ import dagger.android.AndroidInjector;
  **/
 
 
-@Singleton
+
+@AppScoped
 @Component (modules = { AndroidInjectionModule.class, AppModule.class,
         ActivityBuilderModule.class,
         ViewModelFactoryModule.class})

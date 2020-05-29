@@ -8,17 +8,17 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.network.today.TodayApi;
+import com.mukhtarinc.thescoop.network.today.TodayResource;
 import com.mukhtarinc.thescoop.network.today.TodayResponse;
 import com.mukhtarinc.thescoop.utils.Constants;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 /**
@@ -27,9 +27,11 @@ import io.reactivex.schedulers.Schedulers;
 public class TodayViewModel extends ViewModel {
 
     private static final String TAG = "TodayViewModel";
-    
-    private MediatorLiveData<TodayResponse> articles = new MediatorLiveData<>();
 
+
+    private MediatorLiveData<TodayResource<TodayResponse>> articles = new MediatorLiveData<>();
+
+    private LiveData<TodayResponse> myArticles;
     private TodayApi api;
 
     @Inject
@@ -37,30 +39,69 @@ public class TodayViewModel extends ViewModel {
 
         this.api =api;
         Log.d(TAG, "TodayViewModel: is Working");
-        
+
+
     }
     
     
     public void getTodayArticle(String country,String apiKey){
 
 
-        final LiveData<TodayResponse> source = LiveDataReactiveStreams.fromPublisher(
+
+
+
+        //request is attempting to be made
+        articles.setValue(TodayResource.loading(null));
+
+        final LiveData<TodayResource<TodayResponse>> source = LiveDataReactiveStreams.fromPublisher(
                 api.getTodayArticles(country,apiKey)
+
+                        // if error Ocurrs
+                        .onErrorReturn(new Function<Throwable, TodayResponse>() {
+
+
+                            @Override
+                            public TodayResponse apply(Throwable throwable) throws Exception {
+                                TodayResponse errorResponse = new TodayResponse();
+                                errorResponse.setArticles(null);
+                                return errorResponse;
+                            }
+                        })
+
+                        //maps to the above Todayresponse Object to the data retrieved to check and compare if there is an error
+                        .map(new Function<TodayResponse, TodayResource<TodayResponse>>() {
+                            @Override
+                            public TodayResource<TodayResponse> apply(TodayResponse todayResponse) throws Exception {
+                                if(todayResponse.getArticles()==null) {
+                                    return TodayResource.error("Check your Internet Connection", null);
+                                }
+                                    return TodayResource.successful(todayResponse);
+
+                            }
+                        })
                 .subscribeOn(Schedulers.io())
         );
 
-        articles.addSource(source, new Observer<TodayResponse>() {
+        articles.addSource(source, new Observer<TodayResource<TodayResponse>>() {
             @Override
-            public void onChanged(TodayResponse todayResponse) {
-                articles.setValue(todayResponse);
+            public void onChanged(TodayResource<TodayResponse> todayResponseTodayResource) {
+                
+                if(todayResponseTodayResource.data==null){
+
+                    Log.d(TAG, "onChanged: NULL");
+                }else{
+
+                    Log.d(TAG, "onChanged: not null");
+                }
+                articles.setValue(todayResponseTodayResource);
                 articles.removeSource(source);
             }
         });
-        
+//
         
     }
 
-    public LiveData<TodayResponse> getArticles() {
+    public LiveData<TodayResource<TodayResponse>> getArticles() {
         return articles;
     }
 }

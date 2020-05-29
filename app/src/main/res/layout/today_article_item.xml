@@ -1,74 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="403dp"
-    android:layout_marginLeft="4dp"
-    android:background="#ffff"
-    android:layout_marginRight="4dp"
-    android:layout_marginBottom="4dp"
-    android:layout_height="106dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginStart="4dp"
-    android:layout_marginEnd="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+<layout   xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <data>
+
+        <variable
+            name="article"
+            type="com.mukhtarinc.thescoop.model.Article" />
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_marginLeft="7dp"
+        app:cardElevation="1dp"
+        app:cardCornerRadius="4dp"
+        android:background="#ffff"
+        android:layout_marginRight="7dp"
+        android:layout_marginBottom="4dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp">
 
 
-        <TextView
-            android:id="@+id/article_title"
-            android:layout_width="297dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:text="Black mother arrested brutally by NYPD for not wearing COVID-19 face mask"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/article_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/article_image" />
-
-        <ImageView
-            android:id="@+id/article_image"
-            android:layout_width="91dp"
-            android:layout_height="103dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_search"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
-        <TextView
-            android:id="@+id/article_source"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="CNN"
-            app:layout_constraintStart_toStartOf="@+id/article_title"
-            app:layout_constraintTop_toBottomOf="@+id/article_title" />
+            <TextView
+                android:id="@+id/title"
+                style="@style/theScoopTitle"
+                android:layout_width="280dp"
+                android:layout_height="66dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="6dp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:layout_marginRight="6dp"
+                android:text="@{article.title}"
+                app:layout_constraintEnd_toStartOf="@+id/image_article"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-        <TextView
-            android:id="@+id/article_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="14dp"
-            android:text="2020-05-25T01:17:27Z"
-            app:layout_constraintBottom_toBottomOf="@+id/article_source"
-            app:layout_constraintStart_toEndOf="@+id/article_source"
-            app:layout_constraintTop_toBottomOf="@+id/article_title" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/source"
+                style="@style/theScoopSource"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@{article.getSource.name}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/title"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
 
+            <View
+                android:id="@+id/divider"
+                android:layout_width="30dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/source"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
-</com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginLeft="14dp"
+                style="@style/theScoopSource"
+                app:layout_constraintBottom_toBottomOf="@+id/source"
+                app:layout_constraintStart_toEndOf="@+id/divider" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:id="@+id/overflow_menu"
+                android:layout_marginRight="6dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_overflow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/image_article" />
+
+            <ImageView
+                android:id="@+id/image_article"
+                android:layout_width="91dp"
+                android:layout_height="103dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginBottom="12dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

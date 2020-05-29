@@ -2,6 +2,8 @@ package com.mukhtarinc.thescoop.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by Raiyan Mukhtar on 5/24/2020.
  */
@@ -26,6 +28,12 @@ public class Article {
     @SerializedName("content")
     private String content;
 
+    @SerializedName("source")
+    private Source getSource;
+
+    public Source getGetSource() {
+        return getSource;
+    }
 
     public String getAuthor() {
         return author;
