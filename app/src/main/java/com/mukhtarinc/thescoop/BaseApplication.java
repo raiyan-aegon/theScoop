@@ -2,6 +2,7 @@ package com.mukhtarinc.thescoop;
 
 
 
+
 import com.mukhtarinc.thescoop.di.application.component.DaggerAppComponent;
 
 import dagger.android.AndroidInjector;

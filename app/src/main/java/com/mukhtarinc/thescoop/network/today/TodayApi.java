@@ -3,6 +3,7 @@ package com.mukhtarinc.thescoop.network.today;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -14,7 +15,7 @@ public interface TodayApi {
 
 
     @GET("top-headlines")
-    Flowable<TodayResponse> getTodayArticles(@Query("country") String country, @Query("apiKey") String apiKey);
+    Observable<TodayResponse> getTodayArticles(@Query("country") String country, @Query("apiKey") String apiKey);
 
 
 }

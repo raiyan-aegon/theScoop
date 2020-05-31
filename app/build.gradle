@@ -8,9 +8,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dataBinding {
-
-        enabled = true
+    buildFeatures{
+        dataBinding = true
     }
 
     defaultConfig {
@@ -71,7 +70,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //MATERIAL DESIGN
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.2.0-beta01'
 
 
     //RETROFIT

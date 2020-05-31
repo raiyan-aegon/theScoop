@@ -14,7 +14,7 @@ import dagger.android.ContributesAndroidInjector;
  */
 
 
-@Module(includes = UtilsModule.class)
+@Module
 public abstract class FragmentsBuilderModule {
 
     @ContributesAndroidInjector(modules = {TodayApiServiceModule.class, TodayViewModelModule.class})

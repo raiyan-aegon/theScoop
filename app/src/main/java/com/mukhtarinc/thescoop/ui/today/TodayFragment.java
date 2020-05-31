@@ -105,49 +105,31 @@ public class TodayFragment extends DaggerFragment {
 
 
 
-        if(hasNetwork()){
 
-            viewModel.getTodayArticle("us",Constants.apiKey);
+//            viewModel.getTodayArticle("us",Constants.apiKey);
             subscribeObservers();
 
-        }else {
 
-            binding.noConnection.setVisibility(View.VISIBLE);
-            binding.todayList.setVisibility(View.GONE);
-        }
+//            binding.noConnection.setVisibility(View.VISIBLE);
+//            binding.todayList.setVisibility(View.GONE);
+
 
 
     }
 
 
-    boolean hasNetwork(){
-
-
-        boolean isConnected = false;
-
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-            if (networkInfo != null && networkInfo.isConnected()) {
-                isConnected = true;
-            }
-
-        }
-        Log.d(TAG, "hasNetwork: "+isConnected);
-        return isConnected;
-    }
 
     void subscribeObservers(){
 
        // RxJavaPlugins.setErrorHandler(throwable -> Log.e("MainActivity","Uncaught: "+throwable.toString()));
 
 
-
-        viewModel.getArticles().observe(this, new Observer<TodayResource<TodayResponse>>() {
-            @Override
+        viewModel.getTodayArticles("us",Constants.apiKey)
+                .observe(this, new Observer<TodayResource<TodayResponse>>() {
+                    @Override
             public void onChanged(TodayResource<TodayResponse> todayResponseTodayResource) {
                 if(todayResponseTodayResource!=null){
+
 
 
                     switch(todayResponseTodayResource.status)
@@ -163,6 +145,7 @@ public class TodayFragment extends DaggerFragment {
 
 
                             if(todayResponseTodayResource.data!=null) {
+
 
 
 
@@ -188,6 +171,54 @@ public class TodayFragment extends DaggerFragment {
                 }
             }
         });
+
+
+//        viewModel.getArticles().observe(this, new Observer<TodayResource<TodayResponse>>() {
+//            @Override
+//            public void onChanged(TodayResource<TodayResponse> todayResponseTodayResource) {
+//                if(todayResponseTodayResource!=null){
+//
+//
+//
+//                    switch(todayResponseTodayResource.status)
+//                    {
+//
+//                        case LOADING: {
+//                            binding.shimmerLayout.startShimmerAnimation();
+//
+//                            break;
+//                        }
+//
+//                        case SUCCESS: {
+//
+//
+//                            if(todayResponseTodayResource.data!=null) {
+//
+//
+//
+//
+//                                todayListAdapter.setData(todayResponseTodayResource.data.getArticles());
+//                                binding.todayList.setAdapter(todayListAdapter);
+//
+//                                binding.shimmerLayout.stopShimmerAnimation();
+//                                binding.shimmerLayout.setVisibility(View.GONE);
+//                                binding.todayList.setVisibility(View.VISIBLE);
+//                            }
+//                            break;
+//                        }
+//
+//                        case ERROR: {
+//                            binding.shimmerLayout.setVisibility(View.GONE);
+//                            binding.noConnection.setVisibility(View.VISIBLE);
+//                            binding.todayList.setVisibility(View.GONE);
+//                            break;
+//                        }
+//
+//                    }
+//
+//                }
+//            }
+//        });
     }
 
     @Override
