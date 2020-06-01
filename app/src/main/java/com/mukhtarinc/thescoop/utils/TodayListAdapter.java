@@ -1,25 +1,18 @@
 package com.mukhtarinc.thescoop.utils;
 
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.TodayArticleItemBinding;
 import com.mukhtarinc.thescoop.databinding.TopHeadlineBinding;
 import com.mukhtarinc.thescoop.model.Article;
-import com.mukhtarinc.thescoop.network.today.TodayResponse;
-import com.mukhtarinc.thescoop.ui.today.TodayViewModel;
-import com.squareup.picasso.Picasso;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 /**
@@ -31,8 +24,8 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     RequestManager requestManager;
 
-    private static int PUBLIC_KEY=0;
-    private static int PUBLIC_OTHERS=1;
+
+     OverflowClickListener overflowClickListener;
 
    public  TodayListAdapter(RequestManager requestManager){
 
@@ -60,6 +53,15 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
+
+    public void setOverflowClickListener(OverflowClickListener listener){
+
+       this.overflowClickListener = listener;
+
+    }
+
+
+
     @Override
     public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, int position) {
         Article article = todayResponses.get(position);
@@ -78,12 +80,10 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                    requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(topHeadlineBinding.largeImageArticle);
                    topHeadlineBinding.time.setText(TheScoopDateUtils.newsTimeDifference(article.getPublishedAt()));
 
-
                }
 
 
            }
-
 
        }else {
 
@@ -96,15 +96,12 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                    binding.setArticle(article);
                    requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.imageArticle);
                    binding.time.setText(TheScoopDateUtils.newsTimeDifference(article.getPublishedAt()));
-
                }
 
            }
         }
 
-
-
-       }
+   }
 
 
     @Override
@@ -124,26 +121,52 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    public class TodayViewHolder extends RecyclerView.ViewHolder{
+    public class TodayViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
 
+       TodayArticleItemBinding binding;
 
         public TodayViewHolder(@NonNull View view) {
             super(view);
+            binding = DataBindingUtil.getBinding(view);
+
+            binding.overflowMenu.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Article article = todayResponses.get(getAdapterPosition());
+
+            overflowClickListener.overflowClicked(article);
         }
     }
 
 
-    public class TodayHeadlineViewHolder extends RecyclerView.ViewHolder{
+    public class TodayHeadlineViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
 
+       TopHeadlineBinding binding;
        View headlineView;
 
         public TodayHeadlineViewHolder(@NonNull View view) {
+
             super(view);
             headlineView =view;
+            binding = DataBindingUtil.getBinding(view);
+
+            binding.overflowMenu.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            Article article = todayResponses.get(getAdapterPosition());
+
+            overflowClickListener.overflowClicked(article);
         }
     }
+
+
 
 
 

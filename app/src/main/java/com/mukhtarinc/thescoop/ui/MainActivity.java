@@ -17,13 +17,61 @@ import com.mukhtarinc.thescoop.ui.fragments.ForYouFragment;
 import com.mukhtarinc.thescoop.ui.fragments.ShelfFragment;
 import com.mukhtarinc.thescoop.ui.today.TodayFragment;
 
+import java.util.ArrayList;
+
 import dagger.android.support.DaggerAppCompatActivity;
 
 public class MainActivity extends DaggerAppCompatActivity {
 
     ActivityMainBinding binding ;
 
+   private TodayFragment todayFragment;
+   private ForYouFragment forYouFragment;
+   private FollowingFragment followingFragment;
+   private  ShelfFragment shelfFragment;
+
+
+   ArrayList<Fragment> fragments = new ArrayList<>();
+
     private static final String TAG = "MainActivity";
+
+    private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+            Fragment fragment = null;
+            switch (item.getItemId()){
+
+                case R.id.foryou:
+                    Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
+                    //fragment = new ForYouFragment();
+                    displayFragment(0);
+
+                    break;
+                case R.id.today:
+//                    Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
+//                    fragment = new TodayFragment();
+                    displayFragment(1);
+                    break;
+                case R.id.follow:
+//                    Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();
+//                    fragment = new FollowingFragment();
+                    displayFragment(2);
+
+                    break;
+                case R.id.shelf:
+//                    Toast.makeText(MainActivity.this, "Shelf", Toast.LENGTH_SHORT).show();
+//                    fragment = new ShelfFragment();
+                    displayFragment(3);
+                    break;
+
+
+            }
+
+            return true;
+        }
+    };
 
 
 
@@ -35,41 +83,25 @@ public class MainActivity extends DaggerAppCompatActivity {
 
 
 
-        ForYouFragment forYouFragment = ForYouFragment.newInstance("","");
-        openFragment(forYouFragment);
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
+
+        if(savedInstanceState == null){
+            forYouFragment = ForYouFragment.newInstance("","");
+            todayFragment = TodayFragment.newInstance();
+            followingFragment = FollowingFragment.newInstance("","");
+            shelfFragment = ShelfFragment.newInstance("","");
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.container,forYouFragment)
+                    .addToBackStack(null)
+                    .commit();
 
 
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-
-                    case R.id.foryou:
-                        Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
-                        ForYouFragment forYouFragment = ForYouFragment.newInstance("","");
-                        openFragment(forYouFragment);
-                        break;
-                    case R.id.today:
-                        Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
-                        TodayFragment todayFragment = TodayFragment.newInstance();
-                          openFragment(todayFragment);
-                        break;
-                    case R.id.follow:
-                        Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();
-                        FollowingFragment followingFragment = FollowingFragment.newInstance("","");
-                        openFragment(followingFragment);
-                        break;
-                    case R.id.shelf:
-                        Toast.makeText(MainActivity.this, "Shelf", Toast.LENGTH_SHORT).show();
-                        ShelfFragment shelfFragment = ShelfFragment.newInstance("","");
-                        openFragment(shelfFragment);
-                        break;
-
-                }
-                return true;
-            }
-        });
-
+        }
+        fragments.add(forYouFragment);
+        fragments.add(todayFragment);
+        fragments.add(followingFragment);
+        fragments.add(shelfFragment);
 
     }
 
@@ -79,5 +111,106 @@ public class MainActivity extends DaggerAppCompatActivity {
         transaction.replace(R.id.container,fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    void displayFragment(int position){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragment = null;
+
+        switch (position){
+
+                case 0:
+                    fragment = fragments.get(position);
+                    if(fragment.isAdded()){
+
+                        transaction.show(fragment);
+
+                    }else {
+                        transaction.add(R.id.container,fragment);
+                    }
+
+                   if(fragments.get(1).isAdded()){
+                       transaction.hide(fragments.get(1));
+                   }
+                    if(fragments.get(2).isAdded()){
+                        transaction.hide(fragments.get(2));
+                    }
+                    if(fragments.get(3).isAdded()){
+                        transaction.hide(fragments.get(3));
+                    }
+                    transaction.commit();
+                    break;
+
+            case 1:
+                fragment = fragments.get(position);
+                if(fragment.isAdded()){
+
+                    transaction.show(fragment);
+
+                }else {
+                    transaction.add(R.id.container,fragment);
+                }
+
+                if(fragments.get(0).isAdded()){
+                    transaction.hide(fragments.get(0));
+                }
+                if(fragments.get(2).isAdded()){
+                    transaction.hide(fragments.get(2));
+                }
+                if(fragments.get(3).isAdded()){
+                    transaction.hide(fragments.get(3));
+                }
+                transaction.commit();
+
+
+                break;
+            case 2:
+                fragment = fragments.get(position);
+                if(fragment.isAdded()){
+
+                    transaction.show(fragment);
+
+                }else {
+                    transaction.add(R.id.container,fragment);
+                }
+
+                if(fragments.get(0).isAdded()){
+                    transaction.hide(fragments.get(0));
+                }
+                if(fragments.get(1).isAdded()){
+                    transaction.hide(fragments.get(1));
+                }
+                if(fragments.get(3).isAdded()){
+                    transaction.hide(fragments.get(3));
+                }
+                transaction.commit();
+
+                break;
+            case 3:
+                fragment = fragments.get(position);
+                if(fragment.isAdded()){
+
+                    transaction.show(fragment);
+
+                }else {
+                    transaction.add(R.id.container,fragment);
+                }
+
+                if(fragments.get(0).isAdded()){
+                    transaction.hide(fragments.get(0));
+                }
+                if(fragments.get(1).isAdded()){
+                    transaction.hide(fragments.get(1));
+                }
+                if(fragments.get(2).isAdded()){
+                    transaction.hide(fragments.get(2));
+                }
+transaction.commit();
+
+                break;
+        }
+
+
+
     }
 }

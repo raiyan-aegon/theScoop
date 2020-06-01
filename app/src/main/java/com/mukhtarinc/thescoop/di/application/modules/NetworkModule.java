@@ -48,7 +48,6 @@ public class NetworkModule {
     }
 
     @Provides
-    @Named("cache")
     Interceptor provideInterceptor(){
 
 
@@ -62,7 +61,7 @@ public class NetworkModule {
             Response response = chain.proceed(chain.request());
 
             CacheControl cacheControl = new CacheControl.Builder()
-                    .maxStale(5,TimeUnit.SECONDS)
+                    .maxAge(60,TimeUnit.MINUTES)
                     .build();
 
 
@@ -76,50 +75,11 @@ public class NetworkModule {
     }
 
 
-
     @Provides
-    @Named("offline")
-    Interceptor providesOfflineInterceptor(ConnectivityManager manager){
-
-
-        return new Interceptor()  {
-            @NotNull
-            @Override
-            public Response intercept(@NotNull Chain chain) throws IOException {
-
-                Log.d(TAG, "Offline Interceptor: Called");
-
-                Request request = chain.request();
-
-
-                if(hasNetwork(manager)){
-                    CacheControl cacheControl = new CacheControl.Builder()
-                            .maxStale(7,TimeUnit.DAYS)
-                            .build();
-
-
-                    request = request.newBuilder()
-                            .removeHeader("Pragma")
-                            .removeHeader("Cache-Control")
-                            .cacheControl(cacheControl)
-                            .build();
-
-
-                }
-
-                return chain.proceed(request);
-
-            }
-        };
-
-    }
-
-    @Provides
-    OkHttpClient provideOkHttpClient(Cache cache, @Named("cache") Interceptor interceptor, @Named("offline") Interceptor offlineCacheInterceptor){
+    OkHttpClient provideOkHttpClient(Cache cache, Interceptor interceptor){
 
         return new OkHttpClient.Builder()
                 .addNetworkInterceptor(interceptor)
-                .addInterceptor(offlineCacheInterceptor)
                 .cache(cache)
                 .build();
 
@@ -129,16 +89,12 @@ public class NetworkModule {
     @Provides
     boolean hasNetwork(ConnectivityManager connectivityManager){
 
-        boolean isConnected = false;
+
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected()) {
 
-            isConnected = true;
-        }
-
-        return  isConnected;
+        return  networkInfo != null && networkInfo.isConnected();
 
     }
 

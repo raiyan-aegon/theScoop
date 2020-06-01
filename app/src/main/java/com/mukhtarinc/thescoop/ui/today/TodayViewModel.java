@@ -3,15 +3,12 @@ package com.mukhtarinc.thescoop.ui.today;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.LiveDataReactiveStreams;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.mukhtarinc.thescoop.network.today.TodayApi;
-import com.mukhtarinc.thescoop.network.today.TodayResource;
-import com.mukhtarinc.thescoop.network.today.TodayResponse;
+import com.mukhtarinc.thescoop.data.network.today.TodayApi;
+import com.mukhtarinc.thescoop.data.network.today.TodayResource;
+import com.mukhtarinc.thescoop.data.network.today.TodayResponse;
 
 import javax.inject.Inject;
 
@@ -20,9 +17,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop.network.today;
+package com.mukhtarinc.thescoop.data.network.today;
 
 
 import androidx.annotation.NonNull;

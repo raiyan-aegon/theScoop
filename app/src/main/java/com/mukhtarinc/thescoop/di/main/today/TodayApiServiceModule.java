@@ -6,9 +6,7 @@ package com.mukhtarinc.thescoop.di.main.today;
 
 import android.util.Log;
 
-import com.mukhtarinc.thescoop.di.application.scopes.AppScoped;
-import com.mukhtarinc.thescoop.di.application.scopes.FragmentScoped;
-import com.mukhtarinc.thescoop.network.today.TodayApi;
+import com.mukhtarinc.thescoop.data.network.today.TodayApi;
 
 import dagger.Module;
 import dagger.Provides;

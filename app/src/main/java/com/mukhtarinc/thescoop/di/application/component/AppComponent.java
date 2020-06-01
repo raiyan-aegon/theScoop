@@ -8,8 +8,6 @@ import com.mukhtarinc.thescoop.di.application.modules.ActivityBuilderModule;
 import com.mukhtarinc.thescoop.di.application.modules.AppModule;
 import com.mukhtarinc.thescoop.di.application.scopes.AppScoped;
 
-import javax.inject.Singleton;
-
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
@@ -26,6 +24,9 @@ import dagger.android.AndroidInjector;
         ActivityBuilderModule.class,
         ViewModelFactoryModule.class})
 public interface AppComponent extends AndroidInjector<BaseApplication> {
+
+
+
 
 
 
