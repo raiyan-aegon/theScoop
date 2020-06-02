@@ -143,12 +143,9 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             binding = DataBindingUtil.getBinding(view);
 
             binding.overflowMenu.setOnClickListener(this);
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Article article = todayResponses.get(getAdapterPosition());
-                    articleItemClickListener.articleItemClicked(article);
-                }
+            binding.getRoot().setOnClickListener(view1 -> {
+                Article article = todayResponses.get(getAdapterPosition());
+                articleItemClickListener.articleItemClicked(article);
             });
         }
 
@@ -176,12 +173,9 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             binding = DataBindingUtil.getBinding(view);
             binding.overflowMenu.setOnClickListener(this);
 
-            binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Article article = todayResponses.get(getAdapterPosition());
-                    articleItemClickListener.articleItemClicked(article);
-                }
+            binding.getRoot().setOnClickListener(view1 -> {
+                Article article = todayResponses.get(getAdapterPosition());
+                articleItemClickListener.articleItemClicked(article);
             });
 
 
