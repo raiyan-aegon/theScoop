@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop.ui;
+package com.mukhtarinc.thescoop.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -12,10 +12,10 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.ActivityMainBinding;
-import com.mukhtarinc.thescoop.ui.fragments.FollowingFragment;
-import com.mukhtarinc.thescoop.ui.fragments.ForYouFragment;
-import com.mukhtarinc.thescoop.ui.fragments.ShelfFragment;
-import com.mukhtarinc.thescoop.ui.today.TodayFragment;
+import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
+import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouFragment;
+import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfFragment;
+import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
 
 import java.util.ArrayList;
 

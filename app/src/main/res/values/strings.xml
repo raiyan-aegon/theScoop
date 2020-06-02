@@ -14,4 +14,5 @@
     <string name="sheet_go_to_source">Go to Source</string>
     <string name="sheet_share">Share</string>
     <string name="sheet_add_to_shelf">Add to Shelf</string>
+    <string name="read_btn">Read full article</string>
 </resources>

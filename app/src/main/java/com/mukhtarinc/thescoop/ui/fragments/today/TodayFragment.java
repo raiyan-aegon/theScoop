@@ -1,6 +1,7 @@
-package com.mukhtarinc.thescoop.ui.today;
+package com.mukhtarinc.thescoop.ui.fragments.today;
 
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -14,13 +15,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.baoyz.widget.PullRefreshLayout;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentTodayBinding;
 import com.mukhtarinc.thescoop.data.network.today.TodayResource;
 import com.mukhtarinc.thescoop.data.network.today.TodayResponse;
 import com.mukhtarinc.thescoop.model.Article;
-import com.mukhtarinc.thescoop.ui.BottomSheetFragment;
+import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
+import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
+import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
 import com.mukhtarinc.thescoop.utils.Constants;
 import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.TodayListAdapter;
@@ -29,7 +34,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 
 
-public class TodayFragment extends DaggerFragment implements OverflowClickListener {
+public class TodayFragment extends DaggerFragment implements OverflowClickListener, ArticleItemClickListener {
 
     private static final String TAG = "TodayFragment";
 
@@ -48,6 +53,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     TodayListAdapter todayListAdapter;
 
     private  OverflowClickListener overflowClickListener;
+    private ArticleItemClickListener articleItemClickListener;
 
 
     public TodayFragment() {
@@ -66,6 +72,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_today,container,false);
 
        overflowClickListener = this;
+       articleItemClickListener = this;
         return binding.getRoot();
     }
 
@@ -138,6 +145,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
 
                                 todayListAdapter.setOverflowClickListener(overflowClickListener);
+                                todayListAdapter.setArticleItemClickListener(articleItemClickListener);
                                 todayListAdapter.setData(todayResponseTodayResource.data.getArticles());
                                 binding.todayList.setAdapter(todayListAdapter);
 
@@ -176,6 +184,19 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
         fragment.setArguments(bundle);
         fragment.show(fragmentManager,fragment.getTag());
+
+    }
+
+    @Override
+    public void articleItemClicked(Article article) {
+
+        Intent intent = new Intent(getActivity(), TheScoopDetailsActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("article",article);
+        bundle.putParcelable("source",article.getGetSource());
+        intent.putExtras(bundle);
+        startActivity(intent);
 
     }
 }

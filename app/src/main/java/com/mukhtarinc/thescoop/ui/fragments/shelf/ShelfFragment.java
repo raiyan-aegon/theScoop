@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop.ui.fragments;
+package com.mukhtarinc.thescoop.ui.fragments.shelf;
 
 import android.os.Bundle;
 

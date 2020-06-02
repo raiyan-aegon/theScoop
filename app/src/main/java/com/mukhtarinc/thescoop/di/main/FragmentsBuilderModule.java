@@ -1,15 +1,10 @@
 package com.mukhtarinc.thescoop.di.main;
 
-import com.mukhtarinc.thescoop.di.application.modules.UtilsModule;
-import com.mukhtarinc.thescoop.di.application.scopes.FragmentScoped;
 import com.mukhtarinc.thescoop.di.main.today.TodayApiServiceModule;
 import com.mukhtarinc.thescoop.di.main.today.TodayViewModelModule;
-import com.mukhtarinc.thescoop.ui.today.TodayFragment;
-import com.mukhtarinc.thescoop.utils.OverflowClickListener;
+import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
 
-import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 
 /**

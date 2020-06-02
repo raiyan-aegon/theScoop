@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop.ui;
+package com.mukhtarinc.thescoop.ui.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.BottomSheetBinding;
 import com.mukhtarinc.thescoop.model.Article;
+import com.mukhtarinc.thescoop.model.Source;
 
 /**
  * Created by Raiyan Mukhtar on 6/1/2020.
@@ -31,6 +32,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
     BottomSheetBinding bottomSheetBinding;
 
     private Article article;
+    private Source source;
+
 
     public BottomSheetFragment(){
 
@@ -45,6 +48,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
 
            article = getArguments().getParcelable("bottomSheet");
 
+           source = getArguments().getParcelable("source");
         }
     }
 
@@ -61,9 +65,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        String source = "Go to "+article.getGetSource().getName();
 
-        bottomSheetBinding.setSource(source);
+        bottomSheetBinding.setSource("Go to "+source.getName());
 
         bottomSheetBinding.shareSheet.setOnClickListener(new View.OnClickListener() {
             @Override

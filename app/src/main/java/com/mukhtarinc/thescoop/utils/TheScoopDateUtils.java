@@ -26,8 +26,6 @@ public class TheScoopDateUtils {
         long then = formatter.parse(time, position).getTime();
 
 
-
-
         long now  = new Date().getTime();
 
         long seconds = (now-then)/1000;

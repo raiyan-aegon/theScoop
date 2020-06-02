@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop.ui.today;
+package com.mukhtarinc.thescoop.ui.fragments.today;
 
 import android.app.Application;
 import android.util.Log;

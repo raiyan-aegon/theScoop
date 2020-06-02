@@ -3,7 +3,7 @@ package com.mukhtarinc.thescoop.di.main.today;
 import androidx.lifecycle.ViewModel;
 
 import com.mukhtarinc.thescoop.di.application.scopes.ViewModelKey;
-import com.mukhtarinc.thescoop.ui.today.TodayViewModel;
+import com.mukhtarinc.thescoop.ui.fragments.today.TodayViewModel;
 
 import dagger.Binds;
 import dagger.Module;
