@@ -36,4 +36,11 @@
 
     </style>
 
+    <style name="TheScoop.Progressbar" parent="Widget.AppCompat.ProgressBar">
+
+        <item name="android:progressBackgroundTint" tools:targetApi="lollipop">@color/colorPrimaryDark</item>
+        <item name="android:progressTint" tools:targetApi="lollipop">@color/colorPrimary</item>
+
+    </style>
+
 </resources>

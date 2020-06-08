@@ -1,4 +1,4 @@
-package com.mukhtarinc.thescoop.di.main.today;
+package com.mukhtarinc.thescoop.di.main;
 
 /**
  * Created by Raiyan Mukhtar on 5/24/2020.
@@ -6,19 +6,20 @@ package com.mukhtarinc.thescoop.di.main.today;
 
 import android.util.Log;
 
-import com.mukhtarinc.thescoop.data.network.today.TodayApi;
+
+import com.mukhtarinc.thescoop.data.network.NewsAPIService;
 
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
 
 @Module
-public  class TodayApiServiceModule {
+public  class NewsApiServiceModule {
 
     private static final String TAG = "TodayApiServiceModule";
 
     @Provides
-   static TodayApi provideTodayApiService(Retrofit retrofit){
+   static NewsAPIService provideTodayApiService(Retrofit retrofit){
 
         if(retrofit==null){
 
@@ -28,6 +29,6 @@ public  class TodayApiServiceModule {
             Log.d(TAG, "provideTodayApiService: Retrofit is not NULL");
         }
 
-        return retrofit.create(TodayApi.class);
+        return retrofit.create(NewsAPIService.class);
     }
 }

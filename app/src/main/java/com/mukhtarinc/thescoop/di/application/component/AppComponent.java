@@ -27,9 +27,6 @@ public interface AppComponent extends AndroidInjector<BaseApplication> {
 
 
 
-
-
-
     @Component.Builder
     interface Builder {
 

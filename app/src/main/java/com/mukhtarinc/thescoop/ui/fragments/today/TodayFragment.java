@@ -15,12 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentTodayBinding;
-import com.mukhtarinc.thescoop.data.network.today.TodayResource;
+import com.mukhtarinc.thescoop.data.network.NetworkResource;
 import com.mukhtarinc.thescoop.data.network.today.TodayResponse;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
@@ -30,8 +29,17 @@ import com.mukhtarinc.thescoop.utils.Constants;
 import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.TodayListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
+
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class TodayFragment extends DaggerFragment implements OverflowClickListener, ArticleItemClickListener {
@@ -80,6 +88,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
 
+
         Log.d(TAG, "onViewCreated");
 
 
@@ -90,7 +99,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(TodayViewModel.class);
-        pullArticles();
+
     }
 
 
@@ -98,6 +107,10 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
+
+        pullArticles();
+
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
         binding.todayList.setLayoutManager(layoutManager);
@@ -108,8 +121,38 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
         binding.swipeRefresh.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                pullArticles();
-                binding.swipeRefresh.setRefreshing(false);
+
+                binding.swipeRefresh.setRefreshing(true);
+                Observable.timer(3, TimeUnit.SECONDS)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new io.reactivex.Observer<Long>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                Log.d(TAG, "onSubscribe: ");
+                            }
+
+                            @Override
+                            public void onNext(Long aLong) {
+                                pullArticles();
+                                Log.d(TAG, "onNext: ");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                                Log.d(TAG, "onError: ");
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                binding.swipeRefresh.setRefreshing(false);
+
+                                Log.d(TAG, "onComplete: ");
+                            }
+                        });
+
+
             }
         });
     }
@@ -122,14 +165,14 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
 
         viewModel.getTodayArticles("us",Constants.apiKey)
-                .observe(this, new Observer<TodayResource<TodayResponse>>() {
+                .observe(this, new Observer<NetworkResource<TodayResponse>>() {
                     @Override
-            public void onChanged(TodayResource<TodayResponse> todayResponseTodayResource) {
-                if(todayResponseTodayResource!=null){
+            public void onChanged(NetworkResource<TodayResponse> todayResponseNetworkResource) {
+                if(todayResponseNetworkResource !=null){
 
 
 
-                    switch(todayResponseTodayResource.status)
+                    switch(todayResponseNetworkResource.status)
                     {
 
                         case LOADING: {
@@ -140,13 +183,13 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
                         case SUCCESS: {
 
 
-                            if(todayResponseTodayResource.data!=null) {
+                            if(todayResponseNetworkResource.data!=null) {
 
 
 
                                 todayListAdapter.setOverflowClickListener(overflowClickListener);
                                 todayListAdapter.setArticleItemClickListener(articleItemClickListener);
-                                todayListAdapter.setData(todayResponseTodayResource.data.getArticles());
+                                todayListAdapter.setData(todayResponseNetworkResource.data.getArticles());
                                 binding.todayList.setAdapter(todayListAdapter);
 
                                 binding.shimmerLayout.setVisibility(View.GONE);

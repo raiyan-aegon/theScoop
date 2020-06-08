@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:background="?android:attr/selectableItemBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+       <ImageView
+           android:id="@+id/source_image"
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:layout_marginStart="24dp"
+           android:layout_marginLeft="24dp"
+           android:layout_marginTop="16dp"
+           android:layout_marginBottom="16dp"
+           android:src="@drawable/bloomberg"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent" />
+
+       <TextView
+           android:id="@+id/sources_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="11dp"
+           android:layout_marginLeft="11dp"
+           android:text="Bloomberg"
+           android:textSize="14sp"
+           app:layout_constraintBottom_toBottomOf="@+id/source_image"
+           app:layout_constraintStart_toEndOf="@+id/source_image"
+           app:layout_constraintTop_toTopOf="@+id/source_image" />
+
+       <CheckBox
+           android:layout_width="38dp"
+           android:layout_height="38dp"
+           android:layout_marginEnd="38dp"
+           android:layout_marginRight="38dp"
+           android:buttonTint="@color/colorPrimaryDark"
+           app:layout_constraintBottom_toBottomOf="@+id/sources_name"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="@+id/sources_name" />
+
+
+
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+</layout>

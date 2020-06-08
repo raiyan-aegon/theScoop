@@ -3,6 +3,7 @@ package com.mukhtarinc.thescoop.di.application.modules;
 import com.bumptech.glide.RequestManager;
 import com.mukhtarinc.thescoop.di.main.FragmentsBuilderModule;
 import com.mukhtarinc.thescoop.ui.activities.MainActivity;
+import com.mukhtarinc.thescoop.ui.activities.MoreSourcesActivity;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 
 import dagger.Module;
@@ -22,4 +23,7 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract TheScoopDetailsActivity injectDetailsActivity();
+
+    @ContributesAndroidInjector
+    abstract MoreSourcesActivity injectMoreSourcesActivity();
 }

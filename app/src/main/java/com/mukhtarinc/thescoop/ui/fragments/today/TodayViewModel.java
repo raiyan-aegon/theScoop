@@ -6,8 +6,8 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.mukhtarinc.thescoop.data.network.today.TodayApi;
-import com.mukhtarinc.thescoop.data.network.today.TodayResource;
+import com.mukhtarinc.thescoop.data.network.NewsAPIService;
+import com.mukhtarinc.thescoop.data.network.NetworkResource;
 import com.mukhtarinc.thescoop.data.network.today.TodayResponse;
 
 import javax.inject.Inject;
@@ -27,88 +27,22 @@ public class TodayViewModel extends ViewModel {
     private static final String TAG = "TodayViewModel";
 
 
-//    private MediatorLiveData<TodayResource<TodayResponse>> articles = new MediatorLiveData<>();
-    //private LiveData<TodayResource<TodayResponse>> articles ;
-
-    private TodayApi api;
-
-    private Application application;
+    private NewsAPIService api;
 
     @Inject
-    public TodayViewModel(TodayApi api, Application application) {
+    public TodayViewModel(NewsAPIService api, Application application) {
 
         this.api =api;
-      //  Log.d(TAG, "TodayViewModel: is Working");
-        this.application = application;
 
 
     }
-    
-    
-//    public void getTodayArticle(String country,String apiKey){
-//
-//
-//
-//                        //request is attempting to be made
-////            articles.setValue(TodayResource.loading(null));
-////
-////            final LiveData<TodayResource<TodayResponse>> source = LiveDataReactiveStreams.fromPublisher(
-////                    api.getTodayArticles(country,apiKey)
-////
-////                            // if error Ocurrs
-////                            .onErrorReturn(new Function<Throwable, TodayResponse>() {
-////
-////                                @Override
-////                                public TodayResponse apply(Throwable throwable) throws Exception {
-////                                    TodayResponse errorResponse = new TodayResponse();
-////                                    errorResponse.setArticles(null);
-////                                    return errorResponse;
-////                                }
-////                            })
-////
-////                            //maps to the above Todayresponse Object to the data retrieved to check and compare if there is an error
-////                            .map(new Function<TodayResponse, TodayResource<TodayResponse>>() {
-////                                @Override
-////                                public TodayResource<TodayResponse> apply(TodayResponse todayResponse) throws Exception {
-////                                    if(todayResponse.getArticles()==null) {
-////                                        return TodayResource.error("Check your Internet Connection", null);
-////                                    }
-////                                    return TodayResource.successful(todayResponse);
-////
-////                                }
-////                            })
-////                            .subscribeOn(Schedulers.io())
-////            );
-////
-////
-////
-////
-////            articles.addSource(source, new Observer<TodayResource<TodayResponse>>() {
-////                @Override
-////                public void onChanged(TodayResource<TodayResponse> todayResponseTodayResource) {
-////
-////                    if(todayResponseTodayResource.data==null){
-////
-////                        Log.d(TAG, "onChanged: NULL");
-////                    }else{
-////
-////                        Log.d(TAG, "onChanged: not null");
-////                    }
-////                    articles.setValue(todayResponseTodayResource);
-////                    articles.removeSource(source);
-////                }
-////            });
-//
-//
-//    }
+
+    public   MutableLiveData<NetworkResource<TodayResponse>> getTodayArticles(String country, String apiKey){
 
 
-    public   MutableLiveData<TodayResource<TodayResponse>> getTodayArticles(String country,String apiKey){
+        MutableLiveData<NetworkResource<TodayResponse>> articles = new MutableLiveData<>();
 
-
-        MutableLiveData<TodayResource<TodayResponse>> articles = new MutableLiveData<>();
-
-        articles.setValue(TodayResource.loading(null));
+        articles.setValue(NetworkResource.loading(null));
         api.getTodayArticles(country,apiKey)
                 .onErrorReturn(new Function<Throwable, TodayResponse>() {
                     @Override
@@ -119,30 +53,30 @@ public class TodayViewModel extends ViewModel {
                         return todayResponse;
                     }
                 })
-                .map(new Function<TodayResponse, TodayResource<TodayResponse>>() {
+                .map(new Function<TodayResponse, NetworkResource<TodayResponse>>() {
                     @Override
-                    public TodayResource<TodayResponse> apply(TodayResponse todayResponse) throws Exception {
+                    public NetworkResource<TodayResponse> apply(TodayResponse todayResponse) throws Exception {
 
                         if(todayResponse.getArticles()==null){
 
-                            return  TodayResource.error("Check Connection",null);
+                            return  NetworkResource.error("Check Connection",null);
                         }
 
                         Log.d(TAG, "Response is not null");
-                        return TodayResource.successful(todayResponse);
+                        return NetworkResource.successful(todayResponse);
                     }
                 }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TodayResource<TodayResponse>>() {
+                .subscribe(new Observer<NetworkResource<TodayResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(TodayResource<TodayResponse> todayResponseTodayResource) {
+                    public void onNext(NetworkResource<TodayResponse> todayResponseNetworkResource) {
 
-                            articles.setValue(todayResponseTodayResource);
+                            articles.setValue(todayResponseNetworkResource);
 
                     }
 
@@ -164,8 +98,4 @@ public class TodayViewModel extends ViewModel {
 
     }
 
-
-//    public LiveData<TodayResource<TodayResponse>> getArticles() {
-//        return articles;
-//    }
 }

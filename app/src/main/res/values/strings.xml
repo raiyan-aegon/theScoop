@@ -15,4 +15,7 @@
     <string name="sheet_share">Share</string>
     <string name="sheet_add_to_shelf">Add to Shelf</string>
     <string name="read_btn">Read full article</string>
+    <string name="pop_source">Popular Sources</string>
+    <string name="browse_categories">Browse Categories</string>
+    <string name="more">View more</string>
 </resources>

@@ -18,8 +18,16 @@ import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfFragment;
 import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import dagger.android.support.DaggerAppCompatActivity;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends DaggerAppCompatActivity {
 
@@ -46,24 +54,99 @@ public class MainActivity extends DaggerAppCompatActivity {
                 case R.id.foryou:
                     Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
                     //fragment = new ForYouFragment();
+
+
                     displayFragment(0);
 
                     break;
                 case R.id.today:
 //                    Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
 //                    fragment = new TodayFragment();
-                    displayFragment(1);
+
+                    Observable.timer(10,TimeUnit.MICROSECONDS)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<Long>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onNext(Long aLong) {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    displayFragment(1);
+                                }
+                            });
+
+
                     break;
                 case R.id.follow:
 //                    Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();
 //                    fragment = new FollowingFragment();
-                    displayFragment(2);
+                    Observable.timer(10,TimeUnit.MICROSECONDS)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<Long>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onNext(Long aLong) {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    displayFragment(2);
+                                }
+                            });
+
 
                     break;
                 case R.id.shelf:
 //                    Toast.makeText(MainActivity.this, "Shelf", Toast.LENGTH_SHORT).show();
 //                    fragment = new ShelfFragment();
-                    displayFragment(3);
+                    Observable.timer(10,TimeUnit.MICROSECONDS)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Observer<Long>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onNext(Long aLong) {
+
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    displayFragment(3);
+                                }
+                            });
                     break;
 
 
@@ -88,7 +171,7 @@ public class MainActivity extends DaggerAppCompatActivity {
         if(savedInstanceState == null){
             forYouFragment = ForYouFragment.newInstance("","");
             todayFragment = TodayFragment.newInstance();
-            followingFragment = FollowingFragment.newInstance("","");
+            followingFragment = FollowingFragment.newInstance();
             shelfFragment = ShelfFragment.newInstance("","");
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
