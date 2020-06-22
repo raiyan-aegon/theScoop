@@ -33,8 +33,8 @@ public  class UtilsModule{
     }
 
     @Provides
-    SourceListAdapter provideSourceListAdapter(RequestManager requestManager){
-        return new SourceListAdapter(requestManager);
+    SourceListAdapter provideSourceListAdapter(Application application,RequestManager requestManager){
+        return new SourceListAdapter(application,requestManager);
     }
 
     @Provides

@@ -4,23 +4,20 @@ package com.mukhtarinc.thescoop.ui.fragments.today;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.baoyz.widget.PullRefreshLayout;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentTodayBinding;
-import com.mukhtarinc.thescoop.data.network.NetworkResource;
-import com.mukhtarinc.thescoop.data.network.today.TodayResponse;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
@@ -33,12 +30,11 @@ import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
 import dagger.android.support.DaggerFragment;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -79,6 +75,9 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
                              Bundle savedInstanceState) {
        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_today,container,false);
 
+
+
+
        overflowClickListener = this;
        articleItemClickListener = this;
         return binding.getRoot();
@@ -90,6 +89,12 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
 
         Log.d(TAG, "onViewCreated");
+
+        binding.noConnection.findViewById(R.id.retry).setOnClickListener(view1 -> {
+            pullArticles();
+            binding.noConnection.setVisibility(View.GONE);
+        });
+
 
 
     }
@@ -118,42 +123,39 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
 
 
-        binding.swipeRefresh.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+        binding.swipeRefresh.setOnRefreshListener(() -> {
 
-                binding.swipeRefresh.setRefreshing(true);
-                Observable.timer(3, TimeUnit.SECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new io.reactivex.Observer<Long>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                Log.d(TAG, "onSubscribe: ");
-                            }
+            binding.swipeRefresh.setRefreshing(true);
+            Observable.timer(3, TimeUnit.SECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new io.reactivex.Observer<Long>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.d(TAG, "onSubscribe: ");
+                        }
 
-                            @Override
-                            public void onNext(Long aLong) {
-                                pullArticles();
-                                Log.d(TAG, "onNext: ");
-                            }
+                        @Override
+                        public void onNext(Long aLong) {
+                            pullArticles();
+                            Log.d(TAG, "onNext: ");
+                        }
 
-                            @Override
-                            public void onError(Throwable e) {
+                        @Override
+                        public void onError(Throwable e) {
 
-                                Log.d(TAG, "onError: ");
-                            }
+                            Log.d(TAG, "onError: ");
+                        }
 
-                            @Override
-                            public void onComplete() {
-                                binding.swipeRefresh.setRefreshing(false);
+                        @Override
+                        public void onComplete() {
+                            binding.swipeRefresh.setRefreshing(false);
 
-                                Log.d(TAG, "onComplete: ");
-                            }
-                        });
+                            Log.d(TAG, "onComplete: ");
+                        }
+                    });
 
 
-            }
         });
     }
 
@@ -165,49 +167,47 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
 
         viewModel.getTodayArticles("us",Constants.apiKey)
-                .observe(this, new Observer<NetworkResource<TodayResponse>>() {
-                    @Override
-            public void onChanged(NetworkResource<TodayResponse> todayResponseNetworkResource) {
-                if(todayResponseNetworkResource !=null){
+                .observe(this, todayResponseNetworkResource -> {
+            if(todayResponseNetworkResource !=null){
 
 
 
-                    switch(todayResponseNetworkResource.status)
-                    {
+                switch(todayResponseNetworkResource.status)
+                {
 
-                        case LOADING: {
+                    case LOADING: {
 
-                            break;
+                        break;
+                    }
+
+                    case SUCCESS: {
+
+
+                        if(todayResponseNetworkResource.data!=null) {
+
+
+
+                            todayListAdapter.setOverflowClickListener(overflowClickListener);
+                            todayListAdapter.setArticleItemClickListener(articleItemClickListener);
+                            todayListAdapter.setData(todayResponseNetworkResource.data.getArticles());
+                            binding.todayList.setAdapter(todayListAdapter);
+
+                            binding.shimmerLayout.setVisibility(View.GONE);
+                            binding.todayList.setVisibility(View.VISIBLE);
                         }
+                        break;
+                    }
 
-                        case SUCCESS: {
+                    case ERROR: {
+                       binding.shimmerLayout.setVisibility(View.GONE);
+                        binding.noConnection.setVisibility(View.VISIBLE);
 
-
-                            if(todayResponseNetworkResource.data!=null) {
-
-
-
-                                todayListAdapter.setOverflowClickListener(overflowClickListener);
-                                todayListAdapter.setArticleItemClickListener(articleItemClickListener);
-                                todayListAdapter.setData(todayResponseNetworkResource.data.getArticles());
-                                binding.todayList.setAdapter(todayListAdapter);
-
-                                binding.shimmerLayout.setVisibility(View.GONE);
-                                binding.todayList.setVisibility(View.VISIBLE);
-                            }
-                            break;
-                        }
-
-                        case ERROR: {
-                           binding.shimmerLayout.setVisibility(View.GONE);
-                            binding.noConnection.setVisibility(View.VISIBLE);
-                            binding.todayList.setVisibility(View.GONE);
-                            break;
-                        }
-
+                        binding.todayList.setVisibility(View.GONE);
+                        break;
                     }
 
                 }
+
             }
         });
 
@@ -224,6 +224,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("bottomSheet",article);
+        bundle.putParcelable("source",article.getGetSource());
 
         fragment.setArguments(bundle);
         fragment.show(fragmentManager,fragment.getTag());
@@ -242,4 +243,6 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
         startActivity(intent);
 
     }
+
+
 }

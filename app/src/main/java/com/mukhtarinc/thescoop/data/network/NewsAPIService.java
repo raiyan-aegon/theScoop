@@ -4,6 +4,8 @@ import com.mukhtarinc.thescoop.data.network.sources.SourceResponse;
 import com.mukhtarinc.thescoop.data.network.today.TodayResponse;
 import com.mukhtarinc.thescoop.model.Source;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -20,5 +22,9 @@ public interface NewsAPIService {
 
     @GET("sources")
     Observable<SourceResponse> getSources(@Query("apiKey") String apiKey);
+
+
+    @GET("top-headlines")
+    Observable<TodayResponse> getForYouArticles(@Query("sources") String source_id, @Query("apiKey") String apiKey);
 
 }

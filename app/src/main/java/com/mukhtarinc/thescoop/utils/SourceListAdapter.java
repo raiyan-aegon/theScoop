@@ -1,8 +1,13 @@
 package com.mukhtarinc.thescoop.utils;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,15 +26,35 @@ import java.util.List;
  */
 public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.SourceViewHolder> {
 
+    private static final String TAG = "SourceListAdapter";
 
     List<Source> sources;
     int num_of_sources;
 
     RequestManager requestManager;
 
-    public SourceListAdapter(RequestManager requestManager){
+    SharedPreferences preferences;
+
+    SharedPreferences.Editor editor;
+    Application application;
+
+    SourceItemBinding binding;
+
+    CheckboxClickListener checkboxClickListener;
+
+
+    public SourceListAdapter(Application application, RequestManager requestManager){
 
         this.requestManager = requestManager;
+        this.application = application;
+
+    }
+
+
+    public void setOnCheckClickListener(CheckboxClickListener checkboxClickListener){
+
+
+        this.checkboxClickListener = checkboxClickListener;
     }
 
     @NonNull
@@ -37,7 +62,12 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
     public SourceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-       SourceItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.source_item,parent,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.source_item,parent,false);
+
+
+        preferences = parent.getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+
+
 
 
         return new SourceViewHolder(binding.getRoot());
@@ -48,16 +78,36 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
 
         SourceItemBinding binding = DataBindingUtil.getBinding(holder.itemView);
 
+
+
+
+
+
+
         Source source = sources.get(position);
 
         binding.sourcesName.setText(source.getName());
+
+
+        String sourceName = preferences.getString("sourceName "+position,null);
+
+            if(sourceName!=null && sourceName.equals(source.getSource_id())){
+
+                binding.checkSource.setChecked(true);
+
+            }
+
 
         if(position==0){
             //binding.sourceImage.setImageResource(R.drawable.bloomberg);
             requestManager.load(R.drawable.bloomberg).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.sourceImage);
 
+
+
+
         }else if(position==1){
             //binding.sourceImage.setImageResource(R.drawable.bbc_sport_logo);
+
             requestManager.load(R.drawable.bbc_sport_logo).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.sourceImage);
 
         }else if(position==2){
@@ -93,11 +143,31 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
         return sources.size();
     }
 
-    public class SourceViewHolder extends RecyclerView.ViewHolder{
 
+
+    public SourceItemBinding getSourceView(){
+
+        return  binding;
+    }
+
+    public class SourceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        SourceItemBinding binding;
 
         public SourceViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            binding = DataBindingUtil.getBinding(itemView);
+
+            binding.checkSource.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            checkboxClickListener.checkboxClicked(binding,getAdapterPosition(),sources.get(getAdapterPosition()));
+
         }
     }
 }

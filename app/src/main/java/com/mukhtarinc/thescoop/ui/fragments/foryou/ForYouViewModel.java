@@ -1,13 +1,12 @@
-package com.mukhtarinc.thescoop.ui.fragments.today;
+package com.mukhtarinc.thescoop.ui.fragments.foryou;
 
-import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.mukhtarinc.thescoop.data.network.NewsAPIService;
 import com.mukhtarinc.thescoop.data.network.NetworkResource;
+import com.mukhtarinc.thescoop.data.network.NewsAPIService;
 import com.mukhtarinc.thescoop.data.network.today.TodayResponse;
 
 import javax.inject.Inject;
@@ -18,32 +17,31 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-
 /**
- * Created by Raiyan Mukhtar on 5/25/2020.
+ * Created by Raiyan Mukhtar on 6/22/2020.
  */
-public class TodayViewModel extends ViewModel {
+public class ForYouViewModel extends ViewModel {
 
-    private static final String TAG = "TodayViewModel";
-
+    private static final String TAG = "ForYouViewModel";
 
     private NewsAPIService api;
 
     @Inject
-    public TodayViewModel(NewsAPIService api, Application application) {
+    public ForYouViewModel(NewsAPIService apiService){
 
-        this.api =api;
-
+        this.api = apiService;
 
     }
 
-    public   MutableLiveData<NetworkResource<TodayResponse>> getTodayArticles(String country, String apiKey){
 
 
+
+
+    public MutableLiveData<NetworkResource<TodayResponse>> getTodayForYouArticles(String source_id, String apiKey){
         MutableLiveData<NetworkResource<TodayResponse>> articles = new MutableLiveData<>();
 
         articles.setValue(NetworkResource.loading(null));
-        api.getTodayArticles(country,apiKey)
+        api.getForYouArticles(source_id,apiKey)
                 .onErrorReturn(new Function<Throwable, TodayResponse>() {
                     @Override
                     public TodayResponse apply(Throwable throwable) throws Exception {
@@ -73,7 +71,7 @@ public class TodayViewModel extends ViewModel {
                     @Override
                     public void onNext(NetworkResource<TodayResponse> todayResponseNetworkResource) {
 
-                            articles.setValue(todayResponseNetworkResource);
+                        articles.setValue(todayResponseNetworkResource);
 
                     }
 

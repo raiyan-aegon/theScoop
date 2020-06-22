@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import com.mukhtarinc.thescoop.di.application.scopes.ViewModelKey;
 import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
 import com.mukhtarinc.thescoop.ui.fragments.following.FollowingViewModel;
+import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouViewModel;
 import com.mukhtarinc.thescoop.ui.fragments.today.TodayViewModel;
 
 import dagger.Binds;
@@ -28,6 +29,12 @@ public abstract class NewsViewModelModule {
     @IntoMap
     @ViewModelKey(FollowingViewModel.class)
     abstract ViewModel bindFollowingViewModel(FollowingViewModel viewModel);
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ForYouViewModel.class)
+    abstract ViewModel bindForYouViewModel(ForYouViewModel viewModel);
 
 
 }

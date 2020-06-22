@@ -18,4 +18,7 @@
     <string name="pop_source">Popular Sources</string>
     <string name="browse_categories">Browse Categories</string>
     <string name="more">View more</string>
+    <string name="retry">Retry</string>
+    <string name="unavailable">The content isn\'t available</string>
+    <string name="pick_your_sources">Pick your Sources</string>
 </resources>

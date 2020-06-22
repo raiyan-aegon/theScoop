@@ -1,7 +1,14 @@
 package com.mukhtarinc.thescoop.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.model.Category;
 
@@ -23,6 +30,9 @@ public class Constants {
     public static final long CONNECT_TIMEOUT = 30000;
     public static final long READ_TIMEOUT = 30000;
     public static final long WRITE_TIMEOUT = 30000;
+    public static final String SHARED_PREFS ="sources";
+    public static final String CHECK ="check";
+    public static final String SOURCE_NAME ="name";
 
 
 
@@ -41,5 +51,26 @@ public class Constants {
         return categoriesList;
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void showSnackBar(Activity activity, String message, Boolean action){
+        View rootView  = activity.getWindow().getDecorView().findViewById(R.id.parent_container);
+       if(action){
+
+           Snackbar.make(rootView,message,Snackbar.LENGTH_LONG)
+                   .setActionTextColor(activity.getColor(R.color.colorAccent))
+                   .setAction("Read Now", view ->{
+                       Toast.makeText(activity, "Read Now", Toast.LENGTH_SHORT).show();
+                   })
+                   .show();
+       }else {
+
+           Snackbar.make(rootView,message,Snackbar.LENGTH_LONG)
+                   .show();
+
+       }
+
+
+    }
 
 }

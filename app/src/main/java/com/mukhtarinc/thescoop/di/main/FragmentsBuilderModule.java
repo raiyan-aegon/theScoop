@@ -3,6 +3,7 @@ package com.mukhtarinc.thescoop.di.main;
 import com.mukhtarinc.thescoop.di.application.modules.NewsViewModelModule;
 import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
 
+import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouFragment;
 import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
 
 import dagger.Module;
@@ -21,4 +22,7 @@ public abstract class FragmentsBuilderModule {
 
     @ContributesAndroidInjector
     abstract FollowingFragment injectFollowFragment();
+
+    @ContributesAndroidInjector
+    abstract ForYouFragment injectForYouFragment();
 }
