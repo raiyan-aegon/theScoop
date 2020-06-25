@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,12 +40,7 @@ public class TheScoopDetailsActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_the_scoop_details);
 
-        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
 
         if (getIntent().getExtras() != null) {
@@ -62,6 +58,21 @@ public class TheScoopDetailsActivity extends DaggerAppCompatActivity {
 
 
                 binding.sourcesName.setText(source.getName());
+
+
+                binding.readMore.setOnClickListener(view -> {
+
+                    Intent i = new Intent(this, ArticleViewActivity.class);
+                    Bundle web_bundle = new Bundle();
+                    web_bundle.putParcelable("source_web",source);
+                    web_bundle.putString("url",article.getUrl());
+
+                    i.putExtra("web_bundle",web_bundle);
+
+                    startActivity(i);
+
+                });
+
             }
 
 
