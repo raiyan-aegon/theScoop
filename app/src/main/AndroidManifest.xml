@@ -13,15 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/theScoopTheme">
-        <activity android:name=".ui.activities.MoreSourcesActivity"></activity>
-        <activity android:name=".ui.activities.TheScoopDetailsActivity" />
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:name=".ui.activities.ScoopSplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activities.MoreSourcesActivity" />
+        <activity android:name=".ui.activities.MainActivity" />
+        <activity android:name=".ui.activities.TheScoopDetailsActivity" />
     </application>
 
 </manifest>
