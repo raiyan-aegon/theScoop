@@ -3,6 +3,7 @@ package com.mukhtarinc.thescoop.ui.activities
 import android.app.Activity
 import android.graphics.Bitmap
 import android.view.View
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -15,28 +16,20 @@ import com.google.android.material.progressindicator.ProgressIndicator
  * Created by Raiyan Mukhtar on 6/25/2020.
  */
 
-
-open class WebClientImpl(private var activity: Activity, private var progress:ProgressBar) : WebViewClient() {
-
-
+const  val MAX_PROGRESS : Int = 100
+open class WebClientImpl(private var progressBar: ProgressBar) : WebChromeClient(){
 
 
-    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        return false
+    override fun onProgressChanged(view: WebView?, newProgress: Int) {
+        super.onProgressChanged(view, newProgress)
+        progressBar.progress = newProgress
+
+        if(newProgress <MAX_PROGRESS && progressBar.visibility == ProgressBar.GONE ){
+
+            progressBar.visibility = ProgressBar.VISIBLE
+        }
+        if(newProgress == MAX_PROGRESS)
+            progressBar.visibility = ProgressBar.GONE
     }
-
-
-    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-        super.onPageStarted(view, url, favicon)
-    }
-
-    override fun onPageFinished(view: WebView?, url: String?) {
-
-        super.onPageFinished(view, url)
-        progress.visibility = View.GONE
-
-    }
-
-
 
 }

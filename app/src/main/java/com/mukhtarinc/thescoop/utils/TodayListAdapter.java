@@ -90,7 +90,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                if (topHeadlineBinding != null) {
                    topHeadlineBinding.setArticle(article);
                    requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(topHeadlineBinding.largeImageArticle);
-                   topHeadlineBinding.time.setText(TheScoopDateUtils.newsTimeDifference(article.getPublishedAt()));
+                   topHeadlineBinding.time.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
 
                }
 
@@ -107,7 +107,13 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                if (binding != null) {
                    binding.setArticle(article);
                    requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.imageArticle);
-                   binding.time.setText(TheScoopDateUtils.newsTimeDifference(article.getPublishedAt()));
+
+
+                   if(article.getPublishedAt()==null){
+                       binding.time.setText("");
+                       Log.d(TAG, article.getTitle()+" , "+"Time : Null");
+                   }
+                   binding.time.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
                }
 
            }

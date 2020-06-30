@@ -17,6 +17,7 @@ import com.mukhtarinc.thescoop.databinding.ActivityTheScoopDetailsBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
+import com.mukhtarinc.thescoop.utils.ScoopDateUtils;
 import com.mukhtarinc.thescoop.utils.TheScoopDateUtils;
 
 import javax.crypto.spec.PSource;
@@ -54,7 +55,9 @@ public class TheScoopDetailsActivity extends DaggerAppCompatActivity {
 
                 requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).into(binding.articleImage);
                 binding.setArticle(article);
-                binding.datePublished.setText(TheScoopDateUtils.newsTimeDifference(article.getPublishedAt()));
+
+                Log.d(TAG, "onCreate: Time " +article.getPublishedAt());
+                binding.datePublished.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
 
 
                 binding.sourcesName.setText(source.getName());

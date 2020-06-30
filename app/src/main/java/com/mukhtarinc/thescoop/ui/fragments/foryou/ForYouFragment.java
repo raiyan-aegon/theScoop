@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -24,14 +25,19 @@ import com.mukhtarinc.thescoop.databinding.FragmentForYouBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
+import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
+import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfFragment;
+import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
 import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
 import com.mukhtarinc.thescoop.utils.Constants;
 import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.TodayListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -54,6 +60,12 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
     @Inject
     TodayListAdapter todayListAdapter;
+
+    private TodayFragment todayFragment;
+    private ForYouFragment forYouFragment;
+    private FollowingFragment followingFragment;
+    private  ShelfFragment shelfFragment;
+
 
 
     private OverflowClickListener overflowClickListener;
@@ -83,6 +95,9 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
         preferences = getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+
+
+
     }
 
     @Override
@@ -101,7 +116,6 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         overflowClickListener = this;
         articleItemClickListener = this;
 
-
         Map<String, ?> allPrefs = preferences.getAll();
 
 
@@ -111,6 +125,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
 
             binding.pickSource.setVisibility(View.VISIBLE);
+            binding.shimmerLayout.setVisibility(View.GONE);
 
 
         }else {
@@ -138,6 +153,51 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         super.onViewCreated(view, savedInstanceState);
 
 
+        binding.pickSource.setOnClickListener(view1 -> {
+
+
+            ArrayList<Fragment> fragments = new ArrayList<>();
+
+
+            forYouFragment = ForYouFragment.newInstance("","");
+            todayFragment = TodayFragment.newInstance();
+            followingFragment = FollowingFragment.newInstance();
+            shelfFragment = ShelfFragment.newInstance("","");
+
+
+            fragments.add(forYouFragment);
+            fragments.add(todayFragment);
+            fragments.add(followingFragment);
+            fragments.add(shelfFragment);
+
+
+
+
+            FragmentTransaction transaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
+            Fragment fragment;
+
+            fragment = fragments.get(2);
+            if(fragment.isAdded()){
+
+                transaction.show(fragment);
+
+            }else {
+                transaction.add(R.id.container,fragment);
+            }
+
+            if(fragments.get(0).isAdded()){
+                transaction.hide(fragments.get(0));
+            }
+            if(fragments.get(1).isAdded()){
+                transaction.hide(fragments.get(1));
+            }
+            if(fragments.get(3).isAdded()){
+                transaction.hide(fragments.get(3));
+            }
+            transaction.commit();
+
+
+        });
 
     }
 
@@ -163,7 +223,9 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
                                     if(todayResponseNetworkResource.data!=null) {
 
-                                        Log.d(TAG, "forYouArticles: "+todayResponseNetworkResource.data.getArticles().get(0).getTitle());
+                                       // if (todayResponseNetworkResource.data.getArticles().get())
+
+                                       // Log.d(TAG, "forYouArticles: "+todayResponseNetworkResource.data.getArticles().get(0).getTitle());
 
                                         todayListAdapter.setOverflowClickListener(overflowClickListener);
                                         todayListAdapter.setArticleItemClickListener(articleItemClickListener);
