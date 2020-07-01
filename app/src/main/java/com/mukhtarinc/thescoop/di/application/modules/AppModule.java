@@ -1,8 +1,8 @@
 package com.mukhtarinc.thescoop.di.application.modules;
 
 import android.app.Application;
-
-
+import android.content.Context;
+import android.media.AsyncPlayer;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.mukhtarinc.thescoop.di.application.scopes.AppScoped;
@@ -43,6 +43,16 @@ public class AppModule {
         return Glide.with(application);
 
     }
+
+//    @AppScoped
+//    @Provides
+//    static ArticleDatabase provideArticleDatabase(Application application){
+//
+//
+//        return ArticleDatabase.Companion.getDatabase(application);
+//    }
+//
+
 
 
 }

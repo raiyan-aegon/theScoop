@@ -172,7 +172,7 @@ public class MainActivity extends DaggerAppCompatActivity {
             forYouFragment = ForYouFragment.newInstance("","");
             todayFragment = TodayFragment.newInstance();
             followingFragment = FollowingFragment.newInstance();
-            shelfFragment = ShelfFragment.newInstance("","");
+            shelfFragment = ShelfFragment.newInstance();
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.container,forYouFragment)
@@ -198,7 +198,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     void displayFragment(int position){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = null;
+        Fragment fragment;
 
         switch (position){
 

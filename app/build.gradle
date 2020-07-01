@@ -106,4 +106,8 @@ dependencies {
     implementation 'android.arch.paging:runtime:1.0.1'
 
     implementation 'com.android.support:multidex:1.0.3'
+
+    //ROOM
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 }

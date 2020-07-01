@@ -3,7 +3,6 @@ package com.mukhtarinc.thescoop.ui.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,27 +11,38 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.BottomSheetBinding;
+import com.mukhtarinc.thescoop.di.DaggerBottomSheetDialogFragment;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfViewModel;
+import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
+
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerAppCompatDialogFragment;
+import dagger.android.support.DaggerDialogFragment;
+import dagger.android.support.DaggerFragment;
 
 /**
  * Created by Raiyan Mukhtar on 6/1/2020.
  */
-public class BottomSheetFragment extends BottomSheetDialogFragment{
+public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
-    private static final String TAG = "BottomSheetFragment";
+   // private static final String TAG = "BottomSheetFragment";
     BottomSheetBinding bottomSheetBinding;
 
-    private Article article;
-    private Source source;
+     Article article;
+     Source source;
+
+    @Inject
+    ViewModelProviderFactory viewModelProviderFactory;
+
+    ShelfViewModel viewModel;
 
 
     public BottomSheetFragment(){
@@ -50,6 +60,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
 
            source = getArguments().getParcelable("source");
         }
+
+
+
+        viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(ShelfViewModel.class);
+
     }
 
     @Nullable
@@ -79,8 +94,9 @@ public class BottomSheetFragment extends BottomSheetDialogFragment{
         bottomSheetBinding.shelfSheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Added to Shelf", Toast.LENGTH_SHORT).show();
 
+                viewModel.insert(article);
+                Toast.makeText(getActivity(), "Added to Shelf", Toast.LENGTH_SHORT).show();
             }
         });
 

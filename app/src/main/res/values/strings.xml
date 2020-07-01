@@ -22,4 +22,6 @@
     <string name="unavailable">The content isn\'t available</string>
     <string name="pick_your_sources">Pick your Sources</string>
     <string name="the_scoop">the scoop</string>
+    <string name="shelf_frag">SHELF</string>
+    <string name="offline">SAVE ARTICLES FOR OFFLINE</string>
 </resources>

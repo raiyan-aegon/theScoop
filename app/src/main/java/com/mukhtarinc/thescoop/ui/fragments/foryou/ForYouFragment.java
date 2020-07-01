@@ -162,7 +162,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
             forYouFragment = ForYouFragment.newInstance("","");
             todayFragment = TodayFragment.newInstance();
             followingFragment = FollowingFragment.newInstance();
-            shelfFragment = ShelfFragment.newInstance("","");
+            shelfFragment = ShelfFragment.newInstance();
 
 
             fragments.add(forYouFragment);

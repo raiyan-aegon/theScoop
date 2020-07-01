@@ -7,8 +7,10 @@ import android.net.ConnectivityManager;
 import com.bumptech.glide.RequestManager;
 import com.mukhtarinc.thescoop.utils.CategoryListAdapter;
 import com.mukhtarinc.thescoop.utils.OverflowClickListener;
+import com.mukhtarinc.thescoop.utils.ShelfListAdapter;
 import com.mukhtarinc.thescoop.utils.SourceListAdapter;
 import com.mukhtarinc.thescoop.utils.TodayListAdapter;
+import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
@@ -29,6 +31,16 @@ public  class UtilsModule{
     TodayListAdapter provideTodayListAdapter(RequestManager requestManager){
 
         return new TodayListAdapter(requestManager);
+
+    }
+
+
+
+
+    @Provides
+    ShelfListAdapter provideShelfListAdapter(RequestManager requestManager){
+
+        return new ShelfListAdapter(requestManager);
 
     }
 

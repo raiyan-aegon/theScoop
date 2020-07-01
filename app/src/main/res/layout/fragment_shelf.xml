@@ -8,12 +8,18 @@
          android:layout_height="match_parent" >
 
           <TextView
+              android:id="@+id/offline_text"
               android:layout_width="match_parent"
               android:layout_gravity="center"
               android:gravity="center"
-              android:text="SHELF"
+              android:text="@string/offline"
               android:textSize="20sp"
               android:layout_height="wrap_content"/>
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:layout_width="match_parent"
+              android:id="@+id/shelf_articles"
+              android:layout_height="match_parent"/>
 
      </FrameLayout>
 </layout>

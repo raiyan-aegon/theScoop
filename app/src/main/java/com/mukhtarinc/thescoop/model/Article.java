@@ -3,6 +3,11 @@ package com.mukhtarinc.thescoop.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,28 +16,46 @@ import java.util.List;
  * Created by Raiyan Mukhtar on 5/24/2020.
  */
 
+@Entity (tableName = "article")
 public class Article implements Parcelable {
+
+
+    @PrimaryKey (autoGenerate = true)
+    @ColumnInfo(name="_id")
+    private int _id;
 
     @SerializedName("author")
     private String author;
 
+    @ColumnInfo (name = "title")
     @SerializedName("title")
     private String title;
 
+    @ColumnInfo(name = "url")
     @SerializedName("url")
     private String url;
 
+    @ColumnInfo(name ="urlToImage")
     @SerializedName("urlToImage")
     private String urlToImage;
 
+    @ColumnInfo(name ="publishedAt")
     @SerializedName("publishedAt")
     private String publishedAt;
 
+    @ColumnInfo(name = "content")
     @SerializedName("content")
     private String content;
 
+    @Ignore
     @SerializedName("source")
     private Source getSource;
+
+
+    public Article(){
+
+    }
+
 
     protected Article(Parcel in) {
         author = in.readString();
@@ -121,5 +144,17 @@ public class Article implements Parcelable {
         parcel.writeString(urlToImage);
         parcel.writeString(publishedAt);
         parcel.writeString(content);
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public void setGetSource(Source getSource) {
+        this.getSource = getSource;
     }
 }
