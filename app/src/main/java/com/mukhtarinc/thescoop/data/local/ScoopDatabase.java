@@ -13,7 +13,7 @@ import com.mukhtarinc.thescoop.model.Article;
  */
 
 
-@Database( entities = {Article.class}, version = 1,exportSchema = false)
+@Database( entities = {Article.class}, version = 3,exportSchema = false)
 public abstract class ScoopDatabase extends RoomDatabase {
 
     public abstract ArticleDao articleDao();

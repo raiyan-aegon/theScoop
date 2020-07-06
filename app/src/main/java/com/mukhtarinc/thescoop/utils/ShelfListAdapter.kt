@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.mukhtarinc.thescoop.R
+import com.mukhtarinc.thescoop.databinding.ShelfArticleItemBinding
 import com.mukhtarinc.thescoop.databinding.TodayArticleItemBinding
 import com.mukhtarinc.thescoop.model.Article
 import com.mukhtarinc.thescoop.utils.ScoopDateUtils.Companion.newsTimeDifference
@@ -16,20 +17,28 @@ import com.mukhtarinc.thescoop.utils.ScoopDateUtils.Companion.newsTimeDifference
 /**
  * Created by Raiyan Mukhtar on 6/30/2020.
  */
+
+
+private const val TAG = "ShelfListAdapter"
 public class ShelfListAdapter (requestManager: RequestManager) : RecyclerView.Adapter<ShelfListAdapter.ShelfViewHolder>() {
 
-    lateinit var  binding: TodayArticleItemBinding
+    lateinit var  binding: ShelfArticleItemBinding
 
     lateinit var todayResponses: List<Article>
+    private lateinit var articleItemClickListener: ArticleItemClickListener
+
+    private lateinit var overflowClickListener: OverflowClickListener
 
     var requestManager: RequestManager = requestManager
+
+
 
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShelfViewHolder {
         val layoutInflater : LayoutInflater = LayoutInflater.from(parent.context)
 
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.today_article_item,parent,false)
+        binding = DataBindingUtil.inflate(layoutInflater, R.layout.shelf_article_item,parent,false)
 
 
         return ShelfViewHolder(binding.root)
@@ -37,7 +46,23 @@ public class ShelfListAdapter (requestManager: RequestManager) : RecyclerView.Ad
 
     }
 
+    fun getArticles() : List<Article>{
 
+
+        return todayResponses
+    }
+
+
+    fun setArticleClickListener(articleItemClickListener: ArticleItemClickListener){
+
+        this.articleItemClickListener = articleItemClickListener
+    }
+
+
+    fun setOverflowListener(overflowClickListener: OverflowClickListener){
+
+        this.overflowClickListener = overflowClickListener
+    }
 
     override fun getItemCount(): Int {
        return todayResponses.size
@@ -46,8 +71,22 @@ public class ShelfListAdapter (requestManager: RequestManager) : RecyclerView.Ad
     override fun onBindViewHolder(holder: ShelfViewHolder, position: Int) {
         val article = todayResponses[position]
         binding.article = article
-        requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.imageArticle)
+        Log.d(TAG, "onBindViewHolder: Source "+article.sourceName)
+        requestManager.load(article.urlToImage).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.imageArticle)
         binding.time.text = newsTimeDifference(article.publishedAt)
+
+        binding.root.setOnClickListener {
+
+            articleItemClickListener.articleItemClicked(article)
+        }
+
+        binding.overflowMenu.setOnClickListener {
+
+            overflowClickListener.overflowClicked(article)
+
+        }
+
+
     }
 
 
@@ -62,7 +101,7 @@ public class ShelfListAdapter (requestManager: RequestManager) : RecyclerView.Ad
     }
 
 
-    class ShelfViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ShelfViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
 

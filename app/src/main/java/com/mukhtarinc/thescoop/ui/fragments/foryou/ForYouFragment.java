@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentForYouBinding;
 import com.mukhtarinc.thescoop.model.Article;
+import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
 import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
@@ -156,6 +157,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         binding.pickSource.setOnClickListener(view1 -> {
 
 
+
             ArrayList<Fragment> fragments = new ArrayList<>();
 
 
@@ -230,6 +232,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
                                         todayListAdapter.setOverflowClickListener(overflowClickListener);
                                         todayListAdapter.setArticleItemClickListener(articleItemClickListener);
                                         todayListAdapter.setData(todayResponseNetworkResource.data.getArticles());
+                                        todayListAdapter.setForYou(1);
                                         binding.todayList.setAdapter(todayListAdapter);
 
                                         binding.shimmerLayout.setVisibility(View.GONE);
@@ -274,10 +277,11 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
         BottomSheetFragment fragment = new BottomSheetFragment();
 
+        Source source =article.getGetSource();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("bottomSheet",article);
-        bundle.putParcelable("source",article.getGetSource());
+        bundle.putParcelable("source",source);
 
         fragment.setArguments(bundle);
         fragment.show(fragmentManager,fragment.getTag());

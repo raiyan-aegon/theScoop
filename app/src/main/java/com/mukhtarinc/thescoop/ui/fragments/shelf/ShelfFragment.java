@@ -1,15 +1,16 @@
 package com.mukhtarinc.thescoop.ui.fragments.shelf;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,21 +18,25 @@ import android.view.ViewGroup;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
 import com.mukhtarinc.thescoop.model.Article;
-import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouViewModel;
+import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
+import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
+import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
+import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.ShelfListAdapter;
-import com.mukhtarinc.thescoop.utils.TodayListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
 
-public class ShelfFragment extends DaggerFragment {
+public class ShelfFragment extends DaggerFragment implements OverflowClickListener, ArticleItemClickListener {
 
 
     FragmentShelfBinding binding;
@@ -44,7 +49,14 @@ public class ShelfFragment extends DaggerFragment {
 
     ShelfViewModel viewModel;
 
+    ArticleItemClickListener articleItemClickListener;
 
+    OverflowClickListener overflowClickListener;
+
+    private static final String TAG = "ShelfFragment";
+
+
+    //TODO: DONT FORGET THE SHELF TEXT
 
     public ShelfFragment() {
         // Required empty public constructor
@@ -61,6 +73,7 @@ public class ShelfFragment extends DaggerFragment {
 
         viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(ShelfViewModel.class);
 
+
     }
 
 
@@ -75,6 +88,10 @@ public class ShelfFragment extends DaggerFragment {
 
         binding.shelfArticles.setLayoutManager(linearLayoutManager);
 
+        articleItemClickListener = this;
+        overflowClickListener= this;
+
+
         return binding.getRoot();
     }
 
@@ -82,30 +99,74 @@ public class ShelfFragment extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getArticles();
+
+
+
+
 
 
     }
 
 
-    void getArticles(){
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getArticles();
+        binding.offlineText.setVisibility(View.GONE);
+        
+    }
 
+    public void getArticles(){
+        
+        viewModel.getArticles.observe(this, articles -> {
+            
 
-        viewModel.getArticles.observe(this, new Observer<List<Article>>() {
-            @Override
-            public void onChanged(List<Article> articles) {
-                if(articles!=null){
+                shelfListAdapter.setData(articles);
+                shelfListAdapter.setArticleClickListener(articleItemClickListener);
+                shelfListAdapter.setOverflowListener(overflowClickListener);
+                binding.shelfArticles.setAdapter(shelfListAdapter);
+                
+              
 
-                    binding.offlineText.setVisibility(View.GONE);
-                    shelfListAdapter.setData(articles);
-                    binding.shelfArticles.setAdapter(shelfListAdapter);
-                }else{
-                    binding.offlineText.setVisibility(View.VISIBLE);
-                    binding.shelfArticles.setVisibility(View.GONE);
-                }
-
-            }
         });
 
+       
     }
+
+    @Override
+    public void overflowClicked(Article article) {
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        BottomSheetFragment fragment = new BottomSheetFragment();
+
+        Source source = new Source();
+        source.setName(article.getSourceName());
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("bottomSheet",article);
+        bundle.putParcelable("source",source);
+
+        fragment.setArguments(bundle);
+        fragment.show(fragmentManager,fragment.getTag());
+
+    }
+
+    
+
+    @Override
+    public void articleItemClicked(Article article) {
+
+        Intent intent = new Intent(getActivity(), TheScoopDetailsActivity.class);
+        Source source = new Source();
+        source.setName(article.getSourceName());
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("article",article);
+        bundle.putParcelable("source",source);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
+
 }

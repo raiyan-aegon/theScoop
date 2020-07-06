@@ -29,7 +29,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     List<Article> todayResponses;
 
     RequestManager requestManager;
-
+    int for_you;
 
      OverflowClickListener overflowClickListener;
      ArticleItemClickListener articleItemClickListener;
@@ -72,7 +72,12 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
        this.articleItemClickListener =articleItemClickListener;
     }
 
+    public void setForYou(int forYou){
 
+        this.for_you = forYou;
+
+
+    }
 
     @Override
     public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, int position) {
@@ -92,9 +97,18 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                    requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(topHeadlineBinding.largeImageArticle);
                    topHeadlineBinding.time.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
 
+
+                   if (for_you == 1) {
+                       Log.d(TAG, "For you "+for_you);
+                       if (topHeadlineBinding.todayText != null && topHeadlineBinding.forYouText != null) {
+                           topHeadlineBinding.todayText.setVisibility(View.GONE);
+                           topHeadlineBinding.forYouText.setVisibility(View.VISIBLE);
+                       }else {
+                           Log.d(TAG, "onBindViewHolder: NULL TEXT");
+                       }
+                   }
+
                }
-
-
            }
 
        }else {

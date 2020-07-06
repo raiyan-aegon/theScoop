@@ -14,11 +14,11 @@ import dagger.android.ContributesAndroidInjector;
  */
 
 
-@Module
+@Module (includes = {FragmentsBuilderModule.class})
 public abstract class ActivityBuilderModule {
 
 
-    @ContributesAndroidInjector(modules = {FragmentsBuilderModule.class})
+    @ContributesAndroidInjector
    abstract  MainActivity injectActivity();
 
     @ContributesAndroidInjector

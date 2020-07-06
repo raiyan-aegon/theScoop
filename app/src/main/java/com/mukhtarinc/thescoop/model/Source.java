@@ -16,6 +16,9 @@ public class Source implements Parcelable {
     @SerializedName("name")
     private String name;
 
+    public Source(){
+
+    }
 
     protected Source(Parcel in) {
         source_id = in.readString();

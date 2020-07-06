@@ -43,117 +43,112 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = item -> {
 
-            Fragment fragment = null;
-            switch (item.getItemId()){
+        switch (item.getItemId()){
 
-                case R.id.foryou:
-                    Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
-                    //fragment = new ForYouFragment();
+            case R.id.foryou:
+                Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
+                //fragment = new ForYouFragment();
 
 
-                    displayFragment(0);
+                displayFragment(0);
 
-                    break;
-                case R.id.today:
+                break;
+            case R.id.today:
 //                    Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
 //                    fragment = new TodayFragment();
 
-                    Observable.timer(10,TimeUnit.MICROSECONDS)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<Long>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
+                Observable.timer(10,TimeUnit.MICROSECONDS)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Long>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onNext(Long aLong) {
+                            @Override
+                            public void onNext(Long aLong) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onError(Throwable e) {
+                            @Override
+                            public void onError(Throwable e) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onComplete() {
-                                    displayFragment(1);
-                                }
-                            });
+                            @Override
+                            public void onComplete() {
+                                displayFragment(1);
+                            }
+                        });
 
 
-                    break;
-                case R.id.follow:
+                break;
+            case R.id.follow:
 //                    Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();
 //                    fragment = new FollowingFragment();
-                    Observable.timer(10,TimeUnit.MICROSECONDS)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<Long>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
+                Observable.timer(10,TimeUnit.MICROSECONDS)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Long>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onNext(Long aLong) {
+                            @Override
+                            public void onNext(Long aLong) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onError(Throwable e) {
+                            @Override
+                            public void onError(Throwable e) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onComplete() {
-                                    displayFragment(2);
-                                }
-                            });
+                            @Override
+                            public void onComplete() {
+                                displayFragment(2);
+                            }
+                        });
 
 
-                    break;
-                case R.id.shelf:
+                break;
+            case R.id.shelf:
 //                    Toast.makeText(MainActivity.this, "Shelf", Toast.LENGTH_SHORT).show();
 //                    fragment = new ShelfFragment();
-                    Observable.timer(10,TimeUnit.MICROSECONDS)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<Long>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
+                Observable.timer(10,TimeUnit.MICROSECONDS)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Long>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onNext(Long aLong) {
+                            @Override
+                            public void onNext(Long aLong) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onError(Throwable e) {
+                            @Override
+                            public void onError(Throwable e) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onComplete() {
-                                    displayFragment(3);
-                                }
-                            });
-                    break;
+                            @Override
+                            public void onComplete() {
+                                displayFragment(3);
+                            }
+                        });
+                break;
 
 
-            }
-
-            return true;
         }
+
+        return true;
     };
 
 

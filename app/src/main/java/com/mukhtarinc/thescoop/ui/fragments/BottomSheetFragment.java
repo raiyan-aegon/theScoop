@@ -3,6 +3,7 @@ package com.mukhtarinc.thescoop.ui.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ import dagger.android.support.DaggerFragment;
  */
 public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
-   // private static final String TAG = "BottomSheetFragment";
+    private static final String TAG = "BottomSheetFragment";
     BottomSheetBinding bottomSheetBinding;
 
      Article article;
@@ -95,8 +96,10 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
 
+                article.setSourceName(source.getName());
                 viewModel.insert(article);
                 Toast.makeText(getActivity(), "Added to Shelf", Toast.LENGTH_SHORT).show();
+                setCancelable(true);
             }
         });
 
@@ -104,6 +107,7 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Go to Source", Toast.LENGTH_SHORT).show();
+                setCancelable(true);
 
             }
         });

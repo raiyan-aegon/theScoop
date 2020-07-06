@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ImageView
+        android:id="@+id/large_image_article"
+        android:layout_width="@dimen/top_headline_image_dimens"
+        android:layout_height="208dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/colorPrimary"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/theScoopTitle"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_margin="13dp"
+        android:layout_marginTop="12dp"
+        android:maxLines="3"
+        android:background="@color/colorPrimary"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/large_image_article"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/source"
+        style="@style/theScoopSource"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

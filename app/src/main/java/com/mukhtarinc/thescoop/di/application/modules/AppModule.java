@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.AsyncPlayer;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.mukhtarinc.thescoop.data.local.ScoopDatabase;
 import com.mukhtarinc.thescoop.di.application.scopes.AppScoped;
 import com.mukhtarinc.thescoop.utils.Constants;
 import com.squareup.picasso.Picasso;
@@ -44,14 +45,6 @@ public class AppModule {
 
     }
 
-//    @AppScoped
-//    @Provides
-//    static ArticleDatabase provideArticleDatabase(Application application){
-//
-//
-//        return ArticleDatabase.Companion.getDatabase(application);
-//    }
-//
 
 
 

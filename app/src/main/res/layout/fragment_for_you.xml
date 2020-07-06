@@ -4,8 +4,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.fragments.foryou.ForYouFragment"
    >
-  <FrameLayout
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:layout_width="match_parent"
+      android:layout_height="match_parent"
+    >
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:layout_width="match_parent"
+      android:elevation="0dp"
+      app:elevation="0dp"
+      android:layout_height="wrap_content"
+      tools:targetApi="lollipop">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:elevation="0dp"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:navigationIcon="@drawable/ic_search"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorBackground"
+        tools:targetApi="lollipop">
+
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text="@string/for_you"
+          android:textColor="#ffff"
+          android:textSize="20sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <FrameLayout
+      android:background="@color/colorBackground"
+      android:layout_width="match_parent"
+      app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
       android:layout_height="match_parent"
       >
 
@@ -20,27 +58,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="16dp">
 
-      <TextView
-          android:id="@+id/textView6"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="Hello Raiyan"
-          android:textSize="24sp"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
 
-
-
-      <ImageView
-          android:layout_width="53dp"
-          android:layout_height="53dp"
-          android:src="@drawable/ic_cloud_drizzle"
-          android:layout_marginEnd="16dp"
-          android:layout_marginRight="16dp"
-          app:layout_constraintBottom_toBottomOf="@+id/textView6"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="@+id/textView6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   
@@ -105,6 +123,6 @@
 
   </FrameLayout>
 
-
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

@@ -47,15 +47,26 @@ public class Article implements Parcelable {
     @SerializedName("content")
     private String content;
 
+    @ColumnInfo(name = "source_name")
+    private String sourceName;
+
     @Ignore
     @SerializedName("source")
     private Source getSource;
+
 
 
     public Article(){
 
     }
 
+    public String getSourceName() {
+        return sourceName;
+    }
+
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
 
     protected Article(Parcel in) {
         author = in.readString();

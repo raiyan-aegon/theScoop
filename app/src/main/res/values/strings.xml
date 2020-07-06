@@ -23,5 +23,6 @@
     <string name="pick_your_sources">Pick your Sources</string>
     <string name="the_scoop">the scoop</string>
     <string name="shelf_frag">SHELF</string>
-    <string name="offline">SAVE ARTICLES FOR OFFLINE</string>
+    <string name="offline">You haven\'t saved any article</string>
+    <string name="your_stories">Your stories</string>
 </resources>

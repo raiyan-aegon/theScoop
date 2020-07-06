@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="top_headline_image_dimens">450dp</dimen>
+    <dimen name="details_image">450dp</dimen>
+    <dimen name="details_image_height">250dp</dimen>
+    <dimen name="category_card">220dp</dimen>
+    <dimen name="category_card_height">132dp</dimen>
+
+
+    <dimen name="article_text">320dp</dimen>
+    <dimen name="shimmer_title">370dp</dimen>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="top_headline_image_dimens">350dp</dimen>
+    <dimen name="details_image">327dp</dimen>
+
+    <dimen name="article_text">220dp</dimen>
+
+    <dimen name="overflow_image_margin">8dp</dimen>
+
+    <dimen name="category_card">160dp</dimen>
+    <dimen name="category_card_height">93dp</dimen>
+
+    <dimen name="shimmer_title">250dp</dimen>
+</resources>

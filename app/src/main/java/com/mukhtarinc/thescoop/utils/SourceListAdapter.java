@@ -143,11 +143,12 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
         return sources.size();
     }
 
-
-
-    public SourceItemBinding getSourceView(){
-
-        return  binding;
+    @Override
+    public void onViewRecycled(@NonNull SourceViewHolder holder) {
+        if(holder.binding.checkSource!=null){
+            holder.binding.checkSource.setOnClickListener(null);
+        }
+        super.onViewRecycled(holder);
     }
 
     public class SourceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
