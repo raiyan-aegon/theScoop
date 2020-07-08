@@ -29,8 +29,8 @@ open class ScoopDateUtils {
             val then : Long? = date?.time
 
             val now :Long? = Date().time
-            val seconds:Long? = (now?.minus(then!!))?.div(1000)
-            val minutes:Long? = seconds?.div(60)
+            val seconds:Long = (now!!.minus(then!!)).div(1000)
+            val minutes:Long? = seconds.div(60)
             val hours = minutes?.div(60)
             val days = hours?.div(24)
             var friendly: String? = null

@@ -3,7 +3,6 @@ package com.mukhtarinc.thescoop.ui.fragments.foryou;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -131,7 +130,9 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
         }else {
 
-            for(int i=0 ;i <allPrefs.size();i++){
+            for(int i=0 ;i <128;i++){
+
+
 
 
 
@@ -140,6 +141,8 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
             }
 
+
+            Log.d(TAG, "sources :"+sb.toString());
 
             forYouArticles(sb.toString());
         }
@@ -225,9 +228,8 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
                                     if(todayResponseNetworkResource.data!=null) {
 
-                                       // if (todayResponseNetworkResource.data.getArticles().get())
 
-                                       // Log.d(TAG, "forYouArticles: "+todayResponseNetworkResource.data.getArticles().get(0).getTitle());
+
 
                                         todayListAdapter.setOverflowClickListener(overflowClickListener);
                                         todayListAdapter.setArticleItemClickListener(articleItemClickListener);

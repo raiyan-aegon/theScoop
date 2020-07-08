@@ -25,4 +25,8 @@
     <string name="shelf_frag">SHELF</string>
     <string name="offline">You haven\'t saved any article</string>
     <string name="your_stories">Your stories</string>
+
+    <string name="path_data_plus">"M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"</string>
+    <string name="path_data_check">"M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"</string>
+    <string name="some">some time ago</string>
 </resources>

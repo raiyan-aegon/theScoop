@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.mukhtarinc.thescoop.R
 import com.mukhtarinc.thescoop.databinding.ShelfArticleItemBinding
-import com.mukhtarinc.thescoop.databinding.TodayArticleItemBinding
 import com.mukhtarinc.thescoop.model.Article
 import com.mukhtarinc.thescoop.utils.ScoopDateUtils.Companion.newsTimeDifference
 
@@ -73,7 +72,13 @@ public class ShelfListAdapter (requestManager: RequestManager) : RecyclerView.Ad
         binding.article = article
         Log.d(TAG, "onBindViewHolder: Source "+article.sourceName)
         requestManager.load(article.urlToImage).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.imageArticle)
-        binding.time.text = newsTimeDifference(article.publishedAt)
+
+
+        if (article.publishedAt[article.publishedAt.length - 1] == 'Z' && article.publishedAt.length <= 20) {
+            binding.time.text = newsTimeDifference(article.publishedAt)
+        } else {
+            binding.time.setText(R.string.some)
+        }
 
         binding.root.setOnClickListener {
 

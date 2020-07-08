@@ -5,39 +5,29 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Trace;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.GridLayout;
-import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
 import com.mukhtarinc.thescoop.R;
-import com.mukhtarinc.thescoop.data.network.NetworkResource;
-import com.mukhtarinc.thescoop.data.network.sources.SourceResponse;
-import com.mukhtarinc.thescoop.databinding.ActivityMainBinding;
 import com.mukhtarinc.thescoop.databinding.FragmentFollowingBinding;
 import com.mukhtarinc.thescoop.databinding.SourceItemBinding;
 import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.activities.MoreSourcesActivity;
 import com.mukhtarinc.thescoop.utils.CategoryListAdapter;
-import com.mukhtarinc.thescoop.utils.CheckboxClickListener;
+import com.mukhtarinc.thescoop.utils.AddClickListener;
+import com.mukhtarinc.thescoop.utils.CheckClickListener;
 import com.mukhtarinc.thescoop.utils.Constants;
 import com.mukhtarinc.thescoop.utils.SourceListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
@@ -49,8 +39,10 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-
-public class FollowingFragment extends DaggerFragment implements View.OnClickListener, CheckboxClickListener {
+/**
+ * Created by Raiyan Mukhtar on 7/8/2020.
+ */
+public class FollowingFragment extends DaggerFragment implements View.OnClickListener, AddClickListener, CheckClickListener {
 
     private static final String TAG = "FollowingFragment";
 
@@ -72,7 +64,9 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     SharedPreferences.Editor editor;
     SharedPreferences preferences;
 
-    CheckboxClickListener mCheckboxClickListener;
+    AddClickListener mAddClickListener;
+
+    CheckClickListener checkClickListener;
 
     SourceItemBinding sourceItemBinding;
 
@@ -94,13 +88,13 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         Log.d(TAG, "onCreate: ");
         viewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(FollowingViewModel.class);
 
-        preferences = getContext().getSharedPreferences(Constants.SHARED_PREFS,Context.MODE_PRIVATE);
+        preferences = getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
 
         editor = preferences.edit();
 
-        mCheckboxClickListener = this;
+        mAddClickListener = this;
 
-
+        checkClickListener = this;
 
 
     }
@@ -171,54 +165,52 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     void initSources(int num) {
 
         viewModel.getSources(Constants.apiKey)
-                .observe(this, new Observer<NetworkResource<SourceResponse>>() {
-                    @Override
-                    public void onChanged(NetworkResource<SourceResponse> sourceResponseNetworkResource) {
+                .observe(this, sourceResponseNetworkResource -> {
 
-                        if (sourceResponseNetworkResource != null) {
+                    if (sourceResponseNetworkResource != null) {
 
 
-                            switch (sourceResponseNetworkResource.status) {
+                        switch (sourceResponseNetworkResource.status) {
 
-                                case LOADING: {
+                            case LOADING: {
 
-                                    break;
-                                }
+                                break;
+                            }
 
-                                case SUCCESS: {
-
-
-                                    if (sourceResponseNetworkResource.data != null) {
+                            case SUCCESS: {
 
 
-                                        sourceListAdapter.setOnCheckClickListener(mCheckboxClickListener);
-                                        // sourceListAdapter.setArticleItemClickListener(articleItemClickListener);
+                                if (sourceResponseNetworkResource.data != null) {
 
-                                        if (num != 0) {
-                                            sourceListAdapter.setCount(3);
-                                        }
-                                        sourcesList = sourceResponseNetworkResource.data.getSources();
 
-                                        sourceListAdapter.setData(sourceResponseNetworkResource.data.getSources());
-                                        binding.popularSourceRv.setAdapter(sourceListAdapter);
+                                    sourceListAdapter.setOnCheckClickListener(checkClickListener);
+                                    sourceListAdapter.setAddClickListener(mAddClickListener);
+                                    // sourceListAdapter.setArticleItemClickListener(articleItemClickListener);
 
-                                        binding.progressFollow.setVisibility(View.GONE);
-                                        binding.constraintFollow.setVisibility(View.VISIBLE);
+                                    if (num != 0) {
+                                        sourceListAdapter.setCount(3);
                                     }
-                                    break;
-                                }
+                                    sourcesList = sourceResponseNetworkResource.data.getSources();
 
-                                case ERROR: {
+                                    sourceListAdapter.setData(sourceResponseNetworkResource.data.getSources());
+                                    binding.popularSourceRv.setAdapter(sourceListAdapter);
+
                                     binding.progressFollow.setVisibility(View.GONE);
-                                    binding.noConnection.setVisibility(View.VISIBLE);
-                                    binding.constraintFollow.setVisibility(View.GONE);
-                                    Toast.makeText(getContext(), sourceResponseNetworkResource.message + "", Toast.LENGTH_SHORT).show();
-                                    break;
+                                    binding.constraintFollow.setVisibility(View.VISIBLE);
                                 }
+                                break;
+                            }
 
+                            case ERROR: {
+                                binding.progressFollow.setVisibility(View.GONE);
+                                binding.noConnection.setVisibility(View.VISIBLE);
+                                binding.constraintFollow.setVisibility(View.GONE);
+                                Toast.makeText(getContext(), sourceResponseNetworkResource.message + "", Toast.LENGTH_SHORT).show();
+                                break;
                             }
 
                         }
+
                     }
                 });
 
@@ -243,27 +235,28 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void checkboxClicked(SourceItemBinding bindings,int position, Source source) {
+    public void AddClicked(SourceItemBinding bindings, int position, Source source) {
 
-        if(bindings.checkSource.isChecked()){
-
-
-            Constants.showSnackBar(getActivity(),"You're following "+source.getName(),true);
+        Constants.showSnackBar(getActivity(),"You're following "+source.getName(),true);
 
 
-            editor.putString("sourceName "+position,source.getSource_id());
+        editor.putString("sourceName "+position,source.getSource_id());
 
-            editor.apply();
+        editor.apply();
 
-        }else{
-            Constants.showSnackBar(getActivity(),"You stopped following " + source.getName(),false);
+        bindings.add.setVisibility(View.GONE);
+        bindings.check.setVisibility(View.VISIBLE);
+    }
 
-            editor.remove("sourceName "+position);
-            editor.commit();
 
-        }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void CheckClicked(SourceItemBinding bindings, int position, Source source) {
+        Constants.showSnackBar(getActivity(),"You stopped following " + source.getName(),false);
 
+        editor.remove("sourceName "+position);
+        editor.commit();
+        bindings.add.setVisibility(View.VISIBLE);
+        bindings.check.setVisibility(View.GONE);
     }
 }
-
-

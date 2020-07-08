@@ -12,10 +12,10 @@ import com.mukhtarinc.thescoop.model.Article
 @Dao
 interface ArticleDao {
 
-    @Query("Select * from article ORDER BY title ASC")
+    @Query("Select * from article ORDER BY publishedAt ASC")
     fun  geArticles() : LiveData<List<Article>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertArticle(article: Article)
 
     @Delete

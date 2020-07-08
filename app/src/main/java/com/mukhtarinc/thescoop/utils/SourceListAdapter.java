@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 import com.mukhtarinc.thescoop.R;
-import com.mukhtarinc.thescoop.databinding.FragmentFollowingBinding;
 import com.mukhtarinc.thescoop.databinding.SourceItemBinding;
 import com.mukhtarinc.thescoop.model.Source;
 
@@ -40,7 +38,8 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
 
     SourceItemBinding binding;
 
-    CheckboxClickListener checkboxClickListener;
+    AddClickListener addClickListener;
+    CheckClickListener checkClickListener;
 
 
     public SourceListAdapter(Application application, RequestManager requestManager){
@@ -51,10 +50,14 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
     }
 
 
-    public void setOnCheckClickListener(CheckboxClickListener checkboxClickListener){
+    public void setOnCheckClickListener(CheckClickListener checkClickListener){
 
 
-        this.checkboxClickListener = checkboxClickListener;
+        this.checkClickListener = checkClickListener;
+    }
+
+    public void setAddClickListener(AddClickListener addClickListener){
+        this.addClickListener = addClickListener;
     }
 
     @NonNull
@@ -89,12 +92,19 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
         binding.sourcesName.setText(source.getName());
 
 
+
         String sourceName = preferences.getString("sourceName "+position,null);
 
-            if(sourceName!=null && sourceName.equals(source.getSource_id())){
+            if(source.getSource_id().equalsIgnoreCase(sourceName)){
 
-                binding.checkSource.setChecked(true);
 
+                   binding.add.setVisibility(View.GONE);
+                   binding.check.setVisibility(View.VISIBLE);
+
+
+            }else {
+                binding.add.setVisibility(View.VISIBLE);
+                binding.check.setVisibility(View.GONE);
             }
 
 
@@ -143,13 +153,7 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
         return sources.size();
     }
 
-    @Override
-    public void onViewRecycled(@NonNull SourceViewHolder holder) {
-        if(holder.binding.checkSource!=null){
-            holder.binding.checkSource.setOnClickListener(null);
-        }
-        super.onViewRecycled(holder);
-    }
+
 
     public class SourceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         SourceItemBinding binding;
@@ -159,15 +163,25 @@ public class SourceListAdapter extends RecyclerView.Adapter<SourceListAdapter.So
 
             binding = DataBindingUtil.getBinding(itemView);
 
-            binding.checkSource.setOnClickListener(this);
+            binding.add.setOnClickListener(this);
 
+            binding.check.setOnClickListener(this);
 
         }
 
         @Override
         public void onClick(View view) {
 
-            checkboxClickListener.checkboxClicked(binding,getAdapterPosition(),sources.get(getAdapterPosition()));
+            if(view==binding.add){
+
+
+                addClickListener.AddClicked(binding,getAdapterPosition(),sources.get(getAdapterPosition()));
+
+            }else{
+
+                checkClickListener.CheckClicked(binding,getAdapterPosition(),sources.get(getAdapterPosition()));
+            }
+
 
         }
     }

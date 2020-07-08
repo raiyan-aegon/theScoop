@@ -95,8 +95,15 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                if (topHeadlineBinding != null) {
                    topHeadlineBinding.setArticle(article);
                    requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(topHeadlineBinding.largeImageArticle);
-                   topHeadlineBinding.time.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
 
+                   if(article.getPublishedAt().charAt(article.getPublishedAt().length()-1)=='Z' && !(article.getPublishedAt().length()>20)){
+
+                       topHeadlineBinding.time.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
+                       Log.d(TAG, article.getPublishedAt());
+
+                   }else {
+                       topHeadlineBinding.time.setText(R.string.some);
+                   }
 
                    if (for_you == 1) {
                        Log.d(TAG, "For you "+for_you);
@@ -123,11 +130,14 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                    requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.imageArticle);
 
 
-                   if(article.getPublishedAt()==null){
-                       binding.time.setText("");
-                       Log.d(TAG, article.getTitle()+" , "+"Time : Null");
+                   if(article.getPublishedAt().charAt(article.getPublishedAt().length()-1)=='Z' && !(article.getPublishedAt().length()>20)){
+
+                       binding.time.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
+                       Log.d(TAG, article.getPublishedAt());
+
+                   }else {
+                       binding.time.setText(R.string.some);
                    }
-                   binding.time.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
                }
 
            }
@@ -193,7 +203,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             binding = DataBindingUtil.getBinding(view);
             binding.overflowMenu.setOnClickListener(this);
 
-            binding.getRoot().setOnClickListener(view1 -> {
+            binding.topCard.setOnClickListener(view1 -> {
                 Article article = todayResponses.get(getAdapterPosition());
                 articleItemClickListener.articleItemClicked(article);
             });

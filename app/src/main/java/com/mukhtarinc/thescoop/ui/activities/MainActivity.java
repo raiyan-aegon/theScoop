@@ -1,13 +1,11 @@
 package com.mukhtarinc.thescoop.ui.activities;
 
-import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mukhtarinc.thescoop.R;
@@ -18,16 +16,8 @@ import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfFragment;
 import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import dagger.android.support.DaggerAppCompatActivity;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends DaggerAppCompatActivity {
 
@@ -38,7 +28,8 @@ public class MainActivity extends DaggerAppCompatActivity {
    private FollowingFragment followingFragment;
    private  ShelfFragment shelfFragment;
 
-
+    SharedPreferences.Editor editor;
+    SharedPreferences preferences;
    ArrayList<Fragment> fragments = new ArrayList<>();
 
     private static final String TAG = "MainActivity";
@@ -48,101 +39,155 @@ public class MainActivity extends DaggerAppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.foryou:
-                Toast.makeText(MainActivity.this, "For you", Toast.LENGTH_SHORT).show();
-                //fragment = new ForYouFragment();
+//                int clicks =preferences.getInt("click_for_you",0); ;
+//
+//                if(clicks==0){
+//
+                    Fragment forYouFragment  = new ForYouFragment();
+
+                    openFragment(forYouFragment);
+//
+//
+//
+//                }else {
+//                    clicks =1;
+//                    editor.putInt("click_for_you",clicks);
+//                    editor.commit();
+//
+//                    displayFragment(0);
+//
+//                }
 
 
-                displayFragment(0);
 
                 break;
             case R.id.today:
 //                    Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
-//                    fragment = new TodayFragment();
 
-                Observable.timer(10,TimeUnit.MICROSECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Long>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
 
-                            }
+//                int clicks_today =preferences.getInt("click_today",0);
+//
+//                if(clicks_today==0) {
+//
+//
+                    Fragment fragment = new TodayFragment();
+                    openFragment(fragment);
+//
+//                    clicks_today = 1;
+//                    editor.putInt("click_today", clicks_today);
+//                    editor.commit();
+//
+//
+//
+//                }else {
+//
+//
+//                    Observable.timer(10,TimeUnit.MICROSECONDS)
+//                            .subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(new Observer<Long>() {
+//                                @Override
+//                                public void onSubscribe(Disposable d) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onNext(Long aLong) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onError(Throwable e) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onComplete() {
+//                                    displayFragment(1);
+//                                }
+//                            });
+//                }
+//
+//
 
-                            @Override
-                            public void onNext(Long aLong) {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                displayFragment(1);
-                            }
-                        });
 
 
                 break;
             case R.id.follow:
 //                    Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();
-//                    fragment = new FollowingFragment();
-                Observable.timer(10,TimeUnit.MICROSECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Long>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onNext(Long aLong) {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                displayFragment(2);
-                            }
-                        });
+                   Fragment fragmentFollow = new FollowingFragment();
+                    openFragment(fragmentFollow);
+//                Observable.timer(10,TimeUnit.MICROSECONDS)
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new Observer<Long>() {
+//                            @Override
+//                            public void onSubscribe(Disposable d) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onNext(Long aLong) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onError(Throwable e) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onComplete() {
+//                                displayFragment(2);
+//                            }
+//                        });
 
 
                 break;
             case R.id.shelf:
-//                    Toast.makeText(MainActivity.this, "Shelf", Toast.LENGTH_SHORT).show();
-//                    fragment = new ShelfFragment();
-                Observable.timer(10,TimeUnit.MICROSECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Long>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
 
-                            }
+//                int clicks_shelf =preferences.getInt("click_shelf",0);
+//
+//                if(clicks_shelf==0) {
+//
+//
+//
+//                    clicks_shelf = 1;
+//                    editor.putInt("click_shelf", clicks_shelf);
+//                    editor.commit();
+//
+                    Fragment fragmentShelf = new ShelfFragment();
 
-                            @Override
-                            public void onNext(Long aLong) {
-
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                displayFragment(3);
-                            }
-                        });
+                    openFragment(fragmentShelf);
+//
+//                }else {
+//
+//
+//                    Observable.timer(10, TimeUnit.MICROSECONDS)
+//                            .subscribeOn(Schedulers.io())
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(new Observer<Long>() {
+//                                @Override
+//                                public void onSubscribe(Disposable d) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onNext(Long aLong) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onError(Throwable e) {
+//
+//                                }
+//
+//                                @Override
+//                                public void onComplete() {
+//                                    displayFragment(3);
+//                                }
+//                            });
+//                }
                 break;
 
 
@@ -158,7 +203,6 @@ public class MainActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
 
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -195,9 +239,15 @@ public class MainActivity extends DaggerAppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment;
 
+
         switch (position){
 
                 case 0:
+
+
+
+
+
                     fragment = fragments.get(position);
                     if(fragment.isAdded()){
 
@@ -291,4 +341,5 @@ transaction.commit();
 
 
     }
+
 }

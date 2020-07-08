@@ -57,8 +57,14 @@ public class TheScoopDetailsActivity extends DaggerAppCompatActivity {
                 binding.setArticle(article);
 
                 Log.d(TAG, "onCreate: Time " +article.getPublishedAt());
-                binding.datePublished.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
+                if(article.getPublishedAt().charAt(article.getPublishedAt().length()-1)=='Z' && !(article.getPublishedAt().length()>20)){
 
+                    binding.datePublished.setText(ScoopDateUtils.Companion.newsTimeDifference(article.getPublishedAt()));
+                    Log.d(TAG, article.getPublishedAt());
+
+                }else {
+                    binding.datePublished.setText(R.string.some);
+                }
 
                 binding.sourcesName.setText(source.getName());
 

@@ -1,14 +1,12 @@
 package com.mukhtarinc.thescoop.di.main;
 
-import com.mukhtarinc.thescoop.di.DaggerBottomSheetDialogFragment;
 import com.mukhtarinc.thescoop.di.application.modules.NewsViewModelModule;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
-import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
 
+import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
 import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouFragment;
 import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfFragment;
 import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
-import com.mukhtarinc.thescoop.utils.ShelfListAdapter;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

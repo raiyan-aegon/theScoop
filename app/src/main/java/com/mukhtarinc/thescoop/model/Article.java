@@ -16,6 +16,7 @@ import java.util.List;
  * Created by Raiyan Mukhtar on 5/24/2020.
  */
 
+
 @Entity (tableName = "article")
 public class Article implements Parcelable {
 

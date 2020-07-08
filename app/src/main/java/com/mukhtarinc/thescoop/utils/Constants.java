@@ -31,6 +31,9 @@ public class Constants {
     public static final long READ_TIMEOUT = 30000;
     public static final long WRITE_TIMEOUT = 30000;
     public static final String SHARED_PREFS ="sources";
+    public static final String SHARED_PREFS_CLICK ="clicks";
+
+
     public static final String CHECK ="check";
     public static final String SOURCE_NAME ="name";
 

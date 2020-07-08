@@ -47,6 +47,7 @@
 
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/top_card"
             android:layout_width="397dp"
             android:layout_height="117dp"
             android:layout_marginStart="4dp"

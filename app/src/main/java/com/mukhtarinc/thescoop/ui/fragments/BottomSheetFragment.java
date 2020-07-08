@@ -88,7 +88,7 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
-
+                dismiss();
             }
         });
 
@@ -99,7 +99,7 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
                 article.setSourceName(source.getName());
                 viewModel.insert(article);
                 Toast.makeText(getActivity(), "Added to Shelf", Toast.LENGTH_SHORT).show();
-                setCancelable(true);
+                dismiss();
             }
         });
 
@@ -107,11 +107,12 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Go to Source", Toast.LENGTH_SHORT).show();
-                setCancelable(true);
-
+                dismiss();
             }
         });
     }
+
+
 
     @NonNull
     @Override
@@ -122,5 +123,7 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
         super.onCancel(dialog);
+
+
     }
 }

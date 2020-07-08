@@ -44,6 +44,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/top_card"
             android:layout_width="@dimen/top_headline_image_dimens"
             android:layout_height="117dp"
             android:layout_marginStart="@dimen/margin_left_right"

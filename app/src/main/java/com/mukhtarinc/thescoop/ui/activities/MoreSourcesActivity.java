@@ -1,7 +1,6 @@
 package com.mukhtarinc.thescoop.ui.activities;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,10 +19,10 @@ import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.MoreSourceBinding;
 import com.mukhtarinc.thescoop.databinding.SourceItemBinding;
 import com.mukhtarinc.thescoop.model.Source;
-import com.mukhtarinc.thescoop.utils.CheckboxClickListener;
+import com.mukhtarinc.thescoop.utils.AddClickListener;
+import com.mukhtarinc.thescoop.utils.CheckClickListener;
 import com.mukhtarinc.thescoop.utils.Constants;
 import com.mukhtarinc.thescoop.utils.SourceListAdapter;
-import com.mukhtarinc.thescoop.utils.TodayListAdapter;
 
 import java.util.ArrayList;
 
@@ -31,7 +30,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class MoreSourcesActivity extends DaggerAppCompatActivity implements CheckboxClickListener {
+public class MoreSourcesActivity extends DaggerAppCompatActivity implements AddClickListener,CheckClickListener {
 
     private static final String TAG = "MoreSourcesActivity";
     MoreSourceBinding binding;
@@ -41,7 +40,9 @@ public class MoreSourcesActivity extends DaggerAppCompatActivity implements Chec
     @Inject
     SourceListAdapter sourceListAdapter;
 
-    CheckboxClickListener mCheckboxClickListener;
+    AddClickListener mAddClickListener;
+
+    CheckClickListener mCheckClickListener;
     
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -51,7 +52,8 @@ public class MoreSourcesActivity extends DaggerAppCompatActivity implements Chec
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.more_source);
 
-        mCheckboxClickListener = this;
+        mAddClickListener = this;
+        mCheckClickListener = this;
         preferences = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);
         editor = preferences.edit();
 
@@ -76,6 +78,7 @@ public class MoreSourcesActivity extends DaggerAppCompatActivity implements Chec
             sources = intent.getParcelableArrayListExtra("sources");
 
 
+
         }
 
 
@@ -86,37 +89,49 @@ public class MoreSourcesActivity extends DaggerAppCompatActivity implements Chec
         binding.moreSourcesRV.hasFixedSize();
 
         sourceListAdapter.setData(sources);
-        sourceListAdapter.setOnCheckClickListener(mCheckboxClickListener);
+        sourceListAdapter.setOnCheckClickListener(mCheckClickListener);
+        sourceListAdapter.setAddClickListener(mAddClickListener);
 
         binding.moreSourcesRV.setAdapter(sourceListAdapter);
 
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void checkboxClicked(SourceItemBinding bindings,int position, Source source) {
+    public void AddClicked(SourceItemBinding bindings, int position, Source source) {
+       // Constants.showSnackBar(this,"You're following "+source.getName(),true);
+        Snackbar.make(bindings.getRoot(),"You're following "+source.getName(),Snackbar.LENGTH_LONG)
+                .setActionTextColor(getColor(R.color.colorAccent))
+                .setAction("Read Now", view ->{
+                    Toast.makeText(this, "Read Now", Toast.LENGTH_SHORT).show();
+                })
+                .show();
 
-        if(bindings.checkSource.isChecked()){
+        editor.putString("sourceName "+position,source.getSource_id());
+        Log.d(TAG, "Source_ID"+source.getSource_id());
 
-            Snackbar.make(binding.getRoot(),"You're following "+source.getName(),Snackbar.LENGTH_LONG )
-                    .setActionTextColor(getColor(R.color.colorAccent))
-                    .setAction("Read Now", view ->{
-                        Toast.makeText(this, "Read Now", Toast.LENGTH_SHORT).show();
-                    })
-                    .show();
+        editor.apply();
 
+        bindings.add.setVisibility(View.GONE);
+        bindings.check.setVisibility(View.VISIBLE);
+    }
 
-            editor.putString("sourceName "+position,source.getSource_id());
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void CheckClicked(SourceItemBinding bindings, int position, Source source) {
+       // Constants.showSnackBar(bin,"You stopped following " + source.getName(),false);
 
-            editor.apply();
+        Snackbar.make(bindings.getRoot(),"You stopped following " + source.getName(),Snackbar.LENGTH_LONG)
+                .setActionTextColor(getColor(R.color.colorAccent))
+                .setAction("Read Now", view ->{
+                    Toast.makeText(this, "Read Now", Toast.LENGTH_SHORT).show();
+                })
+                .show();
 
-        }else{
-            Snackbar.make(binding.getRoot(),"You stopped following "+source.getName(),Snackbar.LENGTH_LONG )
-                    .show();
-            editor.remove("sourceName "+position);
-            editor.commit();
-
-        }
-
+        editor.remove("sourceName "+position);
+        editor.commit();
+        bindings.add.setVisibility(View.VISIBLE);
+        bindings.check.setVisibility(View.GONE);
     }
 }
