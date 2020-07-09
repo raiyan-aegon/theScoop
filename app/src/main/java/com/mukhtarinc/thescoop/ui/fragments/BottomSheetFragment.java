@@ -103,6 +103,14 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
         bottomSheetBinding.shareSheet.setOnClickListener(view13 -> {
             Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
+
+            Intent sendIntent  =  new Intent(Intent.ACTION_SEND);
+            sendIntent.setType("text/plain");
+
+            sendIntent.putExtra(Intent.EXTRA_TEXT,article.getUrl());
+
+            startActivity(Intent.createChooser(sendIntent,"Share"));
+
             dismiss();
         });
 
