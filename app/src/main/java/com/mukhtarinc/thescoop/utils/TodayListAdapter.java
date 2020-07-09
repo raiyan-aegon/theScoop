@@ -33,6 +33,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     RequestManager requestManager;
     int for_you;
     Category category;
+    Source source;
 
      OverflowClickListener overflowClickListener;
      ArticleItemClickListener articleItemClickListener;
@@ -66,6 +67,10 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void setCategory(Category category){
 
        this.category = category;
+    }
+
+    public void setSource(Source source){
+       this.source = source;
     }
 
 
@@ -115,7 +120,11 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                    }
 
                    if(category!=null){
-                       topHeadlineBinding.todayText.setText("Top "+category.getCat_name()+" stories");
+                       topHeadlineBinding.todayText.setText("Top "+category.getCat_name().toLowerCase()+" stories");
+                   }
+
+                   if(source!=null){
+                       topHeadlineBinding.todayText.setVisibility(View.GONE);
                    }
 
                    if (for_you == 1) {

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
-
     <data>
 
         <variable
-            name="category"
-            type="com.mukhtarinc.thescoop.model.Category" />
+            name="source"
+            type="com.mukhtarinc.thescoop.model.Source" />
 
     </data>
 
@@ -18,41 +17,41 @@
         android:background="@color/colorBackground"
         android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="0dp"
-        app:elevation="0dp"
-        tools:targetApi="lollipop">
-
-
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorBackground"
+            android:layout_height="wrap_content"
             android:elevation="0dp"
-            android:id="@+id/toolbar"
-            app:navigationIcon="@drawable/ic_arrow_left"
+            app:elevation="0dp"
             tools:targetApi="lollipop">
 
 
-            <TextView
-                android:text="@{category.cat_name}"
-                android:id="@+id/category_name"
-                android:layout_width="wrap_content"
-                tools:text="Entertainment"
-                android:layout_gravity="center"
-                android:textSize="20sp"
-                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorBackground"
+                android:elevation="0dp"
+                android:id="@+id/toolbar"
+                app:navigationIcon="@drawable/ic_arrow_left"
+                tools:targetApi="lollipop">
+
+
+                <TextView
+                    android:text="@{source.name}"
+                    android:id="@+id/category_name"
+                    android:layout_width="wrap_content"
+                    tools:text="ABC-NEWS"
+                    android:layout_gravity="center"
+                    android:textSize="20sp"
+                    android:layout_height="wrap_content"/>
 
 
 
-        </androidx.appcompat.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
-    </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <ProgressBar
-            android:id="@+id/progress_categories"
+            android:id="@+id/progress_sources"
             android:layout_width="50dp"
             android:layout_gravity="center"
             style="@style/TheScoop.Progressbar"
@@ -61,7 +60,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:visibility="gone"
             android:overScrollMode="never"
-            android:id="@+id/categories_articles"
+            android:id="@+id/source_articles"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -69,6 +68,7 @@
         <include layout="@layout/no_connection"
             android:id="@+id/noConnection"
             android:visibility="gone"/>
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

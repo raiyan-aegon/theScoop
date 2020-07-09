@@ -1,5 +1,6 @@
 package com.mukhtarinc.thescoop.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
 import com.mukhtarinc.thescoop.di.DaggerBottomSheetDialogFragment;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.SourceArticleActivity;
 import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfViewModel;
 import com.mukhtarinc.thescoop.utils.ShelfListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
@@ -127,7 +129,16 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
         });
 
         bottomSheetBinding.sourceSheet.setOnClickListener(view12 -> {
-            Toast.makeText(getActivity(), "Go to Source", Toast.LENGTH_SHORT).show();
+
+            if(source.getSource_id()!=null){
+                Intent intent = new Intent(getContext(), SourceArticleActivity.class);
+                intent.putExtra("source",source);
+                startActivity(intent);
+            }else {
+                Toast.makeText(getContext(), "Sorry no articles", Toast.LENGTH_SHORT).show();
+            }
+
+
             dismiss();
         });
     }

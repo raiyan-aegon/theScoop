@@ -9,15 +9,16 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.ActivityCategoryBinding;
+import com.mukhtarinc.thescoop.databinding.ActivitySourceArticleBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Category;
 import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
 import com.mukhtarinc.thescoop.ui.fragments.following.CategoryViewModel;
+import com.mukhtarinc.thescoop.ui.fragments.following.SourceViewModel;
 import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
 import com.mukhtarinc.thescoop.utils.Constants;
 import com.mukhtarinc.thescoop.utils.OverflowClickListener;
@@ -28,23 +29,25 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
-public class CategoryActivity extends DaggerAppCompatActivity implements ArticleItemClickListener, OverflowClickListener {
+/**
+ * Created by Raiyan Mukhtar on 7/9/2020.
+ */
+public class SourceArticleActivity extends DaggerAppCompatActivity implements ArticleItemClickListener, OverflowClickListener {
 
-    private static final String TAG = "CategoryActivity";
-    CategoryViewModel viewModel;
+    ActivitySourceArticleBinding binding;
 
-    Category category;
+
+    private static final String TAG = "SourceArticleActivity";
+    SourceViewModel viewModel;
+
+    Source source;
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
 
 
-
     @Inject
     TodayListAdapter todayListAdapter;
-
-
-    ActivityCategoryBinding binding;
 
 
     ArticleItemClickListener articleItemClickListener;
@@ -54,7 +57,7 @@ public class CategoryActivity extends DaggerAppCompatActivity implements Article
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_category);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_source_article);
 
         binding.toolbar.setNavigationOnClickListener(view -> {
 
@@ -63,39 +66,36 @@ public class CategoryActivity extends DaggerAppCompatActivity implements Article
         });
 
 
-        viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(CategoryViewModel.class);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        viewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(SourceViewModel.class);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
-        articleItemClickListener =this;
+        articleItemClickListener = this;
         overflowClickListener = this;
 
-        binding.categoriesArticles.setLayoutManager(layoutManager);
-        binding.categoriesArticles.hasFixedSize();
+        binding.sourceArticles.setLayoutManager(layoutManager);
+        binding.sourceArticles.hasFixedSize();
 
 
+        if (getIntent() != null && getIntent().hasExtra("source")) {
 
+            source = getIntent().getParcelableExtra("source");
 
-        if(getIntent()!=null && getIntent().hasExtra("category")){
+            Log.d(TAG, "Source"+source.getSource_id());
 
-            category = getIntent().getParcelableExtra("category");
+            binding.setSource(source);
 
-            binding.setCategory(category);
-
-
-            getCategoryArticles(category);
+            getSourceArticles(source);
         }
 
     }
 
-    public void getCategoryArticles(Category category){
-        viewModel.getCategoryArticles(category.getCat_name(),Constants.apiKey)
+    public void getSourceArticles(Source source) {
+        viewModel.getSourceArticles(source.getSource_id(), Constants.apiKey)
                 .observe(this, todayResponseNetworkResource -> {
-                    if(todayResponseNetworkResource !=null){
+                    if (todayResponseNetworkResource != null) {
 
 
-
-                        switch(todayResponseNetworkResource.status)
-                        {
+                        switch (todayResponseNetworkResource.status) {
 
                             case LOADING: {
 
@@ -105,34 +105,26 @@ public class CategoryActivity extends DaggerAppCompatActivity implements Article
                             case SUCCESS: {
 
 
-                                if(todayResponseNetworkResource.data!=null) {
+                                if (todayResponseNetworkResource.data != null) {
 
 
-                                    Log.d(TAG, "getCategoryArticles: ");
-
-
-                                    if (todayListAdapter == null) {
-
-                                        Log.d(TAG, "Adapter is null");
-                                    }
-
-                                    todayListAdapter.setCategory(category);
+                                   todayListAdapter.setSource(source);
                                     todayListAdapter.setOverflowClickListener(overflowClickListener);
                                     todayListAdapter.setArticleItemClickListener(articleItemClickListener);
                                     todayListAdapter.setData(todayResponseNetworkResource.data.getArticles());
-                                   // todayListAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
-                                    binding.categoriesArticles.setAdapter(todayListAdapter);
+                                    // todayListAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
+                                    binding.sourceArticles.setAdapter(todayListAdapter);
 
-                                    binding.progressCategories.setVisibility(View.GONE);
-                                    binding.categoriesArticles.setVisibility(View.VISIBLE);
+                                    binding.progressSources.setVisibility(View.GONE);
+                                    binding.sourceArticles.setVisibility(View.VISIBLE);
                                 }
                                 break;
                             }
 
                             case ERROR: {
-                                binding.progressCategories.setVisibility(View.GONE);
-                                binding.noConnection.setVisibility(View.VISIBLE);
-                                binding.categoriesArticles.setVisibility(View.GONE);
+                                binding.progressSources.setVisibility(View.GONE);
+                                 binding.noConnection.setVisibility(View.VISIBLE);
+                                binding.sourceArticles.setVisibility(View.GONE);
                                 break;
                             }
 
@@ -148,8 +140,8 @@ public class CategoryActivity extends DaggerAppCompatActivity implements Article
         Intent intent = new Intent(this, TheScoopDetailsActivity.class);
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable("article",article);
-        bundle.putParcelable("source",article.getGetSource());
+        bundle.putParcelable("article", article);
+        bundle.putParcelable("source", article.getGetSource());
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -160,16 +152,17 @@ public class CategoryActivity extends DaggerAppCompatActivity implements Article
 
         BottomSheetFragment fragment = new BottomSheetFragment();
 
-        Source source =article.getGetSource();
+        Source source = article.getGetSource();
 
         Bundle bundle = new Bundle();
-        bundle.putParcelable("bottomSheet",article);
-        Log.d(TAG, "overflowClicked: "+source.getName());
+        bundle.putParcelable("bottomSheet", article);
+        Log.d(TAG, "overflowClicked: " + source.getName());
 
-        bundle.putParcelable("source",source);
+        bundle.putParcelable("source", source);
 
         fragment.setArguments(bundle);
-        fragment.show(fragmentManager,fragment.getTag());
+        fragment.show(fragmentManager, fragment.getTag());
 
     }
+
 }

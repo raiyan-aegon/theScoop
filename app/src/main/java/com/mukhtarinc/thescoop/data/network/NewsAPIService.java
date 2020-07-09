@@ -32,5 +32,8 @@ public interface NewsAPIService {
     Observable<TodayResponse> getCategoryArticles(@Query("category") String category_name,@Query("language") String language, @Query("apiKey") String apiKey);
 
 
+    @GET("everything")
+    Observable<TodayResponse> getSourceArticles(@Query("sources") String source_id,@Query("apiKey") String apiKey);
+
 
 }

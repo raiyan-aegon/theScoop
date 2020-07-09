@@ -41,7 +41,7 @@ class ScoopSplashActivity : AppCompatActivity() {
         compositeDisposable.add(Observable.timer(2, TimeUnit.SECONDS)
                 .subscribe {
 
-                    var intent = Intent(this,MainActivity::class.java)
+                    val intent = Intent(this,MainActivity::class.java)
 
                     startActivity(intent)
 
