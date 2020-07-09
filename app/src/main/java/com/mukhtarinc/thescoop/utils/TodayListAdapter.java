@@ -1,6 +1,7 @@
 package com.mukhtarinc.thescoop.utils;
 
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.TodayArticleItemBinding;
 import com.mukhtarinc.thescoop.databinding.TopHeadlineBinding;
 import com.mukhtarinc.thescoop.model.Article;
+import com.mukhtarinc.thescoop.model.Category;
 import com.mukhtarinc.thescoop.model.Source;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +32,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     RequestManager requestManager;
     int for_you;
+    Category category;
 
      OverflowClickListener overflowClickListener;
      ArticleItemClickListener articleItemClickListener;
@@ -60,6 +63,11 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
+    public void setCategory(Category category){
+
+       this.category = category;
+    }
+
 
     public void setOverflowClickListener(OverflowClickListener listener){
 
@@ -79,6 +87,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NotNull RecyclerView.ViewHolder holder, int position) {
         Article article = todayResponses.get(position);
@@ -103,6 +112,10 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                    }else {
                        topHeadlineBinding.time.setText(R.string.some);
+                   }
+
+                   if(category!=null){
+                       topHeadlineBinding.todayText.setText("Top "+category.getCat_name()+" stories");
                    }
 
                    if (for_you == 1) {

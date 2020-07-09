@@ -23,14 +23,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentFollowingBinding;
 import com.mukhtarinc.thescoop.databinding.SourceItemBinding;
+import com.mukhtarinc.thescoop.model.Category;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.CategoryActivity;
 import com.mukhtarinc.thescoop.ui.activities.MoreSourcesActivity;
+import com.mukhtarinc.thescoop.utils.CategoryClickListener;
 import com.mukhtarinc.thescoop.utils.CategoryListAdapter;
 import com.mukhtarinc.thescoop.utils.AddClickListener;
 import com.mukhtarinc.thescoop.utils.CheckClickListener;
 import com.mukhtarinc.thescoop.utils.Constants;
 import com.mukhtarinc.thescoop.utils.SourceListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +47,7 @@ import dagger.android.support.DaggerFragment;
 /**
  * Created by Raiyan Mukhtar on 7/8/2020.
  */
-public class FollowingFragment extends DaggerFragment implements View.OnClickListener, AddClickListener, CheckClickListener {
+public class FollowingFragment extends DaggerFragment implements View.OnClickListener, AddClickListener, CheckClickListener , CategoryClickListener {
 
     private static final String TAG = "FollowingFragment";
 
@@ -68,6 +73,8 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
     CheckClickListener checkClickListener;
 
+    CategoryClickListener categoryClickListener;
+
     SourceItemBinding sourceItemBinding;
 
     View v;
@@ -76,7 +83,6 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     public FollowingFragment() {
     }
 
-    // TODO: Rename and change types and number of parameters
     public static FollowingFragment newInstance() {
         return new FollowingFragment();
     }
@@ -95,6 +101,8 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         mAddClickListener = this;
 
         checkClickListener = this;
+
+        categoryClickListener = this;
 
 
     }
@@ -153,6 +161,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
         if (binding != null) {
             categoryListAdapter.setData(viewModel.getCategories());
+            categoryListAdapter.setCategoryClickListener(categoryClickListener);
             binding.categoriesRv.setAdapter(categoryListAdapter);
         } else {
             Log.d(TAG, "pullcategories: Binding is null ");
@@ -258,5 +267,14 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         editor.commit();
         bindings.add.setVisibility(View.VISIBLE);
         bindings.check.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void categoryClick(@NotNull Category category) {
+
+        Log.d(TAG, category.getCat_name());
+        Intent intent = new Intent(getActivity(), CategoryActivity.class);
+        intent.putExtra("category",category);
+        startActivity(intent);
     }
 }

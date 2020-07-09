@@ -6,9 +6,6 @@
     <string name="shelf">Shelf</string>
     <string name="search">Search</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="test">Black mother arrested brutally by the NYPD for not wearing a COVID-19 face Mask</string>
     <string name="top_stories">Top stories right now</string>
     <string name="sheet_cancel">Cancel</string>
     <string name="sheet_go_to_source">Go to Source</string>
@@ -29,4 +26,5 @@
     <string name="path_data_plus">"M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"</string>
     <string name="path_data_check">"M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"</string>
     <string name="some">some time ago</string>
+    <string name="remove">Remove from Shelf</string>
 </resources>

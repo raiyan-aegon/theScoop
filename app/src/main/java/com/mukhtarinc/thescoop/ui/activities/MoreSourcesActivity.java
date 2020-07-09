@@ -57,12 +57,6 @@ public class MoreSourcesActivity extends DaggerAppCompatActivity implements AddC
         preferences = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);
         editor = preferences.edit();
 
-
-
-        // TODO: Setup Snackbars when checked sources
-
-
-
         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

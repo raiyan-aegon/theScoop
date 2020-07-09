@@ -1,13 +1,12 @@
-package com.mukhtarinc.thescoop.ui.fragments.today;
+package com.mukhtarinc.thescoop.ui.fragments.following;
 
-import android.app.Application;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.mukhtarinc.thescoop.data.network.NewsAPIService;
 import com.mukhtarinc.thescoop.data.network.NetworkResource;
+import com.mukhtarinc.thescoop.data.network.NewsAPIService;
 import com.mukhtarinc.thescoop.data.network.today.TodayResponse;
 
 import javax.inject.Inject;
@@ -18,40 +17,34 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-
 /**
- * Created by Raiyan Mukhtar on 5/25/2020.
+ * Created by Raiyan Mukhtar on 7/9/2020.
  */
-public class TodayViewModel extends ViewModel {
-
-    private static final String TAG = "TodayViewModel";
+public class CategoryViewModel extends ViewModel {
 
 
-    private NewsAPIService api;
+    private static final String TAG = "CategoryViewModel";
+    NewsAPIService apiService;
 
     @Inject
-    public TodayViewModel(NewsAPIService api, Application application) {
+    public CategoryViewModel(NewsAPIService apiService){
 
-        this.api =api;
-
+        this.apiService = apiService;
 
     }
 
-    public   MutableLiveData<NetworkResource<TodayResponse>> getTodayArticles(String country, String apiKey){
+    public MutableLiveData<NetworkResource<TodayResponse>> getCategoryArticles(String category_name, String apiKey){
 
 
         MutableLiveData<NetworkResource<TodayResponse>> articles = new MutableLiveData<>();
 
         articles.setValue(NetworkResource.loading(null));
-        api.getTodayArticles(country,"en",apiKey)
-                .onErrorReturn(new Function<Throwable, TodayResponse>() {
-                    @Override
-                    public TodayResponse apply(Throwable throwable) throws Exception {
-                        TodayResponse todayResponse = new TodayResponse();
-                        todayResponse.setArticles(null);
+        apiService.getCategoryArticles(category_name,"en",apiKey)
+                .onErrorReturn(throwable -> {
+                    TodayResponse todayResponse = new TodayResponse();
+                    todayResponse.setArticles(null);
 
-                        return todayResponse;
-                    }
+                    return todayResponse;
                 })
                 .map((Function<TodayResponse, NetworkResource<TodayResponse>>) todayResponse -> {
 
@@ -73,7 +66,7 @@ public class TodayViewModel extends ViewModel {
                     @Override
                     public void onNext(NetworkResource<TodayResponse> todayResponseNetworkResource) {
 
-                            articles.setValue(todayResponseNetworkResource);
+                        articles.setValue(todayResponseNetworkResource);
 
                     }
 
@@ -94,5 +87,4 @@ public class TodayViewModel extends ViewModel {
         return articles;
 
     }
-
 }

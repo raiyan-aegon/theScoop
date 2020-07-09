@@ -1,7 +1,5 @@
 package com.mukhtarinc.thescoop.ui.fragments;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,22 +10,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.BottomSheetBinding;
+import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
 import com.mukhtarinc.thescoop.di.DaggerBottomSheetDialogFragment;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfViewModel;
+import com.mukhtarinc.thescoop.utils.ShelfListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
 
-import javax.inject.Inject;
+import java.util.Objects;
 
-import dagger.android.support.DaggerAppCompatDialogFragment;
-import dagger.android.support.DaggerDialogFragment;
-import dagger.android.support.DaggerFragment;
+import javax.inject.Inject;
 
 /**
  * Created by Raiyan Mukhtar on 6/1/2020.
@@ -41,9 +39,14 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
      Source source;
 
     @Inject
+    ShelfListAdapter shelfListAdapter;
+
+    @Inject
     ViewModelProviderFactory viewModelProviderFactory;
 
     ShelfViewModel viewModel;
+
+    String myShelf;
 
 
     public BottomSheetFragment(){
@@ -60,6 +63,8 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
            article = getArguments().getParcelable("bottomSheet");
 
            source = getArguments().getParcelable("source");
+
+           myShelf = getArguments().getString("shelf");
         }
 
 
@@ -74,6 +79,16 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
         bottomSheetBinding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet,container,false);
 
+        if(myShelf!=null){
+            if(myShelf.equalsIgnoreCase("shelf")){
+
+
+                bottomSheetBinding.shelfButton.setText(R.string.remove);
+
+            }
+        }
+
+
 
         return bottomSheetBinding.getRoot();
     }
@@ -84,45 +99,62 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
         bottomSheetBinding.setSource("Go to "+source.getName());
 
-        bottomSheetBinding.shareSheet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
-                dismiss();
-            }
+        bottomSheetBinding.shareSheet.setOnClickListener(view13 -> {
+            Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
+            dismiss();
         });
 
-        bottomSheetBinding.shelfSheet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        bottomSheetBinding.shelfSheet.setOnClickListener(view1 -> {
+
+            if(bottomSheetBinding.shelfButton.getText().toString().equalsIgnoreCase(getString(R.string.remove))){
+
+                viewModel.deleteArticle(article);
+
+                getArticles();
+
+                Toast.makeText(getActivity(),"Removed from Shelf",Toast.LENGTH_SHORT).show();
+
+
+            }else {
+
 
                 article.setSourceName(source.getName());
                 viewModel.insert(article);
                 Toast.makeText(getActivity(), "Added to Shelf", Toast.LENGTH_SHORT).show();
-                dismiss();
+                getArticles();
             }
+            dismiss();
         });
 
-        bottomSheetBinding.sourceSheet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "Go to Source", Toast.LENGTH_SHORT).show();
-                dismiss();
-            }
+        bottomSheetBinding.sourceSheet.setOnClickListener(view12 -> {
+            Toast.makeText(getActivity(), "Go to Source", Toast.LENGTH_SHORT).show();
+            dismiss();
         });
     }
 
 
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
-    }
 
-    @Override
-    public void onCancel(@NonNull DialogInterface dialog) {
-        super.onCancel(dialog);
+    public void getArticles(){
+
+        Log.d(TAG, "getArticles");
+        viewModel.getArticles.observe(this, articles -> {
+
+
+            shelfListAdapter.setData(articles);
+            View rootView  = Objects.requireNonNull(getActivity()).getWindow().getDecorView().findViewById(R.id.parent_container);
+            LayoutInflater inflater = getLayoutInflater();
+
+
+            FragmentShelfBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_shelf, (ViewGroup) rootView.getParent(),false);
+
+            if (binding.shelfArticles!=null) {
+                binding.shelfArticles.setAdapter(shelfListAdapter);
+            }else {
+                Log.d(TAG, "Binding is null");
+            }
+
+        });
 
 
     }

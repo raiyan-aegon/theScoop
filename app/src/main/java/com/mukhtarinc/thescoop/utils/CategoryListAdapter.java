@@ -26,6 +26,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     RequestManager requestManager;
 
+    CategoryClickListener categoryClickListener;
+
 
     public CategoryListAdapter(RequestManager requestManager){
 
@@ -44,6 +46,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     }
 
+    public void setCategoryClickListener(CategoryClickListener categoryClickListener){
+
+        this.categoryClickListener = categoryClickListener;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
 
@@ -54,6 +61,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             binding.setCategory(category);
             //binding.catIg.setImageResource(category.getCat_image());
             requestManager.load(category.getCat_image()).placeholder(R.drawable.image_placeholder).centerCrop().into(binding.catIg);
+
 
         }
     }
@@ -68,11 +76,18 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         categories = data;
     }
 
-    public class CategoryViewHolder extends RecyclerView.ViewHolder{
+    public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            categoryClickListener.categoryClick(categories.get(getAdapterPosition()));
         }
     }
 }

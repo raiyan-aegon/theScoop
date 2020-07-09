@@ -1,5 +1,6 @@
 package com.mukhtarinc.thescoop.ui.fragments.shelf;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
@@ -73,6 +75,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
         viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(ShelfViewModel.class);
 
+        Log.d(TAG, "onCreate");
 
     }
 
@@ -98,8 +101,9 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "onViewCreated: ");
 
-
+        getArticles();
 
 
 
@@ -111,10 +115,13 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getArticles();
-        binding.offlineText.setVisibility(View.GONE);
+
+        Log.d(TAG, "onActivityCreated");
+
+
         
     }
+
 
     public void getArticles(){
         
@@ -124,9 +131,19 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
                 shelfListAdapter.setData(articles);
                 shelfListAdapter.setArticleClickListener(articleItemClickListener);
                 shelfListAdapter.setOverflowListener(overflowClickListener);
+
+                if(shelfListAdapter.getItemCount()==0){
+
+                    Log.d(TAG, "No articles");
+                }else {
+                    Log.d(TAG, "Articles");
+                    binding.offlineText.setVisibility(View.GONE);
+
+                }
                 binding.shelfArticles.setAdapter(shelfListAdapter);
-                
-              
+
+
+
 
         });
 
@@ -146,6 +163,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
         Bundle bundle = new Bundle();
         bundle.putParcelable("bottomSheet",article);
         bundle.putParcelable("source",source);
+        bundle.putString("shelf","shelf");
 
         fragment.setArguments(bundle);
         fragment.show(fragmentManager,fragment.getTag());
@@ -169,4 +187,12 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG, "onAttach: ");
+
+
+    }
 }

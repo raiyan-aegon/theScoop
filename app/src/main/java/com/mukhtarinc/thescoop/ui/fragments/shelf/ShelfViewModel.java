@@ -75,5 +75,38 @@ public class ShelfViewModel extends ViewModel {
 
     }
 
+    public void deleteArticle(Article article){
+
+
+        Observable.just(article)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<Article>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        Log.d(TAG, "onSubscribe");
+                    }
+
+                    @Override
+                    public void onNext(Article article) {
+
+                        repository.deleteArticle(article);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                        Log.d(TAG, "onError: "+e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "Delete Successful");
+                    }
+                });
+
+
+
+    }
+
 
 }

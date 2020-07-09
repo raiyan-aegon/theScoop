@@ -81,7 +81,6 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
     }
 
 
-    // TODO: Rename and change types and number of parameters
     public static ForYouFragment newInstance(String param1, String param2) {
 
         return new ForYouFragment();

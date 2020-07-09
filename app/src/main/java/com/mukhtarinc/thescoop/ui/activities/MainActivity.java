@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mukhtarinc.thescoop.R;
@@ -14,10 +15,17 @@ import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
 import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouFragment;
 import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfFragment;
 import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
+import com.mukhtarinc.thescoop.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import dagger.android.support.DaggerAppCompatActivity;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends DaggerAppCompatActivity {
 
@@ -39,24 +47,33 @@ public class MainActivity extends DaggerAppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.foryou:
-//                int clicks =preferences.getInt("click_for_you",0); ;
+                int clicks =preferences.getInt("click_for_you",0); ;
+
+                if(clicks==0){
 //
-//                if(clicks==0){
-//
+
+
                     Fragment forYouFragment  = new ForYouFragment();
 
                     openFragment(forYouFragment);
-//
-//
-//
-//                }else {
-//                    clicks =1;
-//                    editor.putInt("click_for_you",clicks);
-//                    editor.commit();
-//
-//                    displayFragment(0);
-//
-//                }
+
+                    clicks =1;
+                    editor.putInt("click_for_you",clicks);
+                    editor.commit();
+
+                    Log.d(TAG, "CLICKS FOR YOU OPEN FRAGMENT");
+
+
+
+                }else {
+
+
+                    Log.d(TAG, "CLICKS FOR YOU DISPLAY FRAGMENT");
+
+                    displayFragment(0);
+
+
+                }
 
 
 
@@ -65,129 +82,73 @@ public class MainActivity extends DaggerAppCompatActivity {
 //                    Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
 
 
-//                int clicks_today =preferences.getInt("click_today",0);
-//
-//                if(clicks_today==0) {
-//
-//
-                    Fragment fragment = new TodayFragment();
-                    openFragment(fragment);
-//
-//                    clicks_today = 1;
-//                    editor.putInt("click_today", clicks_today);
-//                    editor.commit();
-//
-//
-//
-//                }else {
-//
-//
-//                    Observable.timer(10,TimeUnit.MICROSECONDS)
-//                            .subscribeOn(Schedulers.io())
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe(new Observer<Long>() {
-//                                @Override
-//                                public void onSubscribe(Disposable d) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onNext(Long aLong) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onError(Throwable e) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onComplete() {
-//                                    displayFragment(1);
-//                                }
-//                            });
-//                }
-//
-//
+                int clicks_today =preferences.getInt("click_today",0);
+
+                if(clicks_today==0) {
+
+
+                    Fragment fragmentToday = new TodayFragment();
+                    openFragment(fragmentToday);
+
+                    clicks_today = 1;
+                    editor.putInt("click_today", clicks_today);
+                    editor.commit();
+
+
+
+                }else {
+
+                                    displayFragment(1);
+
+                }
+
+
 
 
 
                 break;
             case R.id.follow:
 //                    Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();
-                   Fragment fragmentFollow = new FollowingFragment();
+                int clicks_follow =preferences.getInt("click_follow",0);
+
+                if(clicks_follow==0) {
+                    Fragment fragmentFollow = new FollowingFragment();
                     openFragment(fragmentFollow);
-//                Observable.timer(10,TimeUnit.MICROSECONDS)
-//                        .subscribeOn(Schedulers.io())
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(new Observer<Long>() {
-//                            @Override
-//                            public void onSubscribe(Disposable d) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onNext(Long aLong) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onError(Throwable e) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onComplete() {
-//                                displayFragment(2);
-//                            }
-//                        });
+                    clicks_follow = 1;
+                    editor.putInt("click_follow", clicks_follow);
+                    editor.commit();
 
 
+
+
+
+                }else {
+                                    displayFragment(2);
+
+
+                }
                 break;
             case R.id.shelf:
 
-//                int clicks_shelf =preferences.getInt("click_shelf",0);
-//
-//                if(clicks_shelf==0) {
-//
-//
-//
-//                    clicks_shelf = 1;
-//                    editor.putInt("click_shelf", clicks_shelf);
-//                    editor.commit();
-//
+                int clicks_shelf =preferences.getInt("click_shelf",0);
+
+                if(clicks_shelf==0) {
                     Fragment fragmentShelf = new ShelfFragment();
 
                     openFragment(fragmentShelf);
-//
-//                }else {
-//
-//
-//                    Observable.timer(10, TimeUnit.MICROSECONDS)
-//                            .subscribeOn(Schedulers.io())
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe(new Observer<Long>() {
-//                                @Override
-//                                public void onSubscribe(Disposable d) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onNext(Long aLong) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onError(Throwable e) {
-//
-//                                }
-//
-//                                @Override
-//                                public void onComplete() {
-//                                    displayFragment(3);
-//                                }
-//                            });
-//                }
+
+
+                    clicks_shelf = 1;
+                    editor.putInt("click_shelf", clicks_shelf);
+                    editor.commit();
+
+
+
+                }else {
+
+                                    displayFragment(3);
+
+                }
                 break;
 
 
@@ -203,6 +164,8 @@ public class MainActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        preferences = getSharedPreferences(Constants.SHARED_PREFS_CLICK,MODE_PRIVATE);
+        editor = preferences.edit();
 
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -246,12 +209,11 @@ public class MainActivity extends DaggerAppCompatActivity {
 
 
 
-
-
                     fragment = fragments.get(position);
                     if(fragment.isAdded()){
 
                         transaction.show(fragment);
+
 
                     }else {
                         transaction.add(R.id.container,fragment);
@@ -320,6 +282,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
                     transaction.show(fragment);
 
+
                 }else {
                     transaction.add(R.id.container,fragment);
                 }
@@ -333,7 +296,7 @@ public class MainActivity extends DaggerAppCompatActivity {
                 if(fragments.get(2).isAdded()){
                     transaction.hide(fragments.get(2));
                 }
-transaction.commit();
+                    transaction.commit();
 
                 break;
         }
@@ -342,4 +305,11 @@ transaction.commit();
 
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        editor.clear();
+        editor.commit();
+    }
 }

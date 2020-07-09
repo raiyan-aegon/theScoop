@@ -22,5 +22,10 @@ class ScoopRepository(private val articleDao: ArticleDao){
         articleDao.insertArticle(article)
     }
 
+    fun deleteArticle(article: Article){
+
+        articleDao.deleteArticle(article)
+    }
+
 
 }

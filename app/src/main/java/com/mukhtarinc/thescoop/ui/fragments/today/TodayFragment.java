@@ -1,9 +1,13 @@
 package com.mukhtarinc.thescoop.ui.fragments.today;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +15,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentTodayBinding;
@@ -28,6 +35,7 @@ import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.TodayListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -39,8 +47,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 
+
+
 public class TodayFragment extends DaggerFragment implements OverflowClickListener, ArticleItemClickListener {
 
+    private final String BUNDLE_RECYCLER_LAYOUT = "TodayFragment.recycler.layout";
     private static final String TAG = "TodayFragment";
 
     private TodayViewModel viewModel;
@@ -57,8 +68,15 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     @Inject
     TodayListAdapter todayListAdapter;
 
+    SharedPreferences preferences;
+
+    SharedPreferences.Editor editor;
+
+    int lastPosition;
+
     private  OverflowClickListener overflowClickListener;
     private ArticleItemClickListener articleItemClickListener;
+
 
 
     public TodayFragment() {
@@ -71,10 +89,14 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     }
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_today,container,false);
+
+       preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("RECYCLER_POSITION", Context.MODE_PRIVATE);
+
 
 
 
@@ -82,6 +104,25 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
        overflowClickListener = this;
        articleItemClickListener = this;
         return binding.getRoot();
+    }
+
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        Log.d(TAG, "onAttachFragment");
+    }
+
+    @Override
+    public void onPrimaryNavigationFragmentChanged(boolean isPrimaryNavigationFragment) {
+        super.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment);
+        Log.d(TAG, "onPrimaryNavigationFragmentChanged");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG, "onAttach: ");
     }
 
     @Override
@@ -104,7 +145,12 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+
+
+
         viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(TodayViewModel.class);
+
+
 
     }
 
@@ -121,6 +167,28 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
         binding.todayList.setLayoutManager(layoutManager);
         binding.todayList.hasFixedSize();
+
+//
+//        lastPosition = preferences.getInt("last_post",0);
+//
+//        if(lastPosition!=0){
+//
+//            binding.shimmerLayout.setVisibility(View.GONE);
+//            binding.todayList.scrollToPosition(lastPosition);
+//        }
+//
+//
+//
+//
+//
+//        binding.todayList.setOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                lastPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
+//            }
+//        });
+//
 
 
 
@@ -191,6 +259,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
                             todayListAdapter.setOverflowClickListener(overflowClickListener);
                             todayListAdapter.setArticleItemClickListener(articleItemClickListener);
                             todayListAdapter.setData(todayResponseNetworkResource.data.getArticles());
+                            todayListAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
                             binding.todayList.setAdapter(todayListAdapter);
 
                             binding.shimmerLayout.setVisibility(View.GONE);
@@ -249,4 +318,24 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     }
 
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+
+        editor = preferences.edit();
+
+        editor.putInt("last_post",lastPosition);
+
+        editor.apply();
+
+
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        editor.clear();
+    }
 }

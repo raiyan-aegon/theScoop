@@ -17,7 +17,7 @@ public interface NewsAPIService {
 
 
     @GET("top-headlines")
-    Observable<TodayResponse> getTodayArticles(@Query("country") String country,
+    Observable<TodayResponse> getTodayArticles(@Query("country") String country,@Query("language") String language,
                                                @Query("apiKey") String apiKey);
 
     @GET("sources")
@@ -25,6 +25,12 @@ public interface NewsAPIService {
 
 
     @GET("top-headlines")
-    Observable<TodayResponse> getForYouArticles(@Query("sources") String source_id, @Query("apiKey") String apiKey);
+    Observable<TodayResponse> getForYouArticles(@Query("sources") String source_id,@Query("language") String language, @Query("apiKey") String apiKey);
+
+
+    @GET("top-headlines")
+    Observable<TodayResponse> getCategoryArticles(@Query("category") String category_name,@Query("language") String language, @Query("apiKey") String apiKey);
+
+
 
 }

@@ -41,7 +41,7 @@ public class ForYouViewModel extends ViewModel {
         MutableLiveData<NetworkResource<TodayResponse>> articles = new MutableLiveData<>();
 
         articles.setValue(NetworkResource.loading(null));
-        api.getForYouArticles(source_id,apiKey)
+        api.getForYouArticles(source_id,"en",apiKey)
                 .onErrorReturn(new Function<Throwable, TodayResponse>() {
                     @Override
                     public TodayResponse apply(Throwable throwable) throws Exception {

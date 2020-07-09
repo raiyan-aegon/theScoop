@@ -45,11 +45,7 @@ public class ShelfListAdapter (requestManager: RequestManager) : RecyclerView.Ad
 
     }
 
-    fun getArticles() : List<Article>{
 
-
-        return todayResponses
-    }
 
 
     fun setArticleClickListener(articleItemClickListener: ArticleItemClickListener){
@@ -104,6 +100,7 @@ public class ShelfListAdapter (requestManager: RequestManager) : RecyclerView.Ad
 
 
     }
+
 
 
     class ShelfViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
