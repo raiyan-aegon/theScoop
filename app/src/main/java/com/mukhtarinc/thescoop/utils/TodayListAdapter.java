@@ -32,6 +32,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     RequestManager requestManager;
     int for_you;
+    String search;
     Category category;
     Source source;
 
@@ -67,6 +68,10 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void setCategory(Category category){
 
        this.category = category;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public void setSource(Source source){
@@ -123,8 +128,14 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                        topHeadlineBinding.todayText.setText("Top "+category.getCat_name().toLowerCase()+" stories");
                    }
 
+//                   if(search.length()>0){
+//
+//                       topHeadlineBinding.todayText.setText(search);
+//                   }
+
                    if(source!=null){
                        topHeadlineBinding.todayText.setVisibility(View.GONE);
+                       topHeadlineBinding.forYouText.setVisibility(View.GONE);
                    }
 
                    if (for_you == 1) {

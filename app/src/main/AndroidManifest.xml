@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/theScoopTheme">
-        <activity android:name=".ui.activities.CategoryActivity"/>
-        <activity android:name=".ui.activities.SourceArticleActivity"/>
+        <activity android:name=".ui.activities.SearchActivity"></activity>
+        <activity android:name=".ui.activities.CategoryActivity" />
+        <activity android:name=".ui.activities.SourceArticleActivity" />
         <activity android:name=".ui.activities.ArticleViewActivity" />
         <activity android:name=".ui.activities.ScoopSplashActivity">
             <intent-filter>

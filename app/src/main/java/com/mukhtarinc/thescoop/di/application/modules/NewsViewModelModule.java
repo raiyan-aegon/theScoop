@@ -3,6 +3,7 @@ package com.mukhtarinc.thescoop.di.application.modules;
 import androidx.lifecycle.ViewModel;
 
 import com.mukhtarinc.thescoop.di.application.scopes.ViewModelKey;
+import com.mukhtarinc.thescoop.ui.activities.SearchViewModel;
 import com.mukhtarinc.thescoop.ui.fragments.following.CategoryViewModel;
 import com.mukhtarinc.thescoop.ui.fragments.following.FollowingViewModel;
 import com.mukhtarinc.thescoop.ui.fragments.following.SourceViewModel;
@@ -56,6 +57,11 @@ public abstract class NewsViewModelModule {
     @ViewModelKey(SourceViewModel.class)
     abstract ViewModel bindSourceViewModel(SourceViewModel viewModel);
 
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel.class)
+    abstract ViewModel bindSearchViewModel(SearchViewModel viewModel);
 
 
 

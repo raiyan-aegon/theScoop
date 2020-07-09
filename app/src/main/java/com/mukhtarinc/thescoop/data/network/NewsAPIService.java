@@ -35,5 +35,7 @@ public interface NewsAPIService {
     @GET("everything")
     Observable<TodayResponse> getSourceArticles(@Query("sources") String source_id,@Query("apiKey") String apiKey);
 
+    @GET("everything")
+    Observable<TodayResponse> getSearchArticles(@Query("q") String query,@Query("sortBy") String sortBy,@Query("apiKey") String apiKey);
 
 }

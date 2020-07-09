@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@color/colorBackground"
+        android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        app:elevation="0dp"
+        tools:targetApi="lollipop">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorBackground"
+            android:elevation="0dp"
+            android:id="@+id/toolbar"
+            tools:targetApi="lollipop">
+
+            <ImageView
+                android:id="@+id/back_search"
+                android:src="@drawable/ic_arrow_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+               <androidx.appcompat.widget.SearchView
+                   app:iconifiedByDefault="false"
+                   android:focusable="true"
+                   android:layout_marginEnd="16dp"
+                   android:id="@+id/search_articles"
+                   android:layout_width="match_parent"
+                   app:closeIcon="@drawable/ic_baseline_cancel_24"
+                   android:layout_height="wrap_content"
+                   android:layout_marginRight="16dp" />
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:id="@+id/articles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <include layout="@layout/no_connection"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:id="@+id/noConnection"
+            android:visibility="gone"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

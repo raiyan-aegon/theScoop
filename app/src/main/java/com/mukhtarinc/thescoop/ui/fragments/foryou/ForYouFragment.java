@@ -23,6 +23,7 @@ import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentForYouBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
 import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
@@ -105,6 +106,12 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_for_you,container,false);
 
+        binding.toolbar.setNavigationOnClickListener(view -> {
+
+            Intent intent = new Intent(getActivity(), SearchActivity.class);
+            Objects.requireNonNull(getActivity()).startActivity(intent);
+
+        });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 

@@ -4,8 +4,11 @@ import com.mukhtarinc.thescoop.di.main.FragmentsBuilderModule;
 import com.mukhtarinc.thescoop.ui.activities.CategoryActivity;
 import com.mukhtarinc.thescoop.ui.activities.MainActivity;
 import com.mukhtarinc.thescoop.ui.activities.MoreSourcesActivity;
+import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.ui.activities.SourceArticleActivity;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
+
+import javax.inject.Inject;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -33,4 +36,7 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract SourceArticleActivity injectSourceArticleActivity();
+
+    @ContributesAndroidInjector
+    abstract SearchActivity injectSearchActivity();
 }
