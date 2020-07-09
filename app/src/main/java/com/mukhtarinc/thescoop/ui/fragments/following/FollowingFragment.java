@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -246,7 +247,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     @Override
     public void AddClicked(SourceItemBinding bindings, int position, Source source) {
 
-        Constants.showSnackBar(getActivity(),"You're following "+source.getName(),true);
+        Constants.showSnackBar(Objects.requireNonNull(getActivity()),"You're following "+source.getName(),true,source);
 
 
         editor.putString("sourceName "+position,source.getSource_id());
@@ -261,7 +262,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void CheckClicked(SourceItemBinding bindings, int position, Source source) {
-        Constants.showSnackBar(getActivity(),"You stopped following " + source.getName(),false);
+        Constants.showSnackBar(getActivity(),"You stopped following " + source.getName(),false,source);
 
         editor.remove("sourceName "+position);
         editor.commit();

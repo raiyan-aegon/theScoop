@@ -2,6 +2,7 @@ package com.mukhtarinc.thescoop.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,8 @@ import androidx.annotation.RequiresApi;
 import com.google.android.material.snackbar.Snackbar;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.model.Category;
+import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.SourceArticleActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,14 +59,17 @@ public class Constants {
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static void showSnackBar(Activity activity, String message, Boolean action){
+    public static void showSnackBar(Activity activity, String message, Boolean action, Source source){
         View rootView  = activity.getWindow().getDecorView().findViewById(R.id.parent_container);
        if(action){
 
            Snackbar.make(rootView,message,Snackbar.LENGTH_LONG)
                    .setActionTextColor(activity.getColor(R.color.colorAccent))
                    .setAction("Read Now", view ->{
-                       Toast.makeText(activity, "Read Now", Toast.LENGTH_SHORT).show();
+                       Intent intent = new Intent(activity, SourceArticleActivity.class);
+                       intent.putExtra("source",source);
+                      activity.startActivity(intent);
+
                    })
                    .show();
        }else {

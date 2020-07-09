@@ -98,7 +98,10 @@ public class MoreSourcesActivity extends DaggerAppCompatActivity implements AddC
         Snackbar.make(bindings.getRoot(),"You're following "+source.getName(),Snackbar.LENGTH_LONG)
                 .setActionTextColor(getColor(R.color.colorAccent))
                 .setAction("Read Now", view ->{
-                    Toast.makeText(this, "Read Now", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this,SourceArticleActivity.class);
+                    intent.putExtra("source",source);
+                    startActivity(intent);
+
                 })
                 .show();
 
@@ -116,12 +119,7 @@ public class MoreSourcesActivity extends DaggerAppCompatActivity implements AddC
     public void CheckClicked(SourceItemBinding bindings, int position, Source source) {
        // Constants.showSnackBar(bin,"You stopped following " + source.getName(),false);
 
-        Snackbar.make(bindings.getRoot(),"You stopped following " + source.getName(),Snackbar.LENGTH_LONG)
-                .setActionTextColor(getColor(R.color.colorAccent))
-                .setAction("Read Now", view ->{
-                    Toast.makeText(this, "Read Now", Toast.LENGTH_SHORT).show();
-                })
-                .show();
+        Snackbar.make(bindings.getRoot(),"You stopped following " + source.getName(),Snackbar.LENGTH_LONG).show();
 
         editor.remove("sourceName "+position);
         editor.commit();
