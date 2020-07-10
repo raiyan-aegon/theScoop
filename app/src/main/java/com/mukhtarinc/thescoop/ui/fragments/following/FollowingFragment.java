@@ -27,6 +27,7 @@ import com.mukhtarinc.thescoop.model.Category;
 import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.activities.CategoryActivity;
 import com.mukhtarinc.thescoop.ui.activities.MoreSourcesActivity;
+import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.utils.CategoryClickListener;
 import com.mukhtarinc.thescoop.utils.CategoryListAdapter;
 import com.mukhtarinc.thescoop.utils.AddClickListener;
@@ -114,6 +115,14 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
         Log.d(TAG, "onCreateView: ");
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_following, container, false);
+
+        binding.toolbar.setNavigationOnClickListener(view -> {
+
+            Intent intent = new Intent(getActivity(), SearchActivity.class);
+            Objects.requireNonNull(getActivity()).startActivity(intent);
+
+        });
+
 
         binding.noConnection.findViewById(R.id.retry).setOnClickListener(view1 -> {
             binding.noConnection.setVisibility(View.GONE);

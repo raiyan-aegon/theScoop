@@ -27,6 +27,7 @@ import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentTodayBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
 import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
@@ -94,6 +95,13 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_today,container,false);
+
+        binding.toolbar.setNavigationOnClickListener(view -> {
+
+            Intent intent = new Intent(getActivity(), SearchActivity.class);
+            Objects.requireNonNull(getActivity()).startActivity(intent);
+
+        });
 
        preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("RECYCLER_POSITION", Context.MODE_PRIVATE);
 
