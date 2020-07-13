@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "376950004577",
+    "firebase_url": "https://the-scoop-ea078.firebaseio.com",
+    "project_id": "the-scoop-ea078",
+    "storage_bucket": "the-scoop-ea078.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376950004577:android:41dfbf787af40880940320",
+        "android_client_info": {
+          "package_name": "com.mukhtarinc.thescoop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376950004577-83e3fbqek50ededa111opijdd879ur48.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYzcbx3wlDMAbjVcanxbZ-ElDkpMBxyLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376950004577-83e3fbqek50ededa111opijdd879ur48.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

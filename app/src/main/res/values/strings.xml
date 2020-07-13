@@ -27,4 +27,15 @@
     <string name="path_data_check">"M9,16.17L4.83,12l-1.42,1.41L9,19 21,7l-1.41,-1.41z"</string>
     <string name="some">some time ago</string>
     <string name="remove">Remove from Shelf</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="hint">Enter email...</string>
+    <string name="sign_in">Sign In</string>
 </resources>

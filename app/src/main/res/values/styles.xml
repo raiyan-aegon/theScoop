@@ -3,13 +3,14 @@
     <!-- Base application theme. -->
     <style name="theScoopTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@color/statusColor</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="fontFamily">@font/worksans_regular</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeScoopAppear</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
@@ -21,6 +22,16 @@
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">#ffff</item>
+    </style>
+
+
+
+    <style name="ShapeScoopAppear" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+
+
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">4dp</item>
+
     </style>
 
 

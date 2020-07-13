@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "196642293038",
+    "firebase_url": "https://thescoop-6bf35.firebaseio.com",
+    "project_id": "thescoop-6bf35",
+    "storage_bucket": "thescoop-6bf35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196642293038:android:828565761a79b25a3ca6bf",
+        "android_client_info": {
+          "package_name": "com.mukhtarinc.thescoop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196642293038-k0b3rivjpqlu6e5vd3u9b50s1e0iu6i9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mukhtarinc.thescoop",
+            "certificate_hash": "3545bff8a873858ba03e775833780d72b133ec63"
+          }
+        },
+        {
+          "client_id": "196642293038-76lf22mj92ri8q18pbqgboqp7g1kl0mp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARpccwbckZAQOxBx6322dnJB5lwlzQBs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196642293038-76lf22mj92ri8q18pbqgboqp7g1kl0mp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

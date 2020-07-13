@@ -2,13 +2,17 @@ package com.mukhtarinc.thescoop.ui.activities;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.ActivityMainBinding;
 import com.mukhtarinc.thescoop.ui.fragments.following.FollowingFragment;
@@ -18,6 +22,7 @@ import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
 import com.mukhtarinc.thescoop.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import dagger.android.support.DaggerAppCompatActivity;
@@ -31,10 +36,14 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     ActivityMainBinding binding ;
 
-   private TodayFragment todayFragment;
-   private ForYouFragment forYouFragment;
-   private FollowingFragment followingFragment;
-   private  ShelfFragment shelfFragment;
+   private final TodayFragment todayFragment = new TodayFragment();
+   private final ForYouFragment forYouFragment = new ForYouFragment();
+   private final FollowingFragment followingFragment = new FollowingFragment();
+   private  final ShelfFragment shelfFragment = new ShelfFragment();
+
+   final FragmentManager fm = getSupportFragmentManager();
+
+   Fragment active = forYouFragment;
 
     SharedPreferences.Editor editor;
     SharedPreferences preferences;
@@ -42,38 +51,44 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    private FirebaseAuth auth;
+
     private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = item -> {
 
         switch (item.getItemId()){
 
             case R.id.foryou:
-                int clicks =preferences.getInt("click_for_you",0); ;
-
-                if(clicks==0){
+//                int clicks =preferences.getInt("click_for_you",0); ;
 //
+//                if(clicks==0){
+////
+//
+//
+//                    Fragment forYouFragment  = new ForYouFragment();
+//
+//                    openFragment(forYouFragment);
+//
+//                    clicks =1;
+//                    editor.putInt("click_for_you",clicks);
+//                    editor.commit();
+//
+//                    Log.d(TAG, "CLICKS FOR YOU OPEN FRAGMENT");
+//
+//
+//
+//                }else {
+//
+//
+//                    Log.d(TAG, "CLICKS FOR YOU DISPLAY FRAGMENT");
+//
+//                    displayFragment(0);
+//
+//
+//                }
 
 
-                    Fragment forYouFragment  = new ForYouFragment();
-
-                    openFragment(forYouFragment);
-
-                    clicks =1;
-                    editor.putInt("click_for_you",clicks);
-                    editor.commit();
-
-                    Log.d(TAG, "CLICKS FOR YOU OPEN FRAGMENT");
-
-
-
-                }else {
-
-
-                    Log.d(TAG, "CLICKS FOR YOU DISPLAY FRAGMENT");
-
-                    displayFragment(0);
-
-
-                }
+                fm.beginTransaction().hide(active).show(forYouFragment).commit();
+                active = forYouFragment;
 
 
 
@@ -82,25 +97,28 @@ public class MainActivity extends DaggerAppCompatActivity {
 //                    Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
 
 
-                int clicks_today =preferences.getInt("click_today",0);
+//                int clicks_today =preferences.getInt("click_today",0);
+//
+//                if(clicks_today==0) {
+//
+//
+//                    Fragment fragmentToday = new TodayFragment();
+//                    openFragment(fragmentToday);
+//
+//                    clicks_today = 1;
+//                    editor.putInt("click_today", clicks_today);
+//                    editor.commit();
+//
+//
+//
+//                }else {
+//
+//                                    displayFragment(1);
+//
+//                }
 
-                if(clicks_today==0) {
-
-
-                    Fragment fragmentToday = new TodayFragment();
-                    openFragment(fragmentToday);
-
-                    clicks_today = 1;
-                    editor.putInt("click_today", clicks_today);
-                    editor.commit();
-
-
-
-                }else {
-
-                                    displayFragment(1);
-
-                }
+                fm.beginTransaction().hide(active).show(todayFragment).commit();
+                active = todayFragment;
 
 
 
@@ -109,46 +127,62 @@ public class MainActivity extends DaggerAppCompatActivity {
                 break;
             case R.id.follow:
 //                    Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();
-                int clicks_follow =preferences.getInt("click_follow",0);
+//                int clicks_follow =preferences.getInt("click_follow",0);
+//
+//                if(clicks_follow==0) {
+//                    Fragment fragmentFollow = new FollowingFragment();
+//                    openFragment(fragmentFollow);
+//                    clicks_follow = 1;
+//                    editor.putInt("click_follow", clicks_follow);
+//                    editor.commit();
+//
+//
+//
+//
+//
+//                }else {
+//                                    displayFragment(2);
+//
+//
+//                }
 
-                if(clicks_follow==0) {
-                    Fragment fragmentFollow = new FollowingFragment();
-                    openFragment(fragmentFollow);
-                    clicks_follow = 1;
-                    editor.putInt("click_follow", clicks_follow);
-                    editor.commit();
+                fm.beginTransaction().hide(active).show(followingFragment).commit();
+                active = followingFragment;
 
 
 
 
 
-                }else {
-                                    displayFragment(2);
-
-
-                }
                 break;
             case R.id.shelf:
 
-                int clicks_shelf =preferences.getInt("click_shelf",0);
+//                int clicks_shelf =preferences.getInt("click_shelf",0);
+//
+//                if(clicks_shelf==0) {
+//                    Fragment fragmentShelf = new ShelfFragment();
+//
+//                    openFragment(fragmentShelf);
+//
+//
+//                    clicks_shelf = 1;
+//                    editor.putInt("click_shelf", clicks_shelf);
+//                    editor.commit();
+//
+//
+//
+//                }else {
+//
+//                                    displayFragment(3);
+//
+//                }
 
-                if(clicks_shelf==0) {
-                    Fragment fragmentShelf = new ShelfFragment();
 
-                    openFragment(fragmentShelf);
-
-
-                    clicks_shelf = 1;
-                    editor.putInt("click_shelf", clicks_shelf);
-                    editor.commit();
+                fm.beginTransaction().hide(active).show(shelfFragment).commit();
+                active = shelfFragment;
 
 
 
-                }else {
 
-                                    displayFragment(3);
-
-                }
                 break;
 
 
@@ -164,29 +198,38 @@ public class MainActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+
+        auth = FirebaseAuth.getInstance();
+
         preferences = getSharedPreferences(Constants.SHARED_PREFS_CLICK,MODE_PRIVATE);
         editor = preferences.edit();
+
+        fm.beginTransaction().add(R.id.container,shelfFragment,"4").hide(shelfFragment).commit();
+        fm.beginTransaction().add(R.id.container,followingFragment,"3").hide(followingFragment).commit();
+        fm.beginTransaction().add(R.id.container,todayFragment,"2").hide(todayFragment).commit();
+        fm.beginTransaction().add(R.id.container,forYouFragment,"1").commit();
 
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
-        if(savedInstanceState == null){
-            forYouFragment = ForYouFragment.newInstance("","");
-            todayFragment = TodayFragment.newInstance();
-            followingFragment = FollowingFragment.newInstance();
-            shelfFragment = ShelfFragment.newInstance();
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.container,forYouFragment)
-                    .addToBackStack(null)
-                    .commit();
-
-
-        }
-        fragments.add(forYouFragment);
-        fragments.add(todayFragment);
-        fragments.add(followingFragment);
-        fragments.add(shelfFragment);
+//        if(savedInstanceState == null){
+//            forYouFragment = ForYouFragment.newInstance("","");
+//            todayFragment = TodayFragment.newInstance();
+//            followingFragment = FollowingFragment.newInstance();
+//            shelfFragment = ShelfFragment.newInstance();
+//
+//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//            transaction.add(R.id.container,forYouFragment)
+//                    .addToBackStack(null)
+//                    .commit();
+//
+//
+//        }
+//        fragments.add(forYouFragment);
+//        fragments.add(todayFragment);
+//        fragments.add(followingFragment);
+//        fragments.add(shelfFragment);
 
     }
 
@@ -305,6 +348,15 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (auth.getCurrentUser()==null){
+            Toast.makeText(this,auth.getCurrentUser().getDisplayName()+"",Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this,LoginScreenActivity.class);
+            startActivity(intent);
+        }
+    }
 
     @Override
     protected void onStop() {

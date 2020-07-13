@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
+import com.google.firebase.auth.FirebaseAuth
 import com.mukhtarinc.thescoop.R
 import com.mukhtarinc.thescoop.databinding.SplashScreenBinding
 import io.reactivex.Observable
@@ -17,6 +18,7 @@ lateinit var binding : SplashScreenBinding
 
 
 class ScoopSplashActivity : AppCompatActivity() {
+    private lateinit var auth : FirebaseAuth
 
     private val compositeDisposable: CompositeDisposable =  CompositeDisposable()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,8 @@ class ScoopSplashActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.splash_screen)
 
 
+        auth = FirebaseAuth.getInstance()
+
 
         startMainActivity()
 
@@ -41,9 +45,18 @@ class ScoopSplashActivity : AppCompatActivity() {
         compositeDisposable.add(Observable.timer(2, TimeUnit.SECONDS)
                 .subscribe {
 
-                    val intent = Intent(this,MainActivity::class.java)
 
-                    startActivity(intent)
+                    if(auth.currentUser==null){
+                        val intent = Intent(this,LoginScreenActivity::class.java)
+
+                        startActivity(intent)
+                    }else{
+                        val intent = Intent(this,MainActivity::class.java)
+
+                        startActivity(intent)
+
+                    }
+
 
                 }
         )
@@ -55,5 +68,8 @@ class ScoopSplashActivity : AppCompatActivity() {
         super.onStop()
         compositeDisposable.dispose()
     }
+
+
+
 
 }

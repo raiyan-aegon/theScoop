@@ -28,13 +28,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/headline_720"
             android:layout_height="wrap_content">
 
 
         <ImageView
             android:id="@+id/large_image_article"
-            android:layout_width="@dimen/top_headline_image_dimens"
+            android:layout_width="wrap_content"
             android:scaleType="centerCrop"
             android:layout_height="208dp"
             android:src="@drawable/image_placeholder"
@@ -45,7 +45,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/top_card"
-            android:layout_width="@dimen/top_headline_image_dimens"
+            android:layout_width="@dimen/headline_720"
             android:layout_height="117dp"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"

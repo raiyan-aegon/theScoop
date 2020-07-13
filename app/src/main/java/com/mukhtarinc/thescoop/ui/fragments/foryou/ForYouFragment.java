@@ -18,11 +18,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentForYouBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.LoginScreenActivity;
 import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
@@ -77,6 +81,8 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
     SharedPreferences preferences;
 
+    private FirebaseAuth auth;
+
     public ForYouFragment() {
         // Required empty public constructor
     }
@@ -96,6 +102,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         preferences = getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
+        auth = FirebaseAuth.getInstance();
 
 
     }
@@ -112,6 +119,10 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
             Objects.requireNonNull(getActivity()).startActivity(intent);
 
         });
+
+        Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).fitCenter().into(binding.profImage);
+
+        Toast.makeText(getContext(),auth.getCurrentUser().getEmail(),Toast.LENGTH_SHORT).show();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
@@ -216,7 +227,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
 
         viewModel.getTodayForYouArticles(source_ids,Constants.apiKey)
-                    .observe(this, todayResponseNetworkResource -> {
+                    .observe(Objects.requireNonNull(getActivity()), todayResponseNetworkResource -> {
                         if(todayResponseNetworkResource !=null){
 
 
@@ -235,6 +246,12 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
                                     if(todayResponseNetworkResource.data!=null) {
 
 
+
+
+                                        if(auth.getCurrentUser()!=null){
+
+                                            todayListAdapter.setUser(true,auth);
+                                        }
 
 
                                         todayListAdapter.setOverflowClickListener(overflowClickListener);

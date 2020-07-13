@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.RequestManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.TodayArticleItemBinding;
 import com.mukhtarinc.thescoop.databinding.TopHeadlineBinding;
@@ -36,6 +37,10 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     Category category;
     Source source;
 
+    boolean isUser =false;
+
+    FirebaseAuth auth;
+
      OverflowClickListener overflowClickListener;
      ArticleItemClickListener articleItemClickListener;
 
@@ -45,6 +50,10 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
+    public void setUser(boolean user,FirebaseAuth auth) {
+        isUser = user;
+        this.auth = auth;
+    }
 
     @NonNull
     @Override
@@ -112,6 +121,7 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
                if (topHeadlineBinding != null) {
+
                    topHeadlineBinding.setArticle(article);
                    requestManager.load(article.getUrlToImage()).placeholder(R.drawable.image_placeholder).centerCrop().into(topHeadlineBinding.largeImageArticle);
 
@@ -139,6 +149,13 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                    }
 
                    if (for_you == 1) {
+                       if(isUser=true){
+
+                           if(auth.getCurrentUser()!=null)
+
+                               topHeadlineBinding.forYouText.setText("Hello "+auth.getCurrentUser().getDisplayName());
+                           topHeadlineBinding.todayText.setVisibility(View.GONE);
+                       }
                        Log.d(TAG, "For you "+for_you);
                        if (topHeadlineBinding.todayText != null && topHeadlineBinding.forYouText != null) {
                            topHeadlineBinding.todayText.setVisibility(View.GONE);

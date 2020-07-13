@@ -15,6 +15,9 @@
     <dimen name="category_card">191dp</dimen>
     <dimen name="category_card_height">132dp</dimen>
     <dimen name="shimmer_title">280dp</dimen>
-
+    <dimen name="headline_720">400dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
 </resources>

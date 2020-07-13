@@ -62,10 +62,10 @@ public class TheScoopDateUtils {
             friendly = seconds+"second";
         }
 
-//        if(num>1){
-//            friendly +="s";
-//
-//        }
+        if(num>1){
+            friendly +="s";
+
+        }
 
 
        // return friendly+" ago";
