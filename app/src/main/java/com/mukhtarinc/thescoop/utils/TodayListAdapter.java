@@ -151,7 +151,8 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                    if (for_you == 1) {
                        if(isUser=true){
 
-                           if(auth.getCurrentUser()!=null)
+
+                           if(auth!=null)
 
                                topHeadlineBinding.forYouText.setText("Hello "+auth.getCurrentUser().getDisplayName());
                            topHeadlineBinding.todayText.setVisibility(View.GONE);

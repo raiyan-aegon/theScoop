@@ -20,6 +20,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentFollowingBinding;
 import com.mukhtarinc.thescoop.databinding.SourceItemBinding;
@@ -81,6 +84,8 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
     View v;
 
+    FirebaseAuth auth;
+
 
     public FollowingFragment() {
     }
@@ -106,6 +111,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
         categoryClickListener = this;
 
+        auth = FirebaseAuth.getInstance();
 
     }
 
@@ -123,6 +129,32 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
         });
 
+
+        binding.profImage.setOnClickListener(view -> {
+
+            String[] items = new String[] {Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(),"Log out"};
+
+
+            new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                    .setTitle("Profile")
+                    .setItems(items,(dialogInterface, i) -> {
+
+                        if(i==1){
+
+                            auth.signOut();
+
+                        }
+
+                    })
+                    .show();
+
+
+
+        });
+        if(auth.getCurrentUser()!=null) {
+
+            Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
+        }
 
         binding.noConnection.findViewById(R.id.retry).setOnClickListener(view1 -> {
             binding.noConnection.setVisibility(View.GONE);

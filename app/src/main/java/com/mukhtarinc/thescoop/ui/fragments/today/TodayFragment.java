@@ -17,12 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentTodayBinding;
 import com.mukhtarinc.thescoop.model.Article;
@@ -73,6 +76,8 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
     SharedPreferences.Editor editor;
 
+    FirebaseAuth auth;
+
     int lastPosition;
 
     private  OverflowClickListener overflowClickListener;
@@ -91,6 +96,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -105,9 +111,32 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
        preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("RECYCLER_POSITION", Context.MODE_PRIVATE);
 
+        binding.profImage.setOnClickListener(view -> {
+
+            String[] items = new String[] {Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(),"Log out"};
+
+
+            new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                    .setTitle("Profile")
+                    .setItems(items,(dialogInterface, i) -> {
+
+                        if(i==1){
+
+                            auth.signOut();
+
+                        }
+
+                    })
+                    .show();
 
 
 
+        });
+
+        if(auth.getCurrentUser()!=null) {
+
+            Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
+        }
 
        overflowClickListener = this;
        articleItemClickListener = this;
@@ -158,6 +187,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
         viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(TodayViewModel.class);
 
+        auth = FirebaseAuth.getInstance();
 
 
     }
@@ -239,12 +269,13 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
 
 
+
     void pullArticles(){
 
 
 
         viewModel.getTodayArticles("us",Constants.apiKey)
-                .observe(this, todayResponseNetworkResource -> {
+                .observe(getActivity(), todayResponseNetworkResource -> {
             if(todayResponseNetworkResource !=null){
 
 

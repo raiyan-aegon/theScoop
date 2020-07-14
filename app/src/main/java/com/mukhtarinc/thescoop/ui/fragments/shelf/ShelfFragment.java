@@ -17,6 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
 import com.mukhtarinc.thescoop.model.Article;
@@ -59,6 +62,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
     private static final String TAG = "ShelfFragment";
 
+    FirebaseAuth auth;
 
     //TODO: DONT FORGET THE SHELF TEXT
 
@@ -79,6 +83,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
         Log.d(TAG, "onCreate");
 
+        auth = FirebaseAuth.getInstance();
     }
 
 
@@ -96,6 +101,32 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
         });
 
+        binding.profImage.setOnClickListener(view -> {
+
+            String[] items = new String[] {Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(),"Log out"};
+
+
+            new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                    .setTitle("Profile")
+                    .setItems(items,(dialogInterface, i) -> {
+
+                        if(i==1){
+
+                            auth.signOut();
+
+                        }
+
+                    })
+                    .show();
+
+
+
+        });
+
+        if(auth.getCurrentUser()!=null) {
+
+            Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
         binding.shelfArticles.setLayoutManager(linearLayoutManager);
@@ -134,7 +165,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
     public void getArticles(){
         
-        viewModel.getArticles.observe(this, articles -> {
+        viewModel.getArticles.observe(getActivity(), articles -> {
             
 
                 shelfListAdapter.setData(articles);

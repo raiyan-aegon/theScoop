@@ -348,15 +348,6 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (auth.getCurrentUser()==null){
-            Toast.makeText(this,auth.getCurrentUser().getDisplayName()+"",Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this,LoginScreenActivity.class);
-            startActivity(intent);
-        }
-    }
 
     @Override
     protected void onStop() {

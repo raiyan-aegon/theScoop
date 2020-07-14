@@ -14,12 +14,15 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.BottomSheetBinding;
 import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
 import com.mukhtarinc.thescoop.di.DaggerBottomSheetDialogFragment;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.LoginScreenActivity;
 import com.mukhtarinc.thescoop.ui.activities.SourceArticleActivity;
 import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfViewModel;
 import com.mukhtarinc.thescoop.utils.ShelfListAdapter;
@@ -51,6 +54,9 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
     String myShelf;
 
 
+    FirebaseAuth auth;
+
+
     public BottomSheetFragment(){
 
 
@@ -73,6 +79,7 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
         viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(ShelfViewModel.class);
 
+        auth = FirebaseAuth.getInstance();
     }
 
     @Nullable
@@ -120,18 +127,37 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
                 viewModel.deleteArticle(article);
 
-                getArticles();
 
                 Toast.makeText(getActivity(),"Removed from Shelf",Toast.LENGTH_SHORT).show();
 
 
             }else {
 
+                if(auth.getCurrentUser()!=null){
 
-                article.setSourceName(source.getName());
-                viewModel.insert(article);
-                Toast.makeText(getActivity(), "Added to Shelf", Toast.LENGTH_SHORT).show();
-                getArticles();
+                    article.setSourceName(source.getName());
+                    viewModel.insert(article);
+                    Toast.makeText(getActivity(), "Added to Shelf", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    View rootView  = getActivity().getWindow().getDecorView().findViewById(R.id.parent_container);
+
+                    if(rootView==null){
+
+                        Log.d(TAG, "onViewCreated: Root NULL");
+                    }
+
+                    Snackbar.make(rootView,"No offline access",Snackbar.LENGTH_LONG)
+                            .setAction("Sign In" , view2 -> {
+
+                                Intent intent = new Intent(view2.getContext(), LoginScreenActivity.class);
+                                view2.getContext().startActivity(intent);
+
+                            }).setActionTextColor(getActivity().getResources().getColor(R.color.colorAccent))
+                            .show();
+                }
+
+
             }
             dismiss();
         });
@@ -154,27 +180,5 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
 
 
-    public void getArticles(){
 
-        Log.d(TAG, "getArticles");
-        viewModel.getArticles.observe(this, articles -> {
-
-
-            shelfListAdapter.setData(articles);
-            View rootView  = Objects.requireNonNull(getActivity()).getWindow().getDecorView().findViewById(R.id.parent_container);
-            LayoutInflater inflater = getLayoutInflater();
-
-
-            FragmentShelfBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_shelf, (ViewGroup) rootView.getParent(),false);
-
-            if (binding.shelfArticles!=null) {
-                binding.shelfArticles.setAdapter(shelfListAdapter);
-            }else {
-                Log.d(TAG, "Binding is null");
-            }
-
-        });
-
-
-    }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,7 +22,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentForYouBinding;
 import com.mukhtarinc.thescoop.model.Article;
@@ -38,6 +41,8 @@ import com.mukhtarinc.thescoop.utils.Constants;
 import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.TodayListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +113,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_for_you,container,false);
@@ -120,10 +125,54 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
         });
 
-        Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).fitCenter().into(binding.profImage);
 
-        Toast.makeText(getContext(),auth.getCurrentUser().getEmail(),Toast.LENGTH_SHORT).show();
+        binding.profImage.setOnClickListener(view -> {
 
+            if(auth.getCurrentUser()!=null) {
+
+                String[] items = new String[]{Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(), "Log out"};
+
+
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                        .setTitle("Profile")
+                        .setItems(items, (dialogInterface, i) -> {
+
+                            if (i == 1) {
+
+                                auth.signOut();
+                            }
+
+                        })
+                        .show();
+
+            }else {
+                String[] items = new String[]{ "Sign In"};
+
+
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                        .setTitle("Profile")
+                        .setItems(items, (dialogInterface, i) -> {
+
+                            if (i == 0) {
+
+                                Intent intent = new Intent(getActivity(),LoginScreenActivity.class);
+                                startActivity(intent);
+                            }
+
+                        })
+                        .show();
+
+
+            }
+
+        });
+
+        if(auth.getCurrentUser()!=null) {
+
+            Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
+
+            Toast.makeText(getContext(), auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
         binding.todayList.setLayoutManager(layoutManager);
@@ -292,6 +341,12 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         bundle.putParcelable("source",article.getGetSource());
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 
     @Override

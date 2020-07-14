@@ -9,6 +9,28 @@
         android:background="@color/colorPrimaryDark"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:id="@+id/toolbar"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_24"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark" >
+
+
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/app_name"
@@ -39,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="150dp"
-            android:text="@string/sign_in"
+            android:text="Sign Up"
             android:textColor="#fff"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/email_field"
@@ -78,7 +100,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:hint="password"
+            android:hint="Password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/email_field">
@@ -91,67 +113,43 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:id="@+id/SkipBT"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_field_re_enter"
+            app:endIconMode="password_toggle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SKIP"
-            android:textColor="#fff"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/signInButton"
-            app:layout_constraintEnd_toStartOf="@+id/signInButton"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/reenter_pass"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/signInButton" />
+            app:layout_constraintTop_toBottomOf="@id/password_field">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditText_pass_re_enter"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sign_in_BT"
+            android:id="@+id/sign_up_BT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Sign In"
-            app:layout_constraintEnd_toEndOf="@+id/password_field"
-            app:layout_constraintTop_toBottomOf="@+id/password_field" />
+            android:text="@string/sign_up"
+            app:layout_constraintEnd_toEndOf="@+id/password_field_re_enter"
+            app:layout_constraintTop_toBottomOf="@+id/password_field_re_enter" />
 
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/signInButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/sign_in_BT"
-                app:layout_constraintEnd_toStartOf="@+id/sign_in_BT"
-                app:layout_constraintTop_toTopOf="@+id/sign_in_BT"
 
-              />
-
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/no_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="116dp"
-            android:text="@string/no_account"
-            android:textColor="#fff"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/materialTextView_signUp"
-            app:layout_constraintStart_toStartOf="@+id/password_field"
-            app:layout_constraintTop_toBottomOf="@+id/signInButton" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/materialTextView_signUp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:text="Sign Up now"
-            android:textColor="#fff"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/no_account"
-            app:layout_constraintStart_toStartOf="@+id/signInButton"
-            app:layout_constraintTop_toTopOf="@+id/no_account"
-            android:focusable="true" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    
+
 </layout>

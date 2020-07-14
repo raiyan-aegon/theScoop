@@ -1,6 +1,8 @@
 package com.mukhtarinc.thescoop.ui.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
@@ -20,9 +22,14 @@ lateinit var binding : SplashScreenBinding
 class ScoopSplashActivity : AppCompatActivity() {
     private lateinit var auth : FirebaseAuth
 
+    lateinit var preferences: SharedPreferences
+
     private val compositeDisposable: CompositeDisposable =  CompositeDisposable()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        preferences = getSharedPreferences("SKIP", Context.MODE_PRIVATE)
+
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
 
@@ -46,16 +53,31 @@ class ScoopSplashActivity : AppCompatActivity() {
                 .subscribe {
 
 
-                    if(auth.currentUser==null){
-                        val intent = Intent(this,LoginScreenActivity::class.java)
+                    val isSkip = preferences.getBoolean("skipClick",false)
 
-                        startActivity(intent)
-                    }else{
+                    if(isSkip){
                         val intent = Intent(this,MainActivity::class.java)
 
                         startActivity(intent)
+                        finish()
 
+                    }else{
+                        if(auth.currentUser==null){
+                            val intent = Intent(this,LoginScreenActivity::class.java)
+
+                            startActivity(intent)
+
+                            finish()
+                        }else{
+                            val intent = Intent(this,MainActivity::class.java)
+
+                            startActivity(intent)
+                            finish()
+
+                        }
                     }
+
+
 
 
                 }

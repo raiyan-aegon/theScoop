@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <data>
+
+        <variable
+            name="email"
+            type="String" />
+
+    </data>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="10dp"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="wrap_content">
+
+
+
+
+            <LinearLayout
+                android:layout_margin="16dp"
+                android:id="@+id/logout_tv"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mail_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textview.MaterialTextView
+
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Log out"
+                    android:textColor="#fff"
+                    android:textSize="24sp"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_margin="16dp"
+
+                android:id="@+id/mail_tv"
+                app:layout_constraintBottom_toTopOf="@+id/logout_tv"
+                app:layout_constraintStart_toStartOf="@+id/logout_tv"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="#fff"
+                    android:textSize="24sp"
+                    android:text="@{email}"
+
+                    tools:text="raiyan.dev6@gmail.com" />
+            </LinearLayout>
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+
+</layout>
