@@ -1,6 +1,7 @@
 package com.mukhtarinc.thescoop.ui.fragments.today;
 
 import android.app.Application;
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -25,6 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 public class TodayViewModel extends ViewModel {
 
     private static final String TAG = "TodayViewModel";
+    public Parcelable listState;
 
 
     private NewsAPIService api;
@@ -94,5 +96,6 @@ public class TodayViewModel extends ViewModel {
         return articles;
 
     }
+
 
 }

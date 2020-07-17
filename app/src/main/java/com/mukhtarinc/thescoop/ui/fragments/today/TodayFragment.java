@@ -30,6 +30,7 @@ import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentTodayBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.LoginScreenActivity;
 import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
@@ -84,6 +85,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     private ArticleItemClickListener articleItemClickListener;
 
 
+    Parcelable newListState;
 
     public TodayFragment() {
         // Required empty public constructor
@@ -101,7 +103,10 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_today,container,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
+        binding.todayList.setLayoutManager(layoutManager);
+        binding.todayList.hasFixedSize();
         binding.toolbar.setNavigationOnClickListener(view -> {
 
             Intent intent = new Intent(getActivity(), SearchActivity.class);
@@ -113,26 +118,44 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
         binding.profImage.setOnClickListener(view -> {
 
-            String[] items = new String[] {Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(),"Log out"};
+            if(auth.getCurrentUser()!=null) {
+
+                String[] items = new String[]{Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(), "Log out"};
 
 
-            new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
-                    .setTitle("Profile")
-                    .setItems(items,(dialogInterface, i) -> {
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                        .setTitle("Profile")
+                        .setItems(items, (dialogInterface, i) -> {
 
-                        if(i==1){
+                            if (i == 1) {
 
-                            auth.signOut();
+                                auth.signOut();
+                            }
 
-                        }
+                        })
+                        .show();
 
-                    })
-                    .show();
+            }else {
+                String[] items = new String[]{ "Sign In"};
 
 
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                        .setTitle("Profile")
+                        .setItems(items, (dialogInterface, i) -> {
+
+                            if (i == 0) {
+
+                                Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
+                                startActivity(intent);
+                            }
+
+                        })
+                        .show();
+
+
+            }
 
         });
-
         if(auth.getCurrentUser()!=null) {
 
             Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
@@ -198,35 +221,10 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
         Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
+
         pullArticles();
 
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
-
-        binding.todayList.setLayoutManager(layoutManager);
-        binding.todayList.hasFixedSize();
-
-//
-//        lastPosition = preferences.getInt("last_post",0);
-//
-//        if(lastPosition!=0){
-//
-//            binding.shimmerLayout.setVisibility(View.GONE);
-//            binding.todayList.scrollToPosition(lastPosition);
-//        }
-//
-//
-//
-//
-//
-//        binding.todayList.setOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                lastPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
-//            }
-//        });
-//
 
 
 
@@ -265,6 +263,9 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
         });
     }
+
+
+
 
 
 
@@ -357,24 +358,5 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
     }
 
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
 
-        editor = preferences.edit();
-
-        editor.putInt("last_post",lastPosition);
-
-        editor.apply();
-
-
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        editor.clear();
-    }
 }

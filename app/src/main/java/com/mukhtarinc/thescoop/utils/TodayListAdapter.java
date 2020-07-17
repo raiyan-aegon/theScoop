@@ -2,6 +2,7 @@ package com.mukhtarinc.thescoop.utils;
 
 
 import android.annotation.SuppressLint;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ import com.mukhtarinc.thescoop.model.Category;
 import com.mukhtarinc.thescoop.model.Source;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -38,6 +41,9 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     Source source;
 
     boolean isUser =false;
+
+    private HashMap<String, Parcelable> scrollState = new HashMap<>();
+
 
     FirebaseAuth auth;
 
@@ -270,11 +276,5 @@ public class TodayListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         }
     }
-
-
-
-
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.mukhtarinc.thescoop.ui.fragments.foryou;
 
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -25,6 +26,16 @@ public class ForYouViewModel extends ViewModel {
     private static final String TAG = "ForYouViewModel";
 
     private NewsAPIService api;
+
+    private Parcelable state;
+
+    public Parcelable getState() {
+        return state;
+    }
+
+    public void setState(Parcelable state) {
+        this.state = state;
+    }
 
     @Inject
     public ForYouViewModel(NewsAPIService apiService){

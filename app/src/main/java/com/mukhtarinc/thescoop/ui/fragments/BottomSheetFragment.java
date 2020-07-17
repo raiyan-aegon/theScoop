@@ -109,14 +109,34 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
         bottomSheetBinding.setSource("Go to "+source.getName());
 
         bottomSheetBinding.shareSheet.setOnClickListener(view13 -> {
-            Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
 
-            Intent sendIntent  =  new Intent(Intent.ACTION_SEND);
-            sendIntent.setType("text/plain");
+            if(auth.getCurrentUser()!=null){
 
-            sendIntent.putExtra(Intent.EXTRA_TEXT,article.getUrl());
+                Toast.makeText(getActivity(), "Share", Toast.LENGTH_SHORT).show();
 
-            startActivity(Intent.createChooser(sendIntent,"Share"));
+                Intent sendIntent  =  new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+
+                sendIntent.putExtra(Intent.EXTRA_TEXT,article.getUrl());
+
+                startActivity(Intent.createChooser(sendIntent,"Share"));
+
+
+
+            }else {
+
+                Snackbar.make(getActivity().findViewById(android.R.id.content),"No offline access",Snackbar.LENGTH_LONG)
+                        .setAction("Sign In" , view2 -> {
+
+                            Intent intent = new Intent(view2.getContext(), LoginScreenActivity.class);
+                            view2.getContext().startActivity(intent);
+
+                        }).setActionTextColor(getActivity().getResources().getColor(R.color.colorAccent))
+                        .show();
+
+
+
+            }
 
             dismiss();
         });
@@ -140,14 +160,14 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
                     Toast.makeText(getActivity(), "Added to Shelf", Toast.LENGTH_SHORT).show();
                 }else {
 
-                    View rootView  = getActivity().getWindow().getDecorView().findViewById(R.id.parent_container);
+                 //   View rootView  = getActivity().getWindow().getDecorView().findViewById(R.id.parent_container);
 
-                    if(rootView==null){
+//                    if(rootView==null){
+//
+//                        Log.d(TAG, "onViewCreated: Root NULL");
+//                    }
 
-                        Log.d(TAG, "onViewCreated: Root NULL");
-                    }
-
-                    Snackbar.make(rootView,"No offline access",Snackbar.LENGTH_LONG)
+                    Snackbar.make(getActivity().findViewById(android.R.id.content),"No offline access",Snackbar.LENGTH_LONG)
                             .setAction("Sign In" , view2 -> {
 
                                 Intent intent = new Intent(view2.getContext(), LoginScreenActivity.class);

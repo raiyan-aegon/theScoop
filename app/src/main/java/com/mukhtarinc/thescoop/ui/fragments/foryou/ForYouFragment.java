@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,10 +49,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -65,6 +71,10 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
     FragmentForYouBinding binding;
 
+    private LinearLayoutManager layoutManager;
+
+    Parcelable state;
+
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
 
@@ -76,6 +86,8 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
     private FollowingFragment followingFragment;
     private  ShelfFragment shelfFragment;
 
+    SharedPreferences.Editor state_pref_editor;
+
 
 
     private OverflowClickListener overflowClickListener;
@@ -84,9 +96,11 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
     List<String> sourceIds;
 
-    SharedPreferences preferences;
+    SharedPreferences preferences,pref_State;
 
     private FirebaseAuth auth;
+
+    Map<String, ?> allPrefs;
 
     public ForYouFragment() {
         // Required empty public constructor
@@ -105,7 +119,10 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         viewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(ForYouViewModel.class);
 
         preferences = getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+
         SharedPreferences.Editor editor = preferences.edit();
+
+
 
         auth = FirebaseAuth.getInstance();
 
@@ -173,7 +190,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
             Toast.makeText(getContext(), auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
         }
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
         binding.todayList.setLayoutManager(layoutManager);
         binding.todayList.hasFixedSize();
@@ -182,7 +199,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         overflowClickListener = this;
         articleItemClickListener = this;
 
-        Map<String, ?> allPrefs = preferences.getAll();
+         allPrefs = preferences.getAll();
 
 
         StringBuilder sb = new StringBuilder();
@@ -272,6 +289,64 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+        binding.swipeRefresh.setOnRefreshListener(() -> {
+
+            binding.swipeRefresh.setRefreshing(true);
+            Observable.timer(3, TimeUnit.SECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new io.reactivex.Observer<Long>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.d(TAG, "onSubscribe: ");
+                        }
+
+                        @Override
+                        public void onNext(Long aLong) {
+                            StringBuilder sb = new StringBuilder();
+
+
+                                for(int i=0 ;i <128;i++){
+
+
+
+
+
+                                    sb.append(allPrefs.get("sourceName " + i)).append(",");
+
+
+                                }
+
+
+                                Log.d(TAG, "sources :"+sb.toString());
+
+                                forYouArticles(sb.toString());
+                            Log.d(TAG, "onNext: ");
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                            Log.d(TAG, "onError: ");
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            binding.swipeRefresh.setRefreshing(false);
+
+                            Log.d(TAG, "onComplete: ");
+                        }
+                    });
+
+
+        });
+    }
+
     public void forYouArticles(String source_ids){
 
 
@@ -309,6 +384,13 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
                                         todayListAdapter.setForYou(1);
                                         binding.todayList.setAdapter(todayListAdapter);
 
+                                        layoutManager.onRestoreInstanceState(viewModel.getState());
+                                        if(viewModel!=null){
+                                            Log.d(TAG, "StateRecycler:" + viewModel.getState());
+                                        }else {
+                                            Log.d(TAG, "forYouArticles: ViewModel is null");
+
+                                        }
                                         binding.shimmerLayout.setVisibility(View.GONE);
                                         binding.todayList.setVisibility(View.VISIBLE);
                                         //binding.staticSalute.setVisibility(View.VISIBLE);
@@ -368,8 +450,5 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
     }
 
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
+
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
+import com.mukhtarinc.thescoop.ui.activities.LoginScreenActivity;
 import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
@@ -63,6 +65,8 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
     private static final String TAG = "ShelfFragment";
 
     FirebaseAuth auth;
+    
+    LayoutInflater inflaterL;
 
     //TODO: DONT FORGET THE SHELF TEXT
 
@@ -87,10 +91,13 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
     }
 
 
+
+
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        inflaterL = inflater;
         // Inflate the layout for this fragment
          binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shelf,container,false);
 
@@ -101,25 +108,45 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
         });
 
+
         binding.profImage.setOnClickListener(view -> {
 
-            String[] items = new String[] {Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(),"Log out"};
+            if(auth.getCurrentUser()!=null) {
+
+                String[] items = new String[]{Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(), "Log out"};
 
 
-            new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
-                    .setTitle("Profile")
-                    .setItems(items,(dialogInterface, i) -> {
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                        .setTitle("Profile")
+                        .setItems(items, (dialogInterface, i) -> {
 
-                        if(i==1){
+                            if (i == 1) {
 
-                            auth.signOut();
+                                auth.signOut();
+                            }
 
-                        }
+                        })
+                        .show();
 
-                    })
-                    .show();
+            }else {
+                String[] items = new String[]{ "Sign In"};
 
 
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                        .setTitle("Profile")
+                        .setItems(items, (dialogInterface, i) -> {
+
+                            if (i == 0) {
+
+                                Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
+                                startActivity(intent);
+                            }
+
+                        })
+                        .show();
+
+
+            }
 
         });
 
@@ -134,6 +161,8 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
         articleItemClickListener = this;
         overflowClickListener= this;
 
+        Log.d(TAG, "onCreateView: ");
+
 
         return binding.getRoot();
     }
@@ -143,7 +172,12 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated: ");
 
-        getArticles();
+
+        if(auth.getCurrentUser()!=null){
+            getArticles();
+            onCreate(null);
+
+        }
 
 
 
@@ -175,15 +209,14 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
                 if(shelfListAdapter.getItemCount()==0){
 
                     Log.d(TAG, "No articles");
+                    binding.shelfArticles.setVisibility(View.GONE);
                 }else {
                     Log.d(TAG, "Articles");
                     binding.offlineText.setVisibility(View.GONE);
 
+
                 }
                 binding.shelfArticles.setAdapter(shelfListAdapter);
-
-
-
 
         });
 
@@ -227,12 +260,4 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(TAG, "onAttach: ");
-
-
-    }
 }

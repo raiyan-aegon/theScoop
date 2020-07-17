@@ -29,6 +29,7 @@ import com.mukhtarinc.thescoop.databinding.SourceItemBinding;
 import com.mukhtarinc.thescoop.model.Category;
 import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.activities.CategoryActivity;
+import com.mukhtarinc.thescoop.ui.activities.LoginScreenActivity;
 import com.mukhtarinc.thescoop.ui.activities.MoreSourcesActivity;
 import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.utils.CategoryClickListener;
@@ -130,25 +131,45 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         });
 
 
+
         binding.profImage.setOnClickListener(view -> {
 
-            String[] items = new String[] {Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(),"Log out"};
+            if(auth.getCurrentUser()!=null) {
+
+                String[] items = new String[]{Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(), "Log out"};
 
 
-            new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
-                    .setTitle("Profile")
-                    .setItems(items,(dialogInterface, i) -> {
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                        .setTitle("Profile")
+                        .setItems(items, (dialogInterface, i) -> {
 
-                        if(i==1){
+                            if (i == 1) {
 
-                            auth.signOut();
+                                auth.signOut();
+                            }
 
-                        }
+                        })
+                        .show();
 
-                    })
-                    .show();
+            }else {
+                String[] items = new String[]{ "Sign In"};
 
 
+                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                        .setTitle("Profile")
+                        .setItems(items, (dialogInterface, i) -> {
+
+                            if (i == 0) {
+
+                                Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
+                                startActivity(intent);
+                            }
+
+                        })
+                        .show();
+
+
+            }
 
         });
         if(auth.getCurrentUser()!=null) {

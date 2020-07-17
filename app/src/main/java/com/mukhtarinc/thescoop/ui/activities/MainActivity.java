@@ -46,8 +46,7 @@ public class MainActivity extends DaggerAppCompatActivity {
    Fragment active = forYouFragment;
 
     SharedPreferences.Editor editor;
-    SharedPreferences preferences;
-   ArrayList<Fragment> fragments = new ArrayList<>();
+
 
     private static final String TAG = "MainActivity";
 
@@ -55,100 +54,34 @@ public class MainActivity extends DaggerAppCompatActivity {
 
     private final BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener = item -> {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.foryou:
-//                int clicks =preferences.getInt("click_for_you",0); ;
-//
-//                if(clicks==0){
-////
-//
-//
-//                    Fragment forYouFragment  = new ForYouFragment();
-//
-//                    openFragment(forYouFragment);
-//
-//                    clicks =1;
-//                    editor.putInt("click_for_you",clicks);
-//                    editor.commit();
-//
-//                    Log.d(TAG, "CLICKS FOR YOU OPEN FRAGMENT");
-//
-//
-//
-//                }else {
-//
-//
-//                    Log.d(TAG, "CLICKS FOR YOU DISPLAY FRAGMENT");
-//
-//                    displayFragment(0);
-//
-//
-//                }
 
 
-                fm.beginTransaction().hide(active).show(forYouFragment).commit();
-                active = forYouFragment;
+                    fm.beginTransaction().hide(active).show(forYouFragment).commit();
+                    active = forYouFragment;
+
+
+
 
 
 
                 break;
             case R.id.today:
-//                    Toast.makeText(MainActivity.this, "Today", Toast.LENGTH_SHORT).show();
 
-
-//                int clicks_today =preferences.getInt("click_today",0);
-//
-//                if(clicks_today==0) {
-//
-//
-//                    Fragment fragmentToday = new TodayFragment();
-//                    openFragment(fragmentToday);
-//
-//                    clicks_today = 1;
-//                    editor.putInt("click_today", clicks_today);
-//                    editor.commit();
-//
-//
-//
-//                }else {
-//
-//                                    displayFragment(1);
-//
-//                }
-
-                fm.beginTransaction().hide(active).show(todayFragment).commit();
-                active = todayFragment;
-
+                    fm.beginTransaction().hide(active).show(todayFragment).commit();
+                    active = todayFragment;
 
 
 
 
                 break;
             case R.id.follow:
-//                    Toast.makeText(MainActivity.this, "Following", Toast.LENGTH_SHORT).show();
-//                int clicks_follow =preferences.getInt("click_follow",0);
-//
-//                if(clicks_follow==0) {
-//                    Fragment fragmentFollow = new FollowingFragment();
-//                    openFragment(fragmentFollow);
-//                    clicks_follow = 1;
-//                    editor.putInt("click_follow", clicks_follow);
-//                    editor.commit();
-//
-//
-//
-//
-//
-//                }else {
-//                                    displayFragment(2);
-//
-//
-//                }
 
-                fm.beginTransaction().hide(active).show(followingFragment).commit();
-                active = followingFragment;
 
+                    fm.beginTransaction().hide(active).show(followingFragment).commit();
+                    active = followingFragment;
 
 
 
@@ -156,31 +89,14 @@ public class MainActivity extends DaggerAppCompatActivity {
                 break;
             case R.id.shelf:
 
-//                int clicks_shelf =preferences.getInt("click_shelf",0);
-//
-//                if(clicks_shelf==0) {
-//                    Fragment fragmentShelf = new ShelfFragment();
-//
-//                    openFragment(fragmentShelf);
-//
-//
-//                    clicks_shelf = 1;
-//                    editor.putInt("click_shelf", clicks_shelf);
-//                    editor.commit();
-//
-//
-//
-//                }else {
-//
-//                                    displayFragment(3);
-//
-//                }
+                    Fragment fragmentShelf = new ShelfFragment();
+
+                    openFragment(fragmentShelf);
 
 
-                fm.beginTransaction().hide(active).show(shelfFragment).commit();
-                active = shelfFragment;
-
-
+                fm.beginTransaction().add(R.id.container,followingFragment,"3").hide(followingFragment).commit();
+                fm.beginTransaction().add(R.id.container,todayFragment,"2").hide(todayFragment).commit();
+                fm.beginTransaction().add(R.id.container,forYouFragment,"1").hide(forYouFragment).commit();
 
 
                 break;
@@ -202,9 +118,6 @@ public class MainActivity extends DaggerAppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        preferences = getSharedPreferences(Constants.SHARED_PREFS_CLICK,MODE_PRIVATE);
-        editor = preferences.edit();
-
         fm.beginTransaction().add(R.id.container,shelfFragment,"4").hide(shelfFragment).commit();
         fm.beginTransaction().add(R.id.container,followingFragment,"3").hide(followingFragment).commit();
         fm.beginTransaction().add(R.id.container,todayFragment,"2").hide(todayFragment).commit();
@@ -213,23 +126,6 @@ public class MainActivity extends DaggerAppCompatActivity {
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
-//        if(savedInstanceState == null){
-//            forYouFragment = ForYouFragment.newInstance("","");
-//            todayFragment = TodayFragment.newInstance();
-//            followingFragment = FollowingFragment.newInstance();
-//            shelfFragment = ShelfFragment.newInstance();
-//
-//            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//            transaction.add(R.id.container,forYouFragment)
-//                    .addToBackStack(null)
-//                    .commit();
-//
-//
-//        }
-//        fragments.add(forYouFragment);
-//        fragments.add(todayFragment);
-//        fragments.add(followingFragment);
-//        fragments.add(shelfFragment);
 
     }
 
@@ -241,112 +137,7 @@ public class MainActivity extends DaggerAppCompatActivity {
                 .commit();
     }
 
-    void displayFragment(int position){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        Fragment fragment;
 
-
-        switch (position){
-
-                case 0:
-
-
-
-                    fragment = fragments.get(position);
-                    if(fragment.isAdded()){
-
-                        transaction.show(fragment);
-
-
-                    }else {
-                        transaction.add(R.id.container,fragment);
-                    }
-
-                   if(fragments.get(1).isAdded()){
-                       transaction.hide(fragments.get(1));
-                   }
-                    if(fragments.get(2).isAdded()){
-                        transaction.hide(fragments.get(2));
-                    }
-                    if(fragments.get(3).isAdded()){
-                        transaction.hide(fragments.get(3));
-                    }
-                    transaction.commit();
-                    break;
-
-            case 1:
-                fragment = fragments.get(position);
-                if(fragment.isAdded()){
-
-                    transaction.show(fragment);
-
-                }else {
-                    transaction.add(R.id.container,fragment);
-                }
-
-                if(fragments.get(0).isAdded()){
-                    transaction.hide(fragments.get(0));
-                }
-                if(fragments.get(2).isAdded()){
-                    transaction.hide(fragments.get(2));
-                }
-                if(fragments.get(3).isAdded()){
-                    transaction.hide(fragments.get(3));
-                }
-                transaction.commit();
-
-
-                break;
-            case 2:
-                fragment = fragments.get(position);
-                if(fragment.isAdded()){
-
-                    transaction.show(fragment);
-
-                }else {
-                    transaction.add(R.id.container,fragment);
-                }
-
-                if(fragments.get(0).isAdded()){
-                    transaction.hide(fragments.get(0));
-                }
-                if(fragments.get(1).isAdded()){
-                    transaction.hide(fragments.get(1));
-                }
-                if(fragments.get(3).isAdded()){
-                    transaction.hide(fragments.get(3));
-                }
-                transaction.commit();
-
-                break;
-            case 3:
-                fragment = fragments.get(position);
-                if(fragment.isAdded()){
-
-                    transaction.show(fragment);
-
-
-                }else {
-                    transaction.add(R.id.container,fragment);
-                }
-
-                if(fragments.get(0).isAdded()){
-                    transaction.hide(fragments.get(0));
-                }
-                if(fragments.get(1).isAdded()){
-                    transaction.hide(fragments.get(1));
-                }
-                if(fragments.get(2).isAdded()){
-                    transaction.hide(fragments.get(2));
-                }
-                    transaction.commit();
-
-                break;
-        }
-
-
-
-    }
 
 
     @Override
