@@ -7,6 +7,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -37,8 +39,6 @@ class NotificationWorker @Inject constructor(appContext : Context, parameters: W
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun doWork(): Result {
 
-        Log.d(TAG, "Api Service : $apiService")
-
         val article: Article = getArticle()
 
         val notifyManager : NotificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -57,6 +57,8 @@ class NotificationWorker @Inject constructor(appContext : Context, parameters: W
 
         val pendingIntent = taskStackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT)
 
+       // val alarmSound: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -71,9 +73,11 @@ class NotificationWorker @Inject constructor(appContext : Context, parameters: W
             val notificationCompat = NotificationCompat.Builder(applicationContext,"1001")
                     .setContentTitle(article.getSource.name)
                     .setContentText(article.title)
+                    .setDefaults(Notification.DEFAULT_SOUND)
                     .setStyle(NotificationCompat.BigTextStyle().bigText(article.title))
                     .setSmallIcon(R.drawable.ic_stat_library_books)
                     .setContentIntent(pendingIntent)
+                    .setOnlyAlertOnce(true)
                     .setChannelId("1001")
             notifyManager.createNotificationChannel(notificationChannel)
             notifyManager.notify((System.currentTimeMillis().toInt()),notificationCompat.build())
@@ -88,15 +92,14 @@ class NotificationWorker @Inject constructor(appContext : Context, parameters: W
                     .setSmallIcon(R.drawable.ic_stat_library_books)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentIntent(pendingIntent)
+                    .setDefaults(Notification.DEFAULT_SOUND)
+                    .setOnlyAlertOnce(true)
                     .setAutoCancel(true)
                     .setVibrate(longArrayOf(100,200,300,400,500,400,300,200,400))
                     .build()
 
             notifyManager.notify((System.currentTimeMillis().toInt()),notification)
         }
-
-
-        Log.d(TAG, "doWork: ")
 
         return Result.success()
     }
@@ -107,7 +110,6 @@ class NotificationWorker @Inject constructor(appContext : Context, parameters: W
          var article: Article? = null
         val random = (0..5).shuffled().random()
 
-        Log.d(TAG, "Number : $random")
         apiService.getNotificationArticle("us","en",Constants.apiKey,2)
                 .take(1)
                 .subscribe {
@@ -121,9 +123,4 @@ class NotificationWorker @Inject constructor(appContext : Context, parameters: W
 
     }
 
-
-    companion object{
-
-        private const val TAG = "NotificationWorker"
-    }
 }
