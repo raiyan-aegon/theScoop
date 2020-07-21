@@ -5,7 +5,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/parent_container"
+        android:id="@+id/parent_container_main"
         android:layout_width="match_parent"
         tools:context=".ui.activities.MainActivity"
         android:fitsSystemWindows="true"

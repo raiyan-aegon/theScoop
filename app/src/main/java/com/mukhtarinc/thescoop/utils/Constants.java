@@ -60,7 +60,7 @@ public class Constants {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static void showSnackBar(Activity activity, String message, Boolean action, Source source){
-        View rootView  = activity.getWindow().getDecorView().findViewById(R.id.parent_container);
+        View rootView  = activity.getWindow().getDecorView().findViewById(R.id.parent_container_main);
        if(action){
 
            Snackbar.make(rootView,message,Snackbar.LENGTH_LONG)

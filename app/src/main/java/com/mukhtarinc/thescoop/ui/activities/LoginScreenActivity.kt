@@ -89,23 +89,44 @@ class LoginScreenActivity : AppCompatActivity() {
 
 
         binding.signInBT.setOnClickListener {
-            auth.signInWithEmailAndPassword(binding.textInputEditTextEmail.text.toString(), binding.textInputEditTextPass.text.toString()).addOnCompleteListener {
+            if(binding.textInputEditTextEmail.text!!.isNotEmpty())
+                    binding.passwordField.error = null
+            if(binding.textInputEditTextPass.text!!.isNotEmpty()) {
+                binding.emailField.error = null
+                auth.signInWithEmailAndPassword(binding.textInputEditTextEmail.text.toString(), binding.textInputEditTextPass.text.toString()).addOnCompleteListener {
 
 
-                if (it.isSuccessful) {
+                    if (it.isSuccessful) {
 
-                    Log.d(TAG, "Email " + binding.textInputEditTextEmail.text.toString())
+                        Log.d(TAG, "Email " + binding.textInputEditTextEmail.text.toString())
 
-                    Toast.makeText(this, "Successfully logged In", Toast.LENGTH_LONG).show();
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Successfully logged In", Toast.LENGTH_LONG).show();
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show()
+                    }
+
+
                 }
+            }else{
 
-
+                when {
+                    binding.textInputEditTextEmail.text!!.isEmpty() -> {
+                        binding.emailField.error = "email field empty"
+                    }
+                    binding.textInputEditTextPass.text!!.isEmpty() -> {
+                        binding.passwordField.error = "password field empty"
+                    }
+                    else -> {
+                        binding.passwordField.error = "password field empty"
+                        binding.emailField.error = "email field empty"
+                    }
+                }
             }
+
+
 
         }
 
