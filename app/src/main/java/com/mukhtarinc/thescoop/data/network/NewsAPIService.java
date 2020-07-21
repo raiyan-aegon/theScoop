@@ -38,4 +38,8 @@ public interface NewsAPIService {
     @GET("everything")
     Observable<TodayResponse> getSearchArticles(@Query("q") String query,@Query("sortBy") String sortBy,@Query("apiKey") String apiKey);
 
+
+    @GET("top-headlines")
+    Observable<TodayResponse> getNotificationArticle(@Query("country") String country,@Query("language") String language,
+                                               @Query("apiKey") String apiKey,@Query("page") int page);
 }

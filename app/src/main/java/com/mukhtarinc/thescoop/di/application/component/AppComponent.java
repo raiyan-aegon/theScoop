@@ -2,11 +2,12 @@ package com.mukhtarinc.thescoop.di.application.component;
 
 import android.app.Application;
 
-import com.mukhtarinc.thescoop.BaseApplication;
+import com.mukhtarinc.thescoop.di.application.BaseApplication;
 import com.mukhtarinc.thescoop.di.application.modules.ViewModelFactoryModule;
 import com.mukhtarinc.thescoop.di.application.modules.ActivityBuilderModule;
 import com.mukhtarinc.thescoop.di.application.modules.AppModule;
 import com.mukhtarinc.thescoop.di.application.scopes.AppScoped;
+import com.mukhtarinc.thescoop.utils.NotificationWorker;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -26,6 +27,8 @@ import dagger.android.AndroidInjector;
 public interface AppComponent extends AndroidInjector<BaseApplication> {
 
 
+
+    void inject(NotificationWorker worker);
 
     @Component.Builder
     interface Builder {
