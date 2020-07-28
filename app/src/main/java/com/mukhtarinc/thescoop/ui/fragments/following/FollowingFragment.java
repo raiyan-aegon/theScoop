@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -25,19 +26,28 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentFollowingBinding;
+import com.mukhtarinc.thescoop.databinding.FragmentForYouBinding;
+import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
 import com.mukhtarinc.thescoop.databinding.SourceItemBinding;
+import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Category;
 import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.activities.CategoryActivity;
 import com.mukhtarinc.thescoop.ui.activities.LoginScreenActivity;
 import com.mukhtarinc.thescoop.ui.activities.MoreSourcesActivity;
 import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
+import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
+import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
+import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouViewModel;
+import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
 import com.mukhtarinc.thescoop.utils.CategoryClickListener;
 import com.mukhtarinc.thescoop.utils.CategoryListAdapter;
 import com.mukhtarinc.thescoop.utils.AddClickListener;
 import com.mukhtarinc.thescoop.utils.CheckClickListener;
 import com.mukhtarinc.thescoop.utils.Constants;
+import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.SourceListAdapter;
+import com.mukhtarinc.thescoop.utils.TodayListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
 
 import org.jetbrains.annotations.NotNull;
@@ -53,7 +63,7 @@ import dagger.android.support.DaggerFragment;
 /**
  * Created by Raiyan Mukhtar on 7/8/2020.
  */
-public class FollowingFragment extends DaggerFragment implements View.OnClickListener, AddClickListener, CheckClickListener , CategoryClickListener {
+public class FollowingFragment extends DaggerFragment implements View.OnClickListener, AddClickListener, CheckClickListener , CategoryClickListener , ArticleItemClickListener, OverflowClickListener {
 
     private static final String TAG = "FollowingFragment";
 
@@ -66,6 +76,13 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     FragmentFollowingBinding binding;
 
     FollowingViewModel viewModel;
+
+    ForYouViewModel forYouViewModel;
+    private  OverflowClickListener overflowClickListener;
+    private ArticleItemClickListener articleItemClickListener;
+
+    @Inject
+    TodayListAdapter todayListAdapter;
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -101,6 +118,8 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
         Log.d(TAG, "onCreate: ");
         viewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(FollowingViewModel.class);
+
+        forYouViewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(ForYouViewModel.class);
 
         preferences = getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
 
@@ -184,6 +203,8 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         });
 
 
+        overflowClickListener = this;
+        articleItemClickListener = this;
 
 
         return binding.getRoot();
@@ -237,7 +258,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     void initSources(int num) {
 
         viewModel.getSources(Constants.apiKey)
-                .observe(this, sourceResponseNetworkResource -> {
+                .observe(getActivity(), sourceResponseNetworkResource -> {
 
                     if (sourceResponseNetworkResource != null) {
 
@@ -314,6 +335,8 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
         editor.putString("sourceName "+position,source.getSource_id());
 
+        getArticles_For_you(source.getSource_id());
+
         editor.apply();
 
         bindings.add.setVisibility(View.GONE);
@@ -330,6 +353,10 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         editor.commit();
         bindings.add.setVisibility(View.VISIBLE);
         bindings.check.setVisibility(View.GONE);
+
+
+        getArticles_For_you("");
+
     }
 
     @Override
@@ -339,5 +366,98 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         Intent intent = new Intent(getActivity(), CategoryActivity.class);
         intent.putExtra("category",category);
         startActivity(intent);
+    }
+
+    public void getArticles_For_you(String source_ids){
+
+        View rootView  = getActivity().getWindow().getDecorView().findViewById(R.id.for_parent);
+
+        FragmentForYouBinding for_you_binding = DataBindingUtil.getBinding(rootView);
+
+        forYouViewModel.getTodayForYouArticles(source_ids,Constants.apiKey)
+                .observe(Objects.requireNonNull(getActivity()), todayResponseNetworkResource -> {
+                    if(todayResponseNetworkResource !=null){
+
+
+
+                        switch(todayResponseNetworkResource.status)
+                        {
+
+                            case LOADING: {
+
+                                break;
+                            }
+
+                            case SUCCESS: {
+
+
+                                if(todayResponseNetworkResource.data!=null) {
+
+
+
+//
+//                                    if(auth.getCurrentUser()!=null){
+//
+//                                        todayListAdapter.setUser(true,auth);
+//                                    }
+
+
+                                    todayListAdapter.setOverflowClickListener(overflowClickListener);
+                                    todayListAdapter.setArticleItemClickListener(articleItemClickListener);
+                                    todayListAdapter.setData(todayResponseNetworkResource.data.getArticles());
+                                    todayListAdapter.setForYou(1);
+                                    for_you_binding.todayList.setAdapter(todayListAdapter);
+
+                                    for_you_binding.progressForYou.setVisibility(View.GONE);
+                                    for_you_binding.todayList.setVisibility(View.VISIBLE);
+                                    //binding.staticSalute.setVisibility(View.VISIBLE);
+                                }
+                                break;
+                            }
+
+                            case ERROR: {
+                                //binding.staticSalute.setVisibility(View.GONE);
+                                for_you_binding.progressForYou.setVisibility(View.GONE);
+                                for_you_binding.noConnection.setVisibility(View.VISIBLE);
+                                for_you_binding.todayList.setVisibility(View.GONE);
+                                break;
+                            }
+
+                        }
+
+                    }
+                });
+
+    }
+
+    @Override
+    public void articleItemClicked(Article article) {
+
+        Intent intent = new Intent(getActivity(), TheScoopDetailsActivity.class);
+        Source source = new Source();
+        source.setName(article.getSourceName());
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("article",article);
+        bundle.putParcelable("source",source);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void overflowClicked(Article article) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        BottomSheetFragment fragment = new BottomSheetFragment();
+
+        Source source = new Source();
+        source.setName(article.getSourceName());
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("bottomSheet",article);
+        bundle.putParcelable("source",source);
+
+        fragment.setArguments(bundle);
+        fragment.show(fragmentManager,fragment.getTag());
     }
 }

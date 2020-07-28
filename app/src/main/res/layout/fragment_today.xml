@@ -67,20 +67,12 @@
 
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:id="@+id/shimmerLayout"
-                android:layout_height="wrap_content">
-
-                <include layout="@layout/shimmer_placeholder_first_item"/>
-                <include layout="@layout/shimmer_placeholder"/>
-                <include layout="@layout/shimmer_placeholder"/>
-                <include layout="@layout/shimmer_placeholder"/>
-                <include layout="@layout/shimmer_placeholder"/>
-                <include layout="@layout/shimmer_placeholder"/>
-
-            </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progress_today"
+            android:layout_width="50dp"
+            android:layout_gravity="center"
+            style="@style/TheScoop.Progressbar"
+            android:layout_height="50dp"/>
 
 
 

@@ -207,8 +207,8 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         if(allPrefs.size()==0){
 
 
-            binding.pickSource.setVisibility(View.VISIBLE);
-            binding.shimmerLayout.setVisibility(View.GONE);
+            binding.pickSourceTV.setVisibility(View.VISIBLE);
+            binding.progressForYou.setVisibility(View.GONE);
 
 
         }else {
@@ -239,53 +239,6 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        binding.pickSource.setOnClickListener(view1 -> {
-
-
-
-            ArrayList<Fragment> fragments = new ArrayList<>();
-
-
-            forYouFragment = ForYouFragment.newInstance("","");
-            todayFragment = TodayFragment.newInstance();
-            followingFragment = FollowingFragment.newInstance();
-            shelfFragment = ShelfFragment.newInstance();
-
-
-            fragments.add(forYouFragment);
-            fragments.add(todayFragment);
-            fragments.add(followingFragment);
-            fragments.add(shelfFragment);
-
-
-
-
-            FragmentTransaction transaction = Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction();
-            Fragment fragment;
-
-            fragment = fragments.get(2);
-            if(fragment.isAdded()){
-
-                transaction.show(fragment);
-
-            }else {
-                transaction.add(R.id.container,fragment);
-            }
-
-            if(fragments.get(0).isAdded()){
-                transaction.hide(fragments.get(0));
-            }
-            if(fragments.get(1).isAdded()){
-                transaction.hide(fragments.get(1));
-            }
-            if(fragments.get(3).isAdded()){
-                transaction.hide(fragments.get(3));
-            }
-            transaction.commit();
-
-
-        });
 
     }
 
@@ -391,7 +344,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
                                             Log.d(TAG, "forYouArticles: ViewModel is null");
 
                                         }
-                                        binding.shimmerLayout.setVisibility(View.GONE);
+                                        binding.progressForYou.setVisibility(View.GONE);
                                         binding.todayList.setVisibility(View.VISIBLE);
                                         //binding.staticSalute.setVisibility(View.VISIBLE);
                                     }
@@ -400,7 +353,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
                                 case ERROR: {
                                     //binding.staticSalute.setVisibility(View.GONE);
-                                    binding.shimmerLayout.setVisibility(View.GONE);
+                                    binding.progressForYou.setVisibility(View.GONE);
                                     binding.noConnection.setVisibility(View.VISIBLE);
                                     binding.todayList.setVisibility(View.GONE);
                                     break;

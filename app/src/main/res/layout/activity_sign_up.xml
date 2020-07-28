@@ -6,6 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:fitsSystemWindows="true"
+        android:id="@+id/sign_up_main"
         android:background="@color/colorPrimaryDark"
         android:layout_height="match_parent">
 

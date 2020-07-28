@@ -46,10 +46,43 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
 
+    // Espresso
+
+    def androidx_test_espresso = "3.2.0"
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
+
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_test_espresso"
+
+    implementation "androidx.test.espresso:espresso-idling-resource:$androidx_test_espresso"
+
+    //FragmentTest
+    def fragment_version= "1.2.5"
+    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+
+
+
+    // Mockk.io
+
+    def mockk_version = "1.9.3"
+
+    androidTestImplementation "io.mockk:mockk-android:$mockk_version"
+
+
+
+    // androidx.test
+
+    def androidx_test = "1.1.0"
+
+    androidTestImplementation "androidx.test:runner:$androidx_test"
+
+    androidTestImplementation "androidx.test:core:$androidx_test"
+
+    androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test"
+
+    //Firebase
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
     //DAGGER2

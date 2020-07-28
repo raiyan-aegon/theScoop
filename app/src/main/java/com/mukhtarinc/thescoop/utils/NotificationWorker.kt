@@ -27,7 +27,7 @@ import javax.inject.Inject
 /**
  * Created by Raiyan Mukhtar on 7/20/2020.
  */
-class NotificationWorker @Inject constructor(appContext : Context, parameters: WorkerParameters ) : Worker(appContext,parameters){
+class  NotificationWorker @Inject constructor(appContext : Context, parameters: WorkerParameters ) : Worker(appContext,parameters){
 
     @Inject lateinit var apiService: NewsAPIService
 

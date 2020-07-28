@@ -36,9 +36,15 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="hint">Enter email...</string>
-    <string name="sign_in">Sign In</string>
+    <string name="hint">Enter email…</string>
     <string name="no_account">Don\'t have an account?</string>
     <string name="reenter_pass">Enter Password again</string>
     <string name="sign_up">Sign Up</string>
-</resources>
+    <string name="sign_up_now">Sign Up now</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="skip"
+    >SKIP</string>
+<string name="sign_in">Sign In</string>
+<string name="choose_source">Go to Following Tab to choose Sources</string>
+    </resources>

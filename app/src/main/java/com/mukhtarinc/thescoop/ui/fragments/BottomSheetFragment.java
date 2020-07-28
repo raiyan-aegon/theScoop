@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -24,7 +25,10 @@ import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Source;
 import com.mukhtarinc.thescoop.ui.activities.LoginScreenActivity;
 import com.mukhtarinc.thescoop.ui.activities.SourceArticleActivity;
+import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfViewModel;
+import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
+import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.ShelfListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
 
@@ -35,7 +39,7 @@ import javax.inject.Inject;
 /**
  * Created by Raiyan Mukhtar on 6/1/2020.
  */
-public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
+public class BottomSheetFragment extends DaggerBottomSheetDialogFragment implements OverflowClickListener, ArticleItemClickListener{
 
     private static final String TAG = "BottomSheetFragment";
     BottomSheetBinding bottomSheetBinding;
@@ -53,6 +57,9 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
 
     String myShelf;
 
+    ArticleItemClickListener articleItemClickListener;
+
+    OverflowClickListener overflowClickListener;
 
     FirebaseAuth auth;
 
@@ -66,6 +73,8 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        articleItemClickListener=this;
+        overflowClickListener=this;
         if(getArguments()!=null){
 
            article = getArguments().getParcelable("bottomSheet");
@@ -98,6 +107,8 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
         }
 
 
+        overflowClickListener = this;
+        articleItemClickListener = this;
 
         return bottomSheetBinding.getRoot();
     }
@@ -146,6 +157,13 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
             if(bottomSheetBinding.shelfButton.getText().toString().equalsIgnoreCase(getString(R.string.remove))){
 
                 viewModel.deleteArticle(article);
+
+                View rootView  = getActivity().getWindow().getDecorView().findViewById(R.id.shelf_parent);
+
+                FragmentShelfBinding binding = DataBindingUtil.getBinding(rootView);
+
+                getArticles(binding);
+
 
 
                 Toast.makeText(getActivity(),"Removed from Shelf",Toast.LENGTH_SHORT).show();
@@ -197,8 +215,63 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment {
         });
     }
 
+    public void getArticles(FragmentShelfBinding binding){
+
+        viewModel.getArticles.observe(getActivity(), articles -> {
 
 
+            shelfListAdapter.setOverflowListener(overflowClickListener);
+            shelfListAdapter.setArticleClickListener(articleItemClickListener);
+            shelfListAdapter.setData(articles);
 
 
+            if(shelfListAdapter.getItemCount()==0){
+
+                Log.d(TAG, "No articles");
+                binding.shelfArticles.setVisibility(View.GONE);
+            }else {
+                Log.d(TAG, "Articles");
+                binding.offlineText.setVisibility(View.GONE);
+
+
+            }
+            binding.shelfArticles.setAdapter(shelfListAdapter);
+
+        });
+
+
+    }
+
+
+    @Override
+    public void articleItemClicked(Article article) {
+
+        Intent intent = new Intent(getActivity(), TheScoopDetailsActivity.class);
+        Source source = new Source();
+        source.setName(article.getSourceName());
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("article",article);
+        bundle.putParcelable("source",source);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void overflowClicked(Article article) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        BottomSheetFragment fragment = new BottomSheetFragment();
+
+        Source source = new Source();
+        source.setName(article.getSourceName());
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("bottomSheet",article);
+        bundle.putParcelable("source",source);
+        bundle.putString("shelf","shelf");
+
+        fragment.setArguments(bundle);
+        fragment.show(fragmentManager,fragment.getTag());
+    }
 }

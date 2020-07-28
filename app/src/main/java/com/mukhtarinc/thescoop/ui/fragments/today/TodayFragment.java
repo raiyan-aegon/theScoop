@@ -75,8 +75,6 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
 
     SharedPreferences preferences;
 
-    SharedPreferences.Editor editor;
-
     FirebaseAuth auth;
 
     int lastPosition;
@@ -302,16 +300,15 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
                             todayListAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.ALLOW);
                             binding.todayList.setAdapter(todayListAdapter);
 
-                            binding.shimmerLayout.setVisibility(View.GONE);
+                            binding.progressToday.setVisibility(View.GONE);
                             binding.todayList.setVisibility(View.VISIBLE);
                         }
                         break;
                     }
 
                     case ERROR: {
-                       binding.shimmerLayout.setVisibility(View.GONE);
+                        binding.progressToday.setVisibility(View.GONE);
                         binding.noConnection.setVisibility(View.VISIBLE);
-
                         binding.todayList.setVisibility(View.GONE);
                         break;
                     }

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "376950004577-511ip6p4aj2ejp1k0kjnfh254ugufc92.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mukhtarinc.thescoop",
+            "certificate_hash": "3545bff8a873858ba03e775833780d72b133ec63"
+          }
+        },
+        {
           "client_id": "376950004577-83e3fbqek50ededa111opijdd879ur48.apps.googleusercontent.com",
           "client_type": 3
         }

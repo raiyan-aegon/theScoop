@@ -1,21 +1,29 @@
 {
   "project_info": {
-    "project_number": "196642293038",
-    "firebase_url": "https://thescoop-6bf35.firebaseio.com",
-    "project_id": "thescoop-6bf35",
-    "storage_bucket": "thescoop-6bf35.appspot.com"
+    "project_number": "376950004577",
+    "firebase_url": "https://the-scoop-ea078.firebaseio.com",
+    "project_id": "the-scoop-ea078",
+    "storage_bucket": "the-scoop-ea078.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:196642293038:android:828565761a79b25a3ca6bf",
+        "mobilesdk_app_id": "1:376950004577:android:41dfbf787af40880940320",
         "android_client_info": {
           "package_name": "com.mukhtarinc.thescoop"
         }
       },
       "oauth_client": [
         {
-          "client_id": "196642293038-k0b3rivjpqlu6e5vd3u9b50s1e0iu6i9.apps.googleusercontent.com",
+          "client_id": "376950004577-kagh7bpp3nuq60rmoreb2h3a92g84dcp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mukhtarinc.thescoop",
+            "certificate_hash": "93cbfc78bb6efa73f2e6a792a8f695e253788750"
+          }
+        },
+        {
+          "client_id": "376950004577-511ip6p4aj2ejp1k0kjnfh254ugufc92.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.mukhtarinc.thescoop",
@@ -23,20 +31,20 @@
           }
         },
         {
-          "client_id": "196642293038-76lf22mj92ri8q18pbqgboqp7g1kl0mp.apps.googleusercontent.com",
+          "client_id": "376950004577-83e3fbqek50ededa111opijdd879ur48.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyARpccwbckZAQOxBx6322dnJB5lwlzQBs4"
+          "current_key": "AIzaSyBYzcbx3wlDMAbjVcanxbZ-ElDkpMBxyLU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "196642293038-76lf22mj92ri8q18pbqgboqp7g1kl0mp.apps.googleusercontent.com",
+              "client_id": "376950004577-83e3fbqek50ededa111opijdd879ur48.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
