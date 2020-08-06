@@ -76,12 +76,26 @@ public class MoreSourcesActivity extends DaggerAppCompatActivity implements AddC
         }
 
 
+        binding.sourceDone.setOnClickListener(view -> {
+
+            Intent i = new Intent(this,MainActivity.class);
+            startActivity(i);
+            finish();
+        });
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
         binding.moreSourcesRV.addItemDecoration(itemDecoration);
         binding.moreSourcesRV.setLayoutManager(linearLayoutManager);
         binding.moreSourcesRV.hasFixedSize();
 
+
+        if(intent.hasExtra("isSkip")){
+
+            binding.sourceDone.setVisibility(View.VISIBLE);
+            sourceListAdapter.setCount(10);
+        }
         sourceListAdapter.setData(sources);
         sourceListAdapter.setOnCheckClickListener(mCheckClickListener);
         sourceListAdapter.setAddClickListener(mAddClickListener);

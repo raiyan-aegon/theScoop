@@ -38,6 +38,8 @@ public class FollowingViewModel extends ViewModel {
     @Inject
     public FollowingViewModel(NewsAPIService apiService){
 
+        Log.d(TAG, "FollowingViewModel");
+
         this.apiService = apiService;
     }
 

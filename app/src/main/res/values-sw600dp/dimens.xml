@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="top_headline_image_dimens">470dp</dimen>
+    <dimen name="top_headline_image_dimens">580dp</dimen>
     <dimen name="headline_720">400dp</dimen>
     <dimen name="details_image">450dp</dimen>
     <dimen name="details_image_height">250dp</dimen>

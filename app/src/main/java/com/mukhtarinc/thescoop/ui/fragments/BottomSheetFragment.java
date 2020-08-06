@@ -64,6 +64,9 @@ public class BottomSheetFragment extends DaggerBottomSheetDialogFragment impleme
     FirebaseAuth auth;
 
 
+
+
+
     public BottomSheetFragment(){
 
 

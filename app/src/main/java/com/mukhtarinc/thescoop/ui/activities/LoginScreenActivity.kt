@@ -1,17 +1,19 @@
 package com.mukhtarinc.thescoop.ui.activities
 
-import android.R.attr
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -21,12 +23,22 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.mukhtarinc.thescoop.R
+import com.mukhtarinc.thescoop.data.network.NetworkResource
+import com.mukhtarinc.thescoop.data.network.NetworkResource.NetworkResonseStatus
+import com.mukhtarinc.thescoop.data.network.sources.SourceResponse
 import com.mukhtarinc.thescoop.databinding.ActivityLoginScreenBinding
+import com.mukhtarinc.thescoop.model.Source
+import com.mukhtarinc.thescoop.ui.fragments.following.FollowingViewModel
+import com.mukhtarinc.thescoop.utils.Constants
+import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory
+import dagger.android.support.DaggerAppCompatActivity
+import java.util.*
+import javax.inject.Inject
 
 
 private const val RC_SIGN_IN = 1001
 private const val TAG = "LoginScreenActivity"
-class LoginScreenActivity : AppCompatActivity() {
+class LoginScreenActivity : DaggerAppCompatActivity() {
 
     private lateinit var binding: ActivityLoginScreenBinding
 
@@ -37,10 +49,22 @@ class LoginScreenActivity : AppCompatActivity() {
     lateinit var preferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
 
+    var viewModel: FollowingViewModel? = null
+
+    @Inject lateinit var viewModelProviderFactory: ViewModelProviderFactory
+
+    var sourcesList: List<Source>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
+        viewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(FollowingViewModel::class.java)
+
+
+
+
+
+        initSources();
 
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
@@ -51,6 +75,17 @@ class LoginScreenActivity : AppCompatActivity() {
 
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login_screen)
+
+
+
+
+        if(intent.hasExtra("inAlready")){
+
+            binding.SkipBT.visibility = View.GONE
+        }
+
+
+
 
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN) // for the requestIdToken, this is in the values.xml file that
@@ -81,9 +116,15 @@ class LoginScreenActivity : AppCompatActivity() {
 
             editor.putBoolean("skipClick",true)
             editor.apply()
-            val intent = Intent(this, MainActivity::class.java)
+
+
+            val intent = Intent(this, MoreSourcesActivity::class.java)
+
+            intent.putExtra("isSkip",true)
+            intent.putParcelableArrayListExtra("sources", list2ArrayList(sourcesList))
+
             startActivity(intent)
-            finish()
+
 
         }
 
@@ -101,7 +142,11 @@ class LoginScreenActivity : AppCompatActivity() {
                         Log.d(TAG, "Email " + binding.textInputEditTextEmail.text.toString())
 
                         Toast.makeText(this, "Successfully logged In", Toast.LENGTH_LONG).show();
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, MoreSourcesActivity::class.java)
+
+                        intent.putExtra("isSkip",true)
+                        intent.putParcelableArrayListExtra("sources", list2ArrayList(sourcesList))
+
                         startActivity(intent)
                         finish()
                     } else {
@@ -183,9 +228,14 @@ class LoginScreenActivity : AppCompatActivity() {
 
                         Log.d(TAG, "firebaseAuthWithGoogle: Success")
 
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, MoreSourcesActivity::class.java)
+
+                        intent.putExtra("isSkip",true)
+                        intent.putParcelableArrayListExtra("sources", list2ArrayList(sourcesList))
+
                         startActivity(intent)
-                        finish()
+
+                        finish();
 
                     }else{
 
@@ -198,7 +248,35 @@ class LoginScreenActivity : AppCompatActivity() {
 
     }
 
+    private fun initSources() {
+        viewModel!!.getSources(Constants.apiKey)
+                .observe(this, Observer { sourceResponseNetworkResource: NetworkResource<SourceResponse?>? ->
+                    if (sourceResponseNetworkResource != null) {
+                        when (sourceResponseNetworkResource.status) {
+                            NetworkResonseStatus.LOADING -> {
+                            }
+                            NetworkResonseStatus.SUCCESS -> {
+                                if (sourceResponseNetworkResource.data != null) {
 
+                                    sourcesList = sourceResponseNetworkResource.data.sources
+
+                                }
+                            }
+                            NetworkResonseStatus.ERROR -> {
+
+                                Toast.makeText(this, sourceResponseNetworkResource.message + "", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                })
+    }
+
+
+
+
+private fun list2ArrayList(sourceList: List<Source>?): ArrayList<Source>? {
+    return ArrayList(sourceList)
+}
 
 }
 

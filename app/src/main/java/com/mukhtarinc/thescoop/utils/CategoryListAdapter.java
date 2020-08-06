@@ -74,6 +74,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void setData(List<Category> data){
 
         categories = data;
+        notifyDataSetChanged();
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

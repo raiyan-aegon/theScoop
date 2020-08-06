@@ -104,15 +104,15 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
         binding.todayList.setLayoutManager(layoutManager);
-        binding.todayList.hasFixedSize();
+        binding.todayList.setHasFixedSize(false);
         binding.toolbar.setNavigationOnClickListener(view -> {
 
             Intent intent = new Intent(getActivity(), SearchActivity.class);
-            Objects.requireNonNull(getActivity()).startActivity(intent);
+            requireActivity().startActivity(intent);
 
         });
 
-       preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("RECYCLER_POSITION", Context.MODE_PRIVATE);
+       preferences = requireActivity().getSharedPreferences("RECYCLER_POSITION", Context.MODE_PRIVATE);
 
         binding.profImage.setOnClickListener(view -> {
 
@@ -121,7 +121,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
                 String[] items = new String[]{Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(), "Log out"};
 
 
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Profile")
                         .setItems(items, (dialogInterface, i) -> {
 
@@ -137,13 +137,14 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
                 String[] items = new String[]{ "Sign In"};
 
 
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Profile")
                         .setItems(items, (dialogInterface, i) -> {
 
                             if (i == 0) {
 
                                 Intent intent = new Intent(getActivity(), LoginScreenActivity.class);
+                                intent.putExtra("inAlready",true);
                                 startActivity(intent);
                             }
 
@@ -156,7 +157,7 @@ public class TodayFragment extends DaggerFragment implements OverflowClickListen
         });
         if(auth.getCurrentUser()!=null) {
 
-            Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
+            Glide.with(requireContext()).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
         }
 
        overflowClickListener = this;

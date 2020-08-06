@@ -138,7 +138,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         binding.toolbar.setNavigationOnClickListener(view -> {
 
             Intent intent = new Intent(getActivity(), SearchActivity.class);
-            Objects.requireNonNull(getActivity()).startActivity(intent);
+            requireActivity().startActivity(intent);
 
         });
 
@@ -150,7 +150,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
                 String[] items = new String[]{Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(), "Log out"};
 
 
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Profile")
                         .setItems(items, (dialogInterface, i) -> {
 
@@ -166,7 +166,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
                 String[] items = new String[]{ "Sign In"};
 
 
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Profile")
                         .setItems(items, (dialogInterface, i) -> {
 
@@ -186,14 +186,14 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
         if(auth.getCurrentUser()!=null) {
 
-            Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
+            Glide.with(requireContext()).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
 
             Toast.makeText(getContext(), auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
         }
         layoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
         binding.todayList.setLayoutManager(layoutManager);
-        binding.todayList.hasFixedSize();
+        binding.todayList.setHasFixedSize(false);
 
 
         overflowClickListener = this;
@@ -304,7 +304,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
 
         viewModel.getTodayForYouArticles(source_ids,Constants.apiKey)
-                    .observe(Objects.requireNonNull(getActivity()), todayResponseNetworkResource -> {
+                    .observe(requireActivity(), todayResponseNetworkResource -> {
                         if(todayResponseNetworkResource !=null){
 
 

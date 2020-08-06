@@ -112,15 +112,24 @@ class  NotificationWorker @Inject constructor(appContext : Context, parameters: 
 
         apiService.getNotificationArticle("us","en",Constants.apiKey,2)
                 .take(1)
-                .subscribe {
+                .subscribe({
 
                     article = it.articles[random]
 
-                }
+                }, {
+
+                    Log.d(TAG, "getArticle: No articles")
+                })
+
 
         return article!!
 
 
+    }
+
+    companion object {
+
+        const val TAG ="Notification Worker"
     }
 
 }

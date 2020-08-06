@@ -52,7 +52,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
    final FragmentManager fm = getSupportFragmentManager();
 
-   Fragment active = forYouFragment;
+   Fragment active = todayFragment;
 
 
     private static final String TAG = "MainActivity";
@@ -96,8 +96,8 @@ public class MainActivity extends DaggerAppCompatActivity {
 
 
                 fm.beginTransaction().add(R.id.container,followingFragment,"3").hide(followingFragment).commit();
-                fm.beginTransaction().add(R.id.container,todayFragment,"2").hide(todayFragment).commit();
-                fm.beginTransaction().add(R.id.container,forYouFragment,"1").hide(forYouFragment).commit();
+                fm.beginTransaction().add(R.id.container,todayFragment,"1").hide(todayFragment).commit();
+                fm.beginTransaction().add(R.id.container,forYouFragment,"2").hide(forYouFragment).commit();
 
 
                 break;
@@ -119,8 +119,8 @@ public class MainActivity extends DaggerAppCompatActivity {
 
         fm.beginTransaction().add(R.id.container,shelfFragment,"4").hide(shelfFragment).commit();
         fm.beginTransaction().add(R.id.container,followingFragment,"3").hide(followingFragment).commit();
-        fm.beginTransaction().add(R.id.container,todayFragment,"2").hide(todayFragment).commit();
-        fm.beginTransaction().add(R.id.container,forYouFragment,"1").commit();
+        fm.beginTransaction().add(R.id.container,todayFragment,"1").commit();
+        fm.beginTransaction().add(R.id.container,forYouFragment,"2").hide(forYouFragment).commit();
 
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -137,10 +137,4 @@ public class MainActivity extends DaggerAppCompatActivity {
     }
 
 
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
 }

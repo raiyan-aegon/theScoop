@@ -28,6 +28,7 @@ import com.mukhtarinc.thescoop.R;
 import com.mukhtarinc.thescoop.databinding.FragmentFollowingBinding;
 import com.mukhtarinc.thescoop.databinding.FragmentForYouBinding;
 import com.mukhtarinc.thescoop.databinding.FragmentShelfBinding;
+
 import com.mukhtarinc.thescoop.databinding.SourceItemBinding;
 import com.mukhtarinc.thescoop.model.Article;
 import com.mukhtarinc.thescoop.model.Category;
@@ -54,6 +55,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -100,7 +102,10 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
     SourceItemBinding sourceItemBinding;
 
+
+
     View v;
+    Map<String, ?> allPrefs;
 
     FirebaseAuth auth;
 
@@ -125,6 +130,8 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
         editor = preferences.edit();
 
+        allPrefs = preferences.getAll();
+
         mAddClickListener = this;
 
         checkClickListener = this;
@@ -145,7 +152,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         binding.toolbar.setNavigationOnClickListener(view -> {
 
             Intent intent = new Intent(getActivity(), SearchActivity.class);
-            Objects.requireNonNull(getActivity()).startActivity(intent);
+            requireActivity().startActivity(intent);
 
         });
 
@@ -158,7 +165,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
                 String[] items = new String[]{Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(), "Log out"};
 
 
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Profile")
                         .setItems(items, (dialogInterface, i) -> {
 
@@ -174,7 +181,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
                 String[] items = new String[]{ "Sign In"};
 
 
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Profile")
                         .setItems(items, (dialogInterface, i) -> {
 
@@ -193,7 +200,7 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         });
         if(auth.getCurrentUser()!=null) {
 
-            Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
+            Glide.with(requireContext()).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
         }
 
         binding.noConnection.findViewById(R.id.retry).setOnClickListener(view1 -> {
@@ -231,13 +238,6 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         initSources(3);
 
         binding.linearLayout.setOnClickListener(this);
-
-
-
-
-
-
-
     }
 
 
@@ -330,17 +330,54 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     @Override
     public void AddClicked(SourceItemBinding bindings, int position, Source source) {
 
-        Constants.showSnackBar(Objects.requireNonNull(getActivity()),"You're following "+source.getName(),true,source);
+        Constants.showSnackBar(requireActivity(),"You're following "+source.getName(),true,source);
+        View rootView  = getActivity().getWindow().getDecorView().findViewById(R.id.for_parent);
 
+        FragmentForYouBinding for_you_binding = DataBindingUtil.getBinding(rootView);
 
         editor.putString("sourceName "+position,source.getSource_id());
 
-        getArticles_For_you(source.getSource_id());
-
         editor.apply();
 
+
+//        getArticles_For_you(source.getSource_id());
+//
+//
+//
         bindings.add.setVisibility(View.GONE);
         bindings.check.setVisibility(View.VISIBLE);
+
+
+
+
+        StringBuilder sb = new StringBuilder();
+
+        if(allPrefs.size()==0){
+
+
+            for_you_binding.pickSourceTV.setVisibility(View.VISIBLE);
+            for_you_binding.progressForYou.setVisibility(View.GONE);
+            Log.d(TAG, "AddClicked: No Prefs");
+    
+        }else {
+
+            for(int i=0 ;i <128;i++){
+
+
+
+
+
+                sb.append(allPrefs.get("sourceName " + i)).append(",");
+
+
+            }
+
+
+            Log.d(TAG, "sourcesAdd :"+sb.toString());
+
+            getArticles_For_you(sb.toString());
+        }
+
     }
 
 
@@ -348,14 +385,46 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     @Override
     public void CheckClicked(SourceItemBinding bindings, int position, Source source) {
         Constants.showSnackBar(getActivity(),"You stopped following " + source.getName(),false,source);
+        View rootView  = getActivity().getWindow().getDecorView().findViewById(R.id.for_parent);
 
+        FragmentForYouBinding for_you_binding = DataBindingUtil.getBinding(rootView);
         editor.remove("sourceName "+position);
         editor.commit();
         bindings.add.setVisibility(View.VISIBLE);
         bindings.check.setVisibility(View.GONE);
 
 
-        getArticles_For_you("");
+        StringBuilder sb = new StringBuilder();
+
+        allPrefs = preferences.getAll();
+
+        if(allPrefs.size()==0){
+
+
+            for_you_binding.pickSourceTV.setVisibility(View.VISIBLE);
+            for_you_binding.progressForYou.setVisibility(View.GONE);
+
+            Log.d(TAG, "CheckClicked: No Prefs");
+
+        }else {
+
+            for(int i=0 ;i <128;i++){
+
+
+
+
+
+                sb.append(allPrefs.get("sourceName " + i)).append(",");
+
+
+            }
+
+
+            Log.d(TAG, "sourcesCheck :"+sb.toString());
+
+            getArticles_For_you(sb.toString());
+        }
+
 
     }
 
@@ -369,13 +438,12 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
     }
 
     public void getArticles_For_you(String source_ids){
-
         View rootView  = getActivity().getWindow().getDecorView().findViewById(R.id.for_parent);
 
         FragmentForYouBinding for_you_binding = DataBindingUtil.getBinding(rootView);
 
         forYouViewModel.getTodayForYouArticles(source_ids,Constants.apiKey)
-                .observe(Objects.requireNonNull(getActivity()), todayResponseNetworkResource -> {
+                .observe(requireActivity(), todayResponseNetworkResource -> {
                     if(todayResponseNetworkResource !=null){
 
 
@@ -460,4 +528,6 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         fragment.setArguments(bundle);
         fragment.show(fragmentManager,fragment.getTag());
     }
+
+
 }

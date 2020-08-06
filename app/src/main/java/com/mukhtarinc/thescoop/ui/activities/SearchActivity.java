@@ -33,7 +33,6 @@ public class SearchActivity extends DaggerAppCompatActivity implements ArticleIt
     ViewModelProviderFactory viewModelProviderFactory;
 
 
-
     @Inject
     TodayListAdapter todayListAdapter;
 

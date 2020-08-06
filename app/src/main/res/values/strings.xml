@@ -12,7 +12,7 @@
     <string name="sheet_share">Share</string>
     <string name="sheet_add_to_shelf">Add to Shelf</string>
     <string name="read_btn">Read full article</string>
-    <string name="pop_source">Popular Sources</string>
+    <string name="pop_source">Select Sources</string>
     <string name="browse_categories">Browse Categories</string>
     <string name="more">View more</string>
     <string name="retry">Retry</string>
@@ -43,8 +43,7 @@
     <string name="sign_up_now">Sign Up now</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="skip"
-    >SKIP</string>
-<string name="sign_in">Sign In</string>
-<string name="choose_source">Go to Following Tab to choose Sources</string>
-    </resources>
+    <string name="skip">SKIP</string>
+    <string name="sign_in">Sign In</string>
+    <string name="choose_source">Go to Following Tab to choose Sources</string>
+</resources>

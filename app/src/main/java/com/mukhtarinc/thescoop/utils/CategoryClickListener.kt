@@ -1,5 +1,6 @@
 package com.mukhtarinc.thescoop.utils
 
+
 import com.mukhtarinc.thescoop.model.Category
 
 
@@ -9,5 +10,7 @@ import com.mukhtarinc.thescoop.model.Category
 interface CategoryClickListener {
 
     abstract fun categoryClick(category: Category)
+
+
 
 }

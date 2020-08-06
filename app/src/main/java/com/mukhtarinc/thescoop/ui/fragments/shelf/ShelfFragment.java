@@ -104,7 +104,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
         binding.toolbar.setNavigationOnClickListener(view -> {
 
             Intent intent = new Intent(getActivity(), SearchActivity.class);
-            Objects.requireNonNull(getActivity()).startActivity(intent);
+            requireActivity().startActivity(intent);
 
         });
 
@@ -116,7 +116,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
                 String[] items = new String[]{Objects.requireNonNull(auth.getCurrentUser()).getDisplayName(), "Log out"};
 
 
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Profile")
                         .setItems(items, (dialogInterface, i) -> {
 
@@ -132,7 +132,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
                 String[] items = new String[]{ "Sign In"};
 
 
-                new MaterialAlertDialogBuilder(Objects.requireNonNull(getContext()))
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Profile")
                         .setItems(items, (dialogInterface, i) -> {
 
@@ -152,7 +152,7 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
 
         if(auth.getCurrentUser()!=null) {
 
-            Glide.with(Objects.requireNonNull(getContext())).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
+            Glide.with(requireContext()).load(Objects.requireNonNull(auth.getCurrentUser()).getPhotoUrl()).placeholder(R.drawable.ic_baseline_person_pin_24).dontAnimate().fitCenter().into(binding.profImage);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
 
@@ -178,9 +178,6 @@ public class ShelfFragment extends DaggerFragment implements OverflowClickListen
             onCreate(null);
 
         }
-
-
-
 
 
     }

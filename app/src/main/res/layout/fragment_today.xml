@@ -15,6 +15,7 @@
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
+        android:id="@+id/today_parent"
         android:layout_height="wrap_content">
 
 
