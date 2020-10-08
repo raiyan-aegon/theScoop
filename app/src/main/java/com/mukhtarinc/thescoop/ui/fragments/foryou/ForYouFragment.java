@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ import com.mukhtarinc.thescoop.ui.fragments.shelf.ShelfFragment;
 import com.mukhtarinc.thescoop.ui.fragments.today.TodayFragment;
 import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
 import com.mukhtarinc.thescoop.utils.Constants;
+import com.mukhtarinc.thescoop.utils.ListPositioner;
 import com.mukhtarinc.thescoop.utils.OverflowClickListener;
 import com.mukhtarinc.thescoop.utils.TodayListAdapter;
 import com.mukhtarinc.thescoop.viewmodels.ViewModelProviderFactory;
@@ -214,9 +216,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
         }else {
 
             for(int i=0 ;i <128;i++){
-
-
-
+                
 
 
                 sb.append(allPrefs.get("sourceName " + i)).append(",");
@@ -380,6 +380,7 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
 
     @Override
     public void onStart() {
+        Log.d(TAG, "onStart: Data");
         super.onStart();
 
     }
@@ -403,5 +404,69 @@ public class ForYouFragment extends DaggerFragment implements OverflowClickListe
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: Data");
+       // preferences = getContext().getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE);
+        StringBuilder sb = new StringBuilder();
+        allPrefs = preferences.getAll();
 
+        for(int i=0 ;i <128;i++){
+
+
+
+
+
+            sb.append(allPrefs.get("sourceName " + i)).append(",");
+
+
+        }
+
+
+        Log.d(TAG, "sources :"+sb.toString());
+
+        forYouArticles(sb.toString());
+    }
+
+
+//
+//    @Override
+//    public void loadListPosition() {
+//
+//        int position = PreferenceManager.getDefaultSharedPreferences(getContext())
+//                .getInt(getRecyclerViewScrollKey(),0);
+//
+//        if(position > 0 && position < Objects.requireNonNull(binding.todayList.getLayoutManager()).getChildCount()){
+//
+//            position++;
+//        }
+//
+//        binding.todayList.scrollToPosition(position);
+//    }
+//
+//    @Override
+//    public void saveListPosition() {
+//
+//        int position = ((LinearLayoutManager) Objects.requireNonNull(binding.todayList.getLayoutManager())).findFirstVisibleItemPosition();
+//        PreferenceManager.getDefaultSharedPreferences(getContext())
+//                .edit()
+//                .putInt(getRecyclerViewScrollKey(),position)
+//                .apply();
+//    }
+//
+//    @Override
+//    public void resetListPosition() {
+//
+//        PreferenceManager.getDefaultSharedPreferences(getContext())
+//                .edit()
+//                .putInt(getRecyclerViewScrollKey(),0)
+//                .apply();
+//    }
+//
+//    @NotNull
+//    @Override
+//    public String getRecyclerViewScrollKey() {
+//        return "com.mukhtarinc.theScoop.scrollposition";
+//    }
 }

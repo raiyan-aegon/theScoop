@@ -13,124 +13,128 @@
             type="com.mukhtarinc.thescoop.model.Article" />
 
     </data>
-
-    <com.google.android.material.card.MaterialCardView
-
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginLeft="7dp"
-        app:cardElevation="1dp"
-        app:cardCornerRadius="4dp"
-        android:background="#ffff"
-        android:layout_marginRight="7dp"
-        android:layout_marginBottom="4dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginEnd="7dp">
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp"
+            android:background="#ffff"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-            <TextView
-                android:id="@+id/title"
-                style="@style/theScoopTitle"
-                android:layout_width="@dimen/article_text"
-                android:layout_height="70dp"
-                android:layout_marginStart="@dimen/margin_left_right"
-                android:layout_marginLeft="@dimen/margin_left_right"
-                android:layout_marginTop="12dp"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:text="@{article.title}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="s;ljaglsa;gk;B:km;smkgjjgLNjgbfgljmdsigjidsjlmgsd" />
-
-
-            <TextView
-                android:id="@+id/source"
-                style="@style/theScoopSource"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_left_right"
-                android:layout_marginLeft="@dimen/margin_left_right"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:text="@{article.sourceName}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title"
-                tools:text="ABC-NEWS" />
-
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="30dp"
-                android:layout_height="1dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="12dp"
-                android:background="@color/colorPrimaryDark"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/source"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
-
-
-            <TextView
-                tools:text="12h"
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                style="@style/theScoopSource"
-                app:layout_constraintBottom_toBottomOf="@+id/source"
-                app:layout_constraintStart_toEndOf="@+id/divider" />
-
-            <ImageView
-                android:id="@+id/overflow_menu"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="@dimen/overflow_image_margin"
-                android:layout_marginRight="@dimen/overflow_image_margin"
-                android:background="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_overflow"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/card_image" />
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_image"
-                android:layout_width="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="7dp"
-                android:layout_marginRight="7dp"
-                android:layout_marginBottom="12dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
 
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/theScoopTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginLeft="@dimen/margin_left_right"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="12dp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="@{article.title}"
+                    app:layout_constraintEnd_toStartOf="@+id/card_image"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="s;ljaglsa;gk;B:km;smkgjjgLNjgbfgljmdsigjidsjlmgsd"
+                    android:layout_marginRight="8dp" />
+
+
+                <TextView
+                    android:id="@+id/source"
+                    style="@style/theScoopSource"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_left_right"
+                    android:layout_marginLeft="@dimen/margin_left_right"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@{article.sourceName}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title"
+                    tools:text="ABC-NEWS" />
+
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="30dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/colorPrimaryDark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/source"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
+
+
+                <TextView
+                    android:id="@+id/time"
+                    style="@style/theScoopSource"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/source"
+                    app:layout_constraintStart_toEndOf="@+id/divider"
+                    tools:text="12h" />
+
                 <ImageView
-                    android:id="@+id/image_article"
-                    android:layout_width="91dp"
-                    android:layout_height="103dp"
-                    android:scaleType="centerCrop"
-                    android:src="@color/colorPrimaryDark"
-                    />
+                    android:id="@+id/overflow_menu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="@dimen/overflow_image_margin"
+                    android:layout_marginRight="@dimen/overflow_image_margin"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:src="@drawable/ic_overflow"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/card_image" />
 
-            </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_marginBottom="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
 
+                    <ImageView
+                        android:id="@+id/image_article"
+                        android:layout_width="91dp"
+                        android:layout_height="103dp"
+                        android:scaleType="centerCrop"
+                        android:src="@color/colorPrimaryDark" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
 
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </com.google.android.material.card.MaterialCardView>
-
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

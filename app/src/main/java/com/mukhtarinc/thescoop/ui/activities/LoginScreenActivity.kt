@@ -62,8 +62,6 @@ class LoginScreenActivity : DaggerAppCompatActivity() {
 
 
 
-
-
         initSources();
 
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -108,7 +106,6 @@ class LoginScreenActivity : DaggerAppCompatActivity() {
             signIn()
         }
 
-        binding.materialTextViewSignUp.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
         binding.SkipBT.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
@@ -125,61 +122,6 @@ class LoginScreenActivity : DaggerAppCompatActivity() {
 
             startActivity(intent)
 
-
-        }
-
-
-        binding.signInBT.setOnClickListener {
-            if(binding.textInputEditTextEmail.text!!.isNotEmpty())
-                    binding.passwordField.error = null
-            if(binding.textInputEditTextPass.text!!.isNotEmpty()) {
-                binding.emailField.error = null
-                auth.signInWithEmailAndPassword(binding.textInputEditTextEmail.text.toString(), binding.textInputEditTextPass.text.toString()).addOnCompleteListener {
-
-
-                    if (it.isSuccessful) {
-
-                        Log.d(TAG, "Email " + binding.textInputEditTextEmail.text.toString())
-
-                        Toast.makeText(this, "Successfully logged In", Toast.LENGTH_LONG).show();
-                        val intent = Intent(this, MoreSourcesActivity::class.java)
-
-                        intent.putExtra("isSkip",true)
-                        intent.putParcelableArrayListExtra("sources", list2ArrayList(sourcesList))
-
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show()
-                    }
-
-
-                }
-            }else{
-
-                when {
-                    binding.textInputEditTextEmail.text!!.isEmpty() -> {
-                        binding.emailField.error = "email field empty"
-                    }
-                    binding.textInputEditTextPass.text!!.isEmpty() -> {
-                        binding.passwordField.error = "password field empty"
-                    }
-                    else -> {
-                        binding.passwordField.error = "password field empty"
-                        binding.emailField.error = "email field empty"
-                    }
-                }
-            }
-
-
-
-        }
-
-
-        binding.materialTextViewSignUp.setOnClickListener {
-
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
 
         }
 
@@ -275,7 +217,7 @@ class LoginScreenActivity : DaggerAppCompatActivity() {
 
 
 private fun list2ArrayList(sourceList: List<Source>?): ArrayList<Source>? {
-    return ArrayList(sourceList)
+    return ArrayList(sourceList!!)
 }
 
 }

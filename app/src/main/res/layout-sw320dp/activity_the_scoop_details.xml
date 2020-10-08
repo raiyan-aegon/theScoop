@@ -66,23 +66,23 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="@dimen/margin_details_top"
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_details_top">
 
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/article_title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="@{article.title}"
                 android:layout_marginLeft="16dp"
-                android:id="@+id/article_title"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:fontFamily="@font/worksans_regular"
+                android:text="@{article.title}"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -91,30 +91,29 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
-                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/card_image_details"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="@dimen/details_image_margin"
                 android:layout_marginRight="@dimen/details_image_margin"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/article_title"
-                app:layout_constraintTop_toBottomOf="@id/article_title"
-                android:layout_width="wrap_content"
-                android:id="@+id/card_image_details"
-                android:layout_height="wrap_content">
+                app:layout_constraintTop_toBottomOf="@id/article_title">
+
                 <ImageView
                     android:id="@+id/article_image"
-                    android:src="@color/colorPrimaryDark"
-                    android:layout_width="@dimen/details_image"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/details_image_height"
-
                     android:scaleType="centerCrop"
-                    />
+
+                    android:src="@color/colorPrimaryDark" />
 
 
             </com.google.android.material.card.MaterialCardView>
 
 
             <TextView
-                tools:text="CNN"
                 android:id="@+id/sources_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,7 +122,8 @@
                 android:textSize="13sp"
                 app:layout_constraintEnd_toStartOf="@+id/divider"
                 app:layout_constraintStart_toStartOf="@id/card_image_details"
-                app:layout_constraintTop_toBottomOf="@id/card_image_details" />
+                app:layout_constraintTop_toBottomOf="@id/card_image_details"
+                tools:text="CNN" />
 
             <View
                 android:id="@+id/divider"
@@ -140,50 +140,45 @@
                 app:layout_constraintTop_toTopOf="@+id/sources_name" />
 
             <TextView
-                tools:text="12 hours ago"
                 android:id="@+id/datePublished"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginRight="@dimen/details_image_margin"
                 app:layout_constraintBottom_toBottomOf="@id/sources_name"
                 app:layout_constraintStart_toEndOf="@+id/divider"
                 app:layout_constraintTop_toTopOf="@+id/sources_name"
-                android:layout_marginEnd="16dp" />
-
+                tools:text="12 hours ago" />
 
             <TextView
                 android:id="@+id/article_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:textSize="16sp"
                 android:text="@{article.content}"
+                android:textSize="16sp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/read_more"
                 app:layout_constraintEnd_toEndOf="@+id/article_title"
                 app:layout_constraintStart_toStartOf="@+id/article_title"
-                app:layout_constraintTop_toBottomOf="@id/sources_name" />
+                app:layout_constraintTop_toBottomOf="@id/sources_name"
+               />
+
 
 
             <Button
                 android:id="@+id/read_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="98dp"
-                android:layout_marginLeft="98dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="98dp"
-                android:layout_marginRight="98dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:text="@string/read_btn"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/article_content" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

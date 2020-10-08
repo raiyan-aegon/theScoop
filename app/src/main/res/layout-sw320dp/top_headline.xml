@@ -14,27 +14,27 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="@dimen/margin_left_right"
+        android:layout_marginLeft="@dimen/margin_left_right"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="@dimen/margin_left_right"
+        android:layout_marginRight="@dimen/margin_left_right"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_large_image"
-            android:layout_marginStart="@dimen/margin_left_right"
-            android:layout_marginLeft="@dimen/margin_left_right"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="@dimen/margin_left_right"
-            android:layout_marginRight="@dimen/margin_left_right"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content">
 
 
         <ImageView
             android:id="@+id/large_image_article"
-            android:layout_width="@dimen/top_headline_image_dimens"
+            android:layout_width="match_parent"
             android:scaleType="centerCrop"
             android:layout_height="208dp"
             android:src="@drawable/image_placeholder"
@@ -45,13 +45,13 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/top_card"
-            android:layout_width="@dimen/top_headline_image_dimens"
+            android:layout_width="0dp"
             android:layout_height="117dp"
             android:layout_marginStart="@dimen/margin_left_right"
             android:layout_marginLeft="@dimen/margin_left_right"
             android:layout_marginTop="8dp"
             android:background="#ffff"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginEnd="@dimen/margin_left_right"
             android:layout_marginRight="@dimen/margin_left_right"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,10 +59,12 @@
             app:layout_constraintTop_toBottomOf="@+id/card_large_image">
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent">
 
 
                 <TextView
@@ -74,17 +76,18 @@
                     android:layout_marginLeft="@dimen/margin_left_right"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="@dimen/margin_left_right"
-                    android:maxLines="3"
-                    tools:text="lisdhggljasljlasjlflLEewfkjfkljwklfjjjwFJEIWEFJIOJWfioejoiewjflWJFLJWiofeiojjglskjlJGE"
-                    android:ellipsize="end"
                     android:layout_marginRight="@dimen/margin_left_right"
+                    android:ellipsize="end"
+                    android:maxLines="3"
                     android:text="@{article.title}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="lisdhggljasljlasjlflLEewfkjfkljwklfjjfhrthrththjwFJEIWEFJIOJWfioejoiewjflWJFLJWiofeiojjglskjlJGE" />
 
 
                 <TextView
-                    tools:text="ABC-NEWS"
                     android:id="@+id/source"
                     style="@style/theScoopSource"
                     android:layout_width="wrap_content"
@@ -94,7 +97,8 @@
                     android:text="@{article.getSource.name}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/title"
-                    app:layout_constraintTop_toBottomOf="@+id/title" />
+                    app:layout_constraintTop_toBottomOf="@+id/title"
+                    tools:text="ABC-NEWS" />
 
 
                 <View
@@ -112,21 +116,21 @@
 
 
                 <TextView
-                    tools:text="12 hours ago"
                     android:id="@+id/time"
+                    style="@style/theScoopSource"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
                     android:layout_marginLeft="14dp"
-                    style="@style/theScoopSource"
                     app:layout_constraintBottom_toBottomOf="@+id/source"
-                    app:layout_constraintStart_toEndOf="@+id/divider" />
+                    app:layout_constraintStart_toEndOf="@+id/divider"
+                    tools:text="12 hours ago" />
 
                 <ImageView
+                    android:id="@+id/overflow_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="6dp"
-                    android:id="@+id/overflow_menu"
                     android:layout_marginRight="6dp"
                     android:layout_marginBottom="5dp"
                     android:src="@drawable/ic_overflow"

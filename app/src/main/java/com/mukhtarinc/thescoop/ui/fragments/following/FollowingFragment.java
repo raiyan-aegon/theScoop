@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -39,6 +40,7 @@ import com.mukhtarinc.thescoop.ui.activities.MoreSourcesActivity;
 import com.mukhtarinc.thescoop.ui.activities.SearchActivity;
 import com.mukhtarinc.thescoop.ui.activities.TheScoopDetailsActivity;
 import com.mukhtarinc.thescoop.ui.fragments.BottomSheetFragment;
+import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouFragment;
 import com.mukhtarinc.thescoop.ui.fragments.foryou.ForYouViewModel;
 import com.mukhtarinc.thescoop.utils.ArticleItemClickListener;
 import com.mukhtarinc.thescoop.utils.CategoryClickListener;
@@ -339,7 +341,10 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
         editor.apply();
 
-
+//
+//        Fragment fragment = new ForYouFragment();
+//
+//        fragment.onResume();
 //        getArticles_For_you(source.getSource_id());
 //
 //
@@ -350,33 +355,33 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
 
 
 
-        StringBuilder sb = new StringBuilder();
-
-        if(allPrefs.size()==0){
-
-
-            for_you_binding.pickSourceTV.setVisibility(View.VISIBLE);
-            for_you_binding.progressForYou.setVisibility(View.GONE);
-            Log.d(TAG, "AddClicked: No Prefs");
-    
-        }else {
-
-            for(int i=0 ;i <128;i++){
-
-
-
-
-
-                sb.append(allPrefs.get("sourceName " + i)).append(",");
-
-
-            }
-
-
-            Log.d(TAG, "sourcesAdd :"+sb.toString());
-
-            getArticles_For_you(sb.toString());
-        }
+//        StringBuilder sb = new StringBuilder();
+//
+//        if(allPrefs.size()==0){
+//
+//
+//            for_you_binding.pickSourceTV.setVisibility(View.VISIBLE);
+//            for_you_binding.progressForYou.setVisibility(View.GONE);
+//            Log.d(TAG, "AddClicked: No Prefs");
+//
+//        }else {
+//
+//            for(int i=0 ;i <128;i++){
+//
+//
+//
+//
+//
+//                sb.append(allPrefs.get("sourceName " + i)).append(",");
+//
+//
+//            }
+//
+//
+//            Log.d(TAG, "sourcesAdd :"+sb.toString());
+//
+//            getArticles_For_you(sb.toString());
+        //}
 
     }
 
@@ -394,36 +399,9 @@ public class FollowingFragment extends DaggerFragment implements View.OnClickLis
         bindings.check.setVisibility(View.GONE);
 
 
-        StringBuilder sb = new StringBuilder();
-
-        allPrefs = preferences.getAll();
-
-        if(allPrefs.size()==0){
-
-
-            for_you_binding.pickSourceTV.setVisibility(View.VISIBLE);
-            for_you_binding.progressForYou.setVisibility(View.GONE);
-
-            Log.d(TAG, "CheckClicked: No Prefs");
-
-        }else {
-
-            for(int i=0 ;i <128;i++){
-
-
-
-
-
-                sb.append(allPrefs.get("sourceName " + i)).append(",");
-
-
-            }
-
-
-            Log.d(TAG, "sourcesCheck :"+sb.toString());
-
-            getArticles_For_you(sb.toString());
-        }
+//        Fragment fragment = new ForYouFragment();
+//
+//        fragment.onResume();
 
 
     }

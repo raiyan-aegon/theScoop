@@ -66,6 +66,13 @@ public class MainActivity extends DaggerAppCompatActivity {
 
                     fm.beginTransaction().hide(active).show(forYouFragment).commit();
                     active = forYouFragment;
+                    if(active.isHidden()){
+
+                        active.onResume();
+                    }else{
+
+                        active.onAttach(this);
+                    }
 
 
                 break;
